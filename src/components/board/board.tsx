@@ -1,0 +1,268 @@
+import confetti from 'canvas-confetti';
+import clsx from 'clsx';
+import {
+  useEffect,
+  useState,
+  useEffectEvent,
+  useMemo,
+  type ReactNode,
+  type ComponentProps,
+  type CSSProperties,
+} from 'react';
+import { useDocumentEventListener, useKey } from 'rooks';
+
+import { Game } from '@/game/game';
+import { SoundManager } from '@/game/sound-manager';
+import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
+
+import { BoardContext } from './board-context';
+import { BoardCssVar } from './board-css-var';
+import { KeyCode } from './key-code';
+
+const MOVE_KEYS: KeyCode[] = [
+  KeyCode.ArrowLeft,
+  KeyCode.ArrowUp,
+  KeyCode.ArrowRight,
+  KeyCode.ArrowDown,
+];
+
+const gridMaps = {
+  3: 'grid-cols-3 grid-rows-3',
+  4: 'grid-cols-4 grid-rows-4',
+  5: 'grid-cols-5 grid-rows-5',
+  6: 'grid-cols-6 grid-rows-6',
+} satisfies Record<
+  Game.BoardSize,
+  `grid-cols-${Game.BoardSize} grid-rows-${Game.BoardSize}`
+>;
+
+interface BoardProps extends ComponentProps<'section'> {
+  /**
+   * Board size.
+   *
+   * @default Game.DEFAULT_BOARD_SIZE
+   */
+  size?: Game.BoardSize;
+  /**
+   * List of tiles.
+   *
+   * @default [ ]
+   */
+  tiles?: Game.Board;
+  /**
+   * Single tile renderer.
+   */
+  renderTile: (tile: number, index: number) => ReactNode;
+  /**
+   * Current game status.
+   *
+   * @default Game.Status.Idle
+   */
+  gameStatus?: Game.Status;
+  /**
+   * Puzzle image source.
+   */
+  image?: string;
+  /**
+   * Disables key press detection.
+   *
+   * @default false
+   */
+  isKeyboardDisabled?: boolean;
+  /**
+   * If `true`, disables sound effects.
+   *
+   * @default false
+   */
+  isSoundDisabled?: boolean;
+  /**
+   * If `true`, the confetti effect won't triggered once the game is over.
+   *
+   * @default false
+   */
+  isConfettiDisabled?: boolean;
+  /**
+   * If `true`, when the board has an image the tiles will have numbers
+   * displayed over them.
+   *
+   * @default false
+   */
+  isNumbersVisible?: boolean;
+  /**
+   * Tile move event handler.
+   */
+  onTileMove?: (direction: Game.MoveDirection) => void;
+  /**
+   * New game event handler.
+   */
+  onNewGame?: () => void;
+  /**
+   * Game pause event handler.
+   */
+  onGamePause?: () => void;
+  /**
+   * Game resume event handler.
+   */
+  onGameResume?: () => void;
+}
+
+export const Board = (props: BoardProps) => {
+  const {
+    size = Game.DEFAULT_BOARD_SIZE,
+    tiles = [],
+    renderTile,
+    gameStatus = Game.Status.Idle,
+    image,
+    isKeyboardDisabled = false,
+    isSoundDisabled = false,
+    isConfettiDisabled = false,
+    isNumbersVisible = false,
+    onTileMove,
+    onNewGame,
+    onGamePause,
+    onGameResume,
+    ...rest
+  } = props;
+
+  const [soundManager] = useState(() => new SoundManager());
+  const [isCursorHidden, setCursorHidden] = useState(false);
+
+  const playSound = useEffectEvent((sound: SoundManager.Sound) => {
+    if (!isSoundDisabled) {
+      soundManager.play(sound);
+    }
+  });
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const playConfetti = useEffectEvent(() => {
+    if (!isConfettiDisabled && !prefersReducedMotion) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.65 },
+        disableForReducedMotion: true,
+      });
+    }
+  });
+
+  const hasImage = !!image;
+  const isGamePlaying = gameStatus === Game.Status.Playing;
+  const isGamePaused = gameStatus === Game.Status.Paused;
+  const isGameOver = gameStatus === Game.Status.Over;
+
+  useEffect(() => {
+    playSound(SoundManager.Sound.Move);
+
+    // A tile move must remove active focus from any element on
+    // the page so it doesn't interfere with the gameplay.
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, [tiles]);
+
+  useEffect(() => {
+    if (isGamePlaying) {
+      confetti.reset();
+    } else if (isGameOver) {
+      playSound(SoundManager.Sound.Win);
+      playConfetti();
+      setCursorHidden(false);
+    }
+  }, [isGamePlaying, isGameOver]);
+
+  useKey(
+    Object.values(KeyCode),
+    (event) => {
+      const code = event.code as KeyCode;
+      const isMoveKey = MOVE_KEYS.includes(code);
+
+      // Move keys must not trigger anything when game paused/over.
+      if (isMoveKey && (isGamePaused || isGameOver)) return;
+
+      // Hide cursor over the board on move key press so it doesn't distract during play.
+      if (isMoveKey && !isCursorHidden) setCursorHidden(true);
+
+      switch (code) {
+        case KeyCode.ArrowLeft:
+          onTileMove?.(Game.MoveDirection.Left);
+          break;
+        case KeyCode.ArrowUp:
+          onTileMove?.(Game.MoveDirection.Up);
+          break;
+        case KeyCode.ArrowRight:
+          onTileMove?.(Game.MoveDirection.Right);
+          break;
+        case KeyCode.ArrowDown:
+          onTileMove?.(Game.MoveDirection.Down);
+          break;
+        case KeyCode.Space:
+          onNewGame?.();
+          break;
+        case KeyCode.KeyP:
+          if (isGamePaused) return onGameResume?.();
+          onGamePause?.();
+          break;
+      }
+    },
+    { when: !isKeyboardDisabled },
+  );
+
+  // Unhide cursor once the mouse moves again.
+  useDocumentEventListener(
+    'mousemove',
+    () => isCursorHidden && setCursorHidden(false),
+  );
+
+  const styles = useMemo<CSSProperties>(
+    () => ({
+      [BoardCssVar.Size]: size,
+      ...(hasImage && {
+        [BoardCssVar.Image]: `url(${image})`,
+        ...(isGameOver && {
+          backgroundImage: `url(${image})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }),
+      }),
+    }),
+    [size, hasImage, image, isGameOver],
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      size,
+      gameStatus,
+      hasImage,
+      // Numbers for a non-image board are always visible.
+      isNumbersVisible: hasImage ? isNumbersVisible : true,
+      isCursorHidden,
+    }),
+    [size, gameStatus, hasImage, isNumbersVisible, isCursorHidden],
+  );
+
+  return (
+    <section
+      aria-label="Sliding puzzle board"
+      {...rest}
+      className={clsx(
+        'bg-surface rounded-lg shadow-surface p-2 rounded-xl',
+        rest.className,
+      )}
+    >
+      <ul
+        style={styles}
+        className={clsx(`grid ${gridMaps[size]} gap-2 select-none`, {
+          'pointer-events-none grayscale-75 transition': isGamePaused,
+          'pointer-events-none': isGameOver,
+          'rounded-lg': hasImage && isGameOver,
+          '!cursor-none': isGamePlaying && isCursorHidden,
+        })}
+      >
+        <BoardContext value={contextValue}>
+          {tiles.map(renderTile)}
+        </BoardContext>
+      </ul>
+    </section>
+  );
+};
