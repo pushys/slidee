@@ -17,7 +17,9 @@ describe('useGame', () => {
   });
 
   it('should initialize a new game instance', () => {
-    const { result } = renderHook(() => useGame({ boardSize: 3, seed: SEED }));
+    const { result } = renderHook(() =>
+      useGame({ defaultBoardSize: 3, seed: SEED }),
+    );
 
     expect(result.current.state).toStrictEqual({
       board: SEQUENCE,
@@ -28,7 +30,9 @@ describe('useGame', () => {
   });
 
   it('should update state when subscribed', () => {
-    const { result } = renderHook(() => useGame({ boardSize: 3, seed: SEED }));
+    const { result } = renderHook(() =>
+      useGame({ defaultBoardSize: 3, seed: SEED }),
+    );
 
     act(() => {
       result.current.game.solve();
@@ -43,7 +47,9 @@ describe('useGame', () => {
   });
 
   it('should track total play time', () => {
-    const { result } = renderHook(() => useGame({ boardSize: 3, seed: SEED }));
+    const { result } = renderHook(() =>
+      useGame({ defaultBoardSize: 3, seed: SEED }),
+    );
 
     vi.advanceTimersByTime(2000);
 
@@ -70,20 +76,5 @@ describe('useGame', () => {
     });
 
     expect(result.current.totalPlayTime).toBe(5000);
-  });
-
-  it('should re-initialize a game instance', () => {
-    const { result, rerender } = renderHook(
-      (props: Game.Options) => useGame({ ...props, seed: SEED }),
-      { initialProps: { boardSize: 3 } },
-    );
-
-    act(() => {
-      result.current.game.solve();
-    });
-
-    rerender({ boardSize: 4 });
-
-    expect(result.current.game.boardSize).toStrictEqual(4);
   });
 });

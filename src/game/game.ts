@@ -26,7 +26,7 @@ export class Game {
   /**
    * Board size.
    */
-  readonly boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE;
+  #boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE;
   /**
    * Current tile collection.
    */
@@ -60,23 +60,23 @@ export class Game {
    */
   #random: () => number = Math.random;
 
-  constructor(opts: Game.Options = {}) {
-    if (opts.boardSize !== undefined) {
-      this.boardSize = opts.boardSize;
+  constructor({ seed, ...rest }: Game.Options = {}) {
+    if (seed !== undefined) {
+      this.#random = mulberry32(seed);
     }
 
-    if (opts.seed !== undefined) {
-      this.#random = mulberry32(opts.seed);
-    }
-
-    this.init();
+    this.init(rest);
   }
 
   /**
    * Initializes a new game.
    */
-  public init(): void {
-    this.#board = Game.createSequence(this.boardSize, true, this.#random);
+  public init(opts: Game.InitOptions = {}): void {
+    if (opts.boardSize !== undefined) {
+      this.#boardSize = opts.boardSize;
+    }
+
+    this.#board = Game.createSequence(this.#boardSize, true, this.#random);
     this.#moves = 0;
     this.#status = Game.Status.Idle;
     this.#playSessionStartedAt = null;
@@ -128,7 +128,7 @@ export class Game {
       return;
     }
 
-    this.#board = Game.createSequence(this.boardSize, false);
+    this.#board = Game.createSequence(this.#boardSize, false);
     this.#status = Game.Status.Over;
     this.#isAutoSolved = true;
 
@@ -187,7 +187,7 @@ export class Game {
     const blankPos = this.#indexToPosition(blankIndex);
     const tilePos = this.#indexToPosition(tileIndex);
 
-    const step = blankPos.row === tilePos.row ? 1 : this.boardSize;
+    const step = blankPos.row === tilePos.row ? 1 : this.#boardSize;
     const direction = tileIndex < blankIndex ? 1 : -1;
 
     for (
@@ -237,9 +237,9 @@ export class Game {
     // The requested move would go outside the board.
     if (
       targetRow < 0 ||
-      targetRow >= this.boardSize ||
+      targetRow >= this.#boardSize ||
       targetColumn < 0 ||
-      targetColumn >= this.boardSize
+      targetColumn >= this.#boardSize
     ) {
       this.#debug(
         'Cannot move tile because the requested move would go outside the board',
@@ -247,7 +247,7 @@ export class Game {
       return;
     }
 
-    const targetIndex = targetRow * this.boardSize + targetColumn;
+    const targetIndex = targetRow * this.#boardSize + targetColumn;
 
     this.moveTile(this.#board[targetIndex]);
   }
@@ -391,8 +391,8 @@ export class Game {
    * @param index
    */
   #indexToPosition(index: number): Position {
-    const row = Math.floor(index / this.boardSize);
-    const column = index % this.boardSize;
+    const row = Math.floor(index / this.#boardSize);
+    const column = index % this.#boardSize;
 
     return { row, column };
   }
@@ -426,7 +426,7 @@ export class Game {
   }
 
   /**
-   * Calculates total play time which exludes time in pause.
+   * Calculates total play time which excludes time in pause.
    */
   public get totalPlayTime(): number {
     if (this.#playSessionStartedAt === null) {
@@ -472,6 +472,8 @@ export namespace Game {
      */
     seed?: number;
   }
+
+  export type InitOptions = Omit<Options, 'seed'>;
 
   export interface State {
     readonly board: Board;

@@ -32,7 +32,7 @@ export function App() {
   const wasPlayingRef = useRef(false);
 
   const { game, state, totalPlayTime } = useGame({
-    boardSize: settings.boardSize,
+    defaultBoardSize: settings.boardSize,
   });
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -41,7 +41,7 @@ export function App() {
     !prefersReducedMotion && settings.animations,
   );
 
-  const initGame = useEffectEvent(() => game.init());
+  const initGame = useEffectEvent((opts?: Game.InitOptions) => game.init(opts));
   const pauseGame = useEffectEvent(() => game.pause());
   const resumeGame = useEffectEvent(() => game.resume());
 
@@ -89,8 +89,10 @@ export function App() {
     }
   }, [isDialogOpen, state.status]);
 
-  // New image selection must start a new game.
-  useEffect(() => initGame(), [settings.image]);
+  // Board size change or new image selection must start a new game.
+  useEffect(() => {
+    initGame({ boardSize: settings.boardSize });
+  }, [settings.boardSize, settings.image]);
 
   return (
     <AppContainer>
