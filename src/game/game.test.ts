@@ -1,10 +1,7 @@
 import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 
-import { mulberry32 } from '@/shared/utils/mulberry32';
-
 import { Game } from './game';
 
-const SEED = 123;
 const SEQUENCE = [1, 5, 3, 7, 6, 0, 4, 2, 8] as const;
 
 describe('Game', () => {
@@ -17,7 +14,7 @@ describe('Game', () => {
   });
 
   it('should initialize a new game instance', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     expect(game.state.board).toStrictEqual(SEQUENCE);
     expect(game.state.moves).toBe(0);
@@ -27,7 +24,7 @@ describe('Game', () => {
   });
 
   it('should pause the game', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(8);
     game.pause();
@@ -36,7 +33,7 @@ describe('Game', () => {
   });
 
   it('should resume the game', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(8);
     game.pause();
@@ -46,7 +43,7 @@ describe('Game', () => {
   });
 
   it('should solve the game', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.solve();
 
@@ -55,7 +52,7 @@ describe('Game', () => {
   });
 
   it('should not pause the game that is not playing', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.pause();
 
@@ -63,7 +60,7 @@ describe('Game', () => {
   });
 
   it('should not resume the game that is not paused', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.resume();
 
@@ -71,7 +68,7 @@ describe('Game', () => {
   });
 
   it('should move a tile and start the game', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(6);
 
@@ -81,7 +78,7 @@ describe('Game', () => {
   });
 
   it('should move multiple tiles in cascade', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(7);
 
@@ -97,7 +94,7 @@ describe('Game', () => {
   });
 
   it('should not move a tile when the game is paused', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(6);
     game.pause();
@@ -108,7 +105,7 @@ describe('Game', () => {
   });
 
   it('should not move a tile when the game is over', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.solve();
     game.moveTile(8);
@@ -117,7 +114,7 @@ describe('Game', () => {
   });
 
   it('should not start the game when tile is not movable', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(1);
 
@@ -127,7 +124,7 @@ describe('Game', () => {
   });
 
   it('should not move a non-movable tile', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(1);
 
@@ -137,7 +134,7 @@ describe('Game', () => {
   });
 
   it('should not move the blank tile', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(0);
 
@@ -147,7 +144,7 @@ describe('Game', () => {
   });
 
   it('should move a tile by direction and start the game', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.move('up');
 
@@ -172,7 +169,7 @@ describe('Game', () => {
   });
 
   it('should not move a tile by direction and start the game as nowhere to move', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.move('left');
 
@@ -182,7 +179,7 @@ describe('Game', () => {
   });
 
   it('should subscribe/unsubscribe to game state changes', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     let stateChanges: Game.State[] = [];
 
@@ -228,27 +225,22 @@ describe('Game', () => {
   });
 
   it('should create solvable sequences of different sizes', () => {
-    const args = [true, mulberry32(SEED)] as const;
-    const seq1 = Game.createSequence(3, ...args);
-    const seq2 = Game.createSequence(4, ...args);
-    const seq3 = Game.createSequence(5, ...args);
-    const seq4 = Game.createSequence(6, ...args);
+    const seq1 = Game.createSequence(3);
+    const seq2 = Game.createSequence(4);
+    const seq3 = Game.createSequence(5);
+    const seq4 = Game.createSequence(6);
 
-    console.dir(seq2);
-    console.dir(seq3);
-    console.dir(seq4);
-
-    expect(seq1).toStrictEqual([1, 5, 3, 7, 6, 0, 4, 2, 8]);
+    expect(seq1).toStrictEqual(SEQUENCE);
     expect(seq2).toStrictEqual([
-      2, 6, 0, 13, 9, 11, 12, 10, 4, 7, 1, 8, 15, 3, 5, 14,
+      8, 2, 6, 1, 12, 0, 15, 14, 11, 9, 10, 5, 4, 7, 3, 13,
     ]);
     expect(seq3).toStrictEqual([
-      20, 16, 12, 4, 18, 0, 11, 3, 13, 14, 7, 1, 21, 5, 2, 22, 9, 19, 17, 10, 8,
-      23, 6, 15, 24,
+      2, 16, 8, 18, 21, 19, 13, 4, 23, 6, 10, 14, 5, 17, 9, 15, 11, 24, 7, 3,
+      20, 0, 22, 12, 1,
     ]);
     expect(seq4).toStrictEqual([
-      29, 13, 3, 25, 34, 9, 21, 27, 17, 16, 11, 6, 33, 8, 32, 30, 4, 2, 31, 28,
-      18, 1, 5, 0, 7, 20, 23, 10, 26, 12, 22, 24, 14, 19, 15, 35,
+      19, 18, 28, 30, 14, 34, 24, 21, 6, 15, 10, 35, 2, 23, 3, 20, 9, 4, 0, 11,
+      33, 32, 1, 5, 25, 16, 12, 22, 27, 31, 26, 13, 8, 17, 7, 29,
     ]);
   });
 
@@ -284,7 +276,7 @@ describe('Game', () => {
   });
 
   it('should calculate total play time', () => {
-    const game = new Game({ boardSize: 3, seed: SEED });
+    const game = new Game({ boardSize: 3 });
 
     game.moveTile(6);
     vi.advanceTimersByTime(3000);

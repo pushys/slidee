@@ -5,7 +5,6 @@ import { Game } from './game';
 
 interface UseGameProps {
   defaultBoardSize?: Game.BoardSize;
-  seed?: number;
 }
 
 interface UseGameReturnValue {
@@ -20,11 +19,9 @@ interface UseGameReturnValue {
  * @param opts
  */
 export function useGame(props: UseGameProps = {}): UseGameReturnValue {
-  const { defaultBoardSize, seed } = props;
+  const { defaultBoardSize } = props;
 
-  const [game] = useState(
-    () => new Game({ boardSize: defaultBoardSize, seed }),
-  );
+  const [game] = useState(() => new Game({ boardSize: defaultBoardSize }));
   const [state, setState] = useState(() => game.state);
   const [totalPlayTime, setTotalPlayTime] = useState(0);
 

@@ -5,6 +5,10 @@ interface Position {
   column: number;
 }
 
+// Return a seeded `random` when in testing to produce consistent sequences.
+const createRandom = () =>
+  import.meta.env.MODE === 'test' ? mulberry32(123) : Math.random;
+
 export class Game {
   static readonly Status = {
     Idle: 'idle',
@@ -55,28 +59,20 @@ export class Game {
    * Game state listeners.
    */
   #listeners: Set<Game.Listener> = new Set();
-  /**
-   * Random number generator function.
-   */
-  #random: () => number = Math.random;
 
-  constructor({ seed, ...rest }: Game.Options = {}) {
-    if (seed !== undefined) {
-      this.#random = mulberry32(seed);
-    }
-
-    this.init(rest);
+  constructor(opts: Game.Options = {}) {
+    this.init(opts);
   }
 
   /**
    * Initializes a new game.
    */
-  public init(opts: Game.InitOptions = {}): void {
+  public init(opts: Game.Options = {}): void {
     if (opts.boardSize !== undefined) {
       this.#boardSize = opts.boardSize;
     }
 
-    this.#board = Game.createSequence(this.#boardSize, true, this.#random);
+    this.#board = Game.createSequence(this.#boardSize, true);
     this.#moves = 0;
     this.#status = Game.Status.Idle;
     this.#playSessionStartedAt = null;
@@ -272,12 +268,10 @@ export class Game {
    *
    * @param boardSize
    * @param shuffle Whether to shuffle the sequence or not.
-   * @param random
    */
   public static createSequence(
     boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE,
     shuffle = true,
-    random: () => number = Math.random,
   ): Game.Board {
     if (boardSize < 3 || boardSize > 6) {
       throw new Error(
@@ -291,6 +285,8 @@ export class Game {
     );
 
     if (!shuffle) return sequence;
+
+    const random = createRandom();
 
     // Shuffle the values using the Fisher-Yates Shuffle algorithm.
     const shuffleSequence = () => {
@@ -462,18 +458,10 @@ export namespace Game {
     /**
      * Board size.
      *
-     * 2 for 2x2. 3 for 3x3. etc.
-     *
-     * @default 2
+     * @default Game.DEFAULT_BOARD_SIZE
      */
     boardSize?: BoardSize;
-    /**
-     * Seed for random number generator. Used for testing purposes.
-     */
-    seed?: number;
   }
-
-  export type InitOptions = Omit<Options, 'seed'>;
 
   export interface State {
     readonly board: Board;

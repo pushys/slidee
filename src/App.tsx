@@ -41,7 +41,7 @@ export function App() {
     !prefersReducedMotion && settings.animations,
   );
 
-  const initGame = useEffectEvent((opts?: Game.InitOptions) => game.init(opts));
+  const initGame = useEffectEvent((opts?: Game.Options) => game.init(opts));
   const pauseGame = useEffectEvent(() => game.pause());
   const resumeGame = useEffectEvent(() => game.resume());
 

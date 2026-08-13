@@ -4,7 +4,6 @@ import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 import { Game } from './game';
 import { useGame } from './use-game';
 
-const SEED = 123;
 const SEQUENCE = [1, 5, 3, 7, 6, 0, 4, 2, 8];
 
 describe('useGame', () => {
@@ -17,9 +16,7 @@ describe('useGame', () => {
   });
 
   it('should initialize a new game instance', () => {
-    const { result } = renderHook(() =>
-      useGame({ defaultBoardSize: 3, seed: SEED }),
-    );
+    const { result } = renderHook(() => useGame({ defaultBoardSize: 3 }));
 
     expect(result.current.state).toStrictEqual({
       board: SEQUENCE,
@@ -30,9 +27,7 @@ describe('useGame', () => {
   });
 
   it('should update state when subscribed', () => {
-    const { result } = renderHook(() =>
-      useGame({ defaultBoardSize: 3, seed: SEED }),
-    );
+    const { result } = renderHook(() => useGame({ defaultBoardSize: 3 }));
 
     act(() => {
       result.current.game.solve();
@@ -47,9 +42,7 @@ describe('useGame', () => {
   });
 
   it('should track total play time', () => {
-    const { result } = renderHook(() =>
-      useGame({ defaultBoardSize: 3, seed: SEED }),
-    );
+    const { result } = renderHook(() => useGame({ defaultBoardSize: 3 }));
 
     vi.advanceTimersByTime(2000);
 
