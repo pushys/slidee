@@ -1,4 +1,5 @@
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
+import { useDidUpdate } from 'rooks';
 
 import type { StatsEntry } from '@/stats/types';
 
@@ -41,10 +42,9 @@ export function App() {
     !prefersReducedMotion && settings.animations,
   );
 
-  const initGame = useEffectEvent((opts?: Game.Options) => game.init(opts));
-  const pauseGame = useEffectEvent(() => game.pause());
-  const resumeGame = useEffectEvent(() => game.resume());
+  const isDialogOpen = isStatsOpen || isHelpOpen || isSettingsOpen;
 
+  // Update player's stats when game is over.
   const updateStats = useEffectEvent(() => {
     // Ignore times that were set using the "Solve" button.
     if (state.isAutoSolved) return;
@@ -70,18 +70,6 @@ export function App() {
     setStats((prevStats) => ({ ...prevStats, [settings.boardSize]: newEntry }));
   });
 
-  const clearStats = (boardSize?: Game.BoardSize) => {
-    if (boardSize) {
-      return setStats((prevStats) => ({
-        ...prevStats,
-        [boardSize]: undefined,
-      }));
-    }
-    return setStats({});
-  };
-
-  const isDialogOpen = isStatsOpen || isHelpOpen || isSettingsOpen;
-
   useEffect(() => {
     if (state.status === Game.Status.Over) {
       updateStats();
@@ -89,6 +77,9 @@ export function App() {
   }, [state.status]);
 
   // Pause the game if it's playing when any dialog opens.
+  const pauseGame = useEffectEvent(() => game.pause());
+  const resumeGame = useEffectEvent(() => game.resume());
+
   useEffect(() => {
     if (isDialogOpen && state.status === Game.Status.Playing) {
       pauseGame();
@@ -100,9 +91,19 @@ export function App() {
   }, [isDialogOpen, state.status]);
 
   // Board size change or new image selection must start a new game.
-  useEffect(() => {
-    initGame({ boardSize: settings.boardSize });
+  useDidUpdate(() => {
+    game.init({ boardSize: settings.boardSize });
   }, [settings.boardSize, settings.image]);
+
+  const handleClearStatsPress = (boardSize?: Game.BoardSize) => {
+    if (boardSize) {
+      return setStats((prevStats) => ({
+        ...prevStats,
+        [boardSize]: undefined,
+      }));
+    }
+    return setStats({});
+  };
 
   return (
     <AppContainer>
@@ -153,7 +154,7 @@ export function App() {
         isOpen={isStatsOpen}
         onOpenChange={setStatsOpen}
         stats={stats}
-        onClearStatsPress={clearStats}
+        onClearStatsPress={handleClearStatsPress}
       />
       <HelpDialog isOpen={isHelpOpen} onOpenChange={setHelpOpen} />
       <SettingsDialog
