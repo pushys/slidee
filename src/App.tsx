@@ -70,6 +70,16 @@ export function App() {
     setStats((prevStats) => ({ ...prevStats, [settings.boardSize]: newEntry }));
   });
 
+  const clearStats = (boardSize?: Game.BoardSize) => {
+    if (boardSize) {
+      return setStats((prevStats) => ({
+        ...prevStats,
+        [boardSize]: undefined,
+      }));
+    }
+    return setStats({});
+  };
+
   const isDialogOpen = isStatsOpen || isHelpOpen || isSettingsOpen;
 
   useEffect(() => {
@@ -143,7 +153,7 @@ export function App() {
         isOpen={isStatsOpen}
         onOpenChange={setStatsOpen}
         stats={stats}
-        onClearStatsPress={() => setStats({})}
+        onClearStatsPress={clearStats}
       />
       <HelpDialog isOpen={isHelpOpen} onOpenChange={setHelpOpen} />
       <SettingsDialog
