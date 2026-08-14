@@ -82,7 +82,7 @@ export const Tile = (props: TileProps) => {
         variant={isSolved && !hasImage ? 'primary' : 'tertiary'}
         onPress={onPress}
         excludeFromTabOrder={!isMovable}
-        className={clsx('rounded-lg w-full h-full', {
+        className={clsx('rounded-lg shadow-sm w-full h-full', {
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
           'pointer-events-none': !isMovable,
           'pointer-events-none opacity-0': value === Game.BLANK,
