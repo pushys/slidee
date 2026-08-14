@@ -128,7 +128,7 @@ export function App() {
             key={tile}
             value={tile}
             isSolved={tile === index + 1}
-            isMovable={game.isTileMovable(tile)}
+            isPressable={game.isTileMovable(tile)}
             isViewTransitionDisabled={isDialogOpen}
             onPress={() => startViewTransition(() => game.moveTile(tile))}
           />

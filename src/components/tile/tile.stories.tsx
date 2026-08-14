@@ -30,7 +30,7 @@ export const Default: Story = {
   args: {
     value: 1,
     isSolved: false,
-    isMovable: false,
+    isPressable: false,
     onPress: fn(),
   },
 };

@@ -31,7 +31,7 @@ interface TileProps extends ComponentProps<'li'> {
    *
    * @default false
    */
-  isMovable?: boolean;
+  isPressable?: boolean;
   /**
    * If `true`, view transitions are disable for the tile.
    *
@@ -48,7 +48,7 @@ export const Tile = (props: TileProps) => {
   const {
     value,
     isSolved = false,
-    isMovable = false,
+    isPressable = false,
     isViewTransitionDisabled = false,
     onPress,
     ...rest
@@ -81,12 +81,12 @@ export const Tile = (props: TileProps) => {
       <Button
         variant={isSolved && !hasImage ? 'primary' : 'tertiary'}
         onPress={onPress}
-        excludeFromTabOrder={!isMovable}
+        excludeFromTabOrder={!isPressable}
         className={clsx('rounded-lg shadow-sm w-full h-full', {
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
-          'pointer-events-none': !isMovable,
+          'pointer-events-none': !isPressable,
           'pointer-events-none opacity-0': value === Game.BLANK,
-          'cursor-none': isMovable && isCursorHidden,
+          'cursor-none': isPressable && isCursorHidden,
           'opacity-0': hasImage && gameStatus === Game.Status.Over,
         })}
         style={hasImage ? buttonWithImageStyles : undefined}
