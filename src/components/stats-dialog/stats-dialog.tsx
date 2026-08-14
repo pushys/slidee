@@ -77,7 +77,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
 
                         return (
                           <Table.Row key={size}>
-                            <Table.Cell className="text-center font-bold min-w-10">{`${size}x${size}`}</Table.Cell>
+                            <Table.Cell className="font-bold min-w-10">{`${size}x${size}`}</Table.Cell>
                             <Table.Cell>
                               {entry ? (
                                 <Chip
