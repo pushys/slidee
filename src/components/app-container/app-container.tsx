@@ -9,7 +9,7 @@ export const AppContainer = (props: AppContainerProps) => {
     <main
       {...props}
       className={clsx(
-        'flex flex-col w-full max-w-[480px] gap-4',
+        'flex flex-col w-full max-w-[480px] gap-4 py-4',
         props.className,
       )}
     >
