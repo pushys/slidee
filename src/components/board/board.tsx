@@ -227,7 +227,7 @@ export const Board = (props: BoardProps) => {
       ...(hasImage && {
         [BoardCssVar.Image]: `url(${image})`,
         ...(isGameOver && {
-          backgroundImage: `url(${image})`,
+          backgroundImage: `var(${BoardCssVar.Image})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
         }),
