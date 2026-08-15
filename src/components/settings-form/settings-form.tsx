@@ -223,25 +223,49 @@ export const SettingsForm = (props: SettingsFormProps) => {
           </RadioGroup>
         )}
       />
-      <Controller
-        name="showNumbers"
-        render={({ field: { value, disabled, ...field } }) => (
-          <Switch
-            {...field}
-            isSelected={value}
-            isDisabled={disabled || image === null}
-          >
-            <Switch.Content>
-              <Switch.Control>
-                <Switch.Thumb />
-              </Switch.Control>
-              Show numbers
-            </Switch.Content>
-            <Description>If to display numbers over image tiles.</Description>
-          </Switch>
-        )}
-        control={methods.control}
-      />
+      <SwitchGroup>
+        <Controller
+          name="showNumbers"
+          render={({ field: { value, disabled, ...field } }) => (
+            <Switch
+              {...field}
+              isSelected={value}
+              isDisabled={disabled || image === null}
+            >
+              <Switch.Content>
+                <Switch.Control>
+                  <Switch.Thumb />
+                </Switch.Control>
+                Show numbers
+              </Switch.Content>
+              <Description>If to display numbers over image tiles.</Description>
+            </Switch>
+          )}
+          control={methods.control}
+        />
+        <Controller
+          name="tileGap"
+          render={({ field: { value, disabled, ...field } }) => (
+            <Switch
+              {...field}
+              isSelected={value}
+              isDisabled={disabled || image === null}
+            >
+              <Switch.Content>
+                <Switch.Control>
+                  <Switch.Thumb />
+                </Switch.Control>
+                Tile gap
+              </Switch.Content>
+              <Description>
+                Show gap between tiles for better visibility, at the cost of
+                immersion.
+              </Description>
+            </Switch>
+          )}
+          control={methods.control}
+        />
+      </SwitchGroup>
     </form>
   );
 };

@@ -47,6 +47,7 @@ export const Default: Story = {
     isSoundDisabled: false,
     isConfettiDisabled: false,
     isNumbersVisible: false,
+    isTileGapVisible: true,
     image: undefined,
     renderTile: (tile, index) => (
       <Tile key={tile} value={tile} isSolved={tile === index + 1} />

@@ -137,6 +137,7 @@ export function App() {
         isSoundDisabled={!settings?.sound}
         isConfettiDisabled={!settings.confetti}
         isNumbersVisible={settings.showNumbers}
+        isTileGapVisible={!settings.image ? true : settings.tileGap}
         onNewGame={() => startViewTransition(() => game.init())}
         onTileMove={(dir) => startViewTransition(() => game.move(dir))}
         onGamePause={() => game.pause()}
