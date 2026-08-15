@@ -9,6 +9,8 @@ import { Button, type ButtonProps } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
 
+import { Tooltip } from '@/components/tooltip';
+
 interface FooterProps extends ComponentProps<'footer'> {
   soundEnabled?: boolean;
   onSoundEnablePress?: ButtonProps['onPress'];
@@ -34,42 +36,53 @@ export const Footer = (props: FooterProps) => {
       {...rest}
       className={clsx('flex justify-center gap-2', rest.className)}
     >
-      <Button
-        isIconOnly
-        size="sm"
-        variant={soundEnabled ? 'secondary' : 'danger-soft'}
-        onPress={soundEnabled ? onSoundDisablePress : onSoundEnablePress}
-        aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
+      <Tooltip
+        content={soundEnabled ? 'Sound off' : 'Sound on'}
+        contentPlacement="bottom"
       >
-        {soundEnabled ? <VolumeFill /> : <VolumeXmarkFill />}
-      </Button>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="secondary"
-        onPress={onStatsPress}
-        aria-label="Stats"
-      >
-        <SquareChartColumn />
-      </Button>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="secondary"
-        onPress={onHelpPress}
-        aria-label="Help"
-      >
-        <CircleInfoFill />
-      </Button>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="secondary"
-        onPress={onSettingsPress}
-        aria-label="Settings"
-      >
-        <Gear />
-      </Button>
+        <Button
+          isIconOnly
+          size="sm"
+          variant={soundEnabled ? 'secondary' : 'danger-soft'}
+          onPress={soundEnabled ? onSoundDisablePress : onSoundEnablePress}
+          aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
+        >
+          {soundEnabled ? <VolumeFill /> : <VolumeXmarkFill />}
+        </Button>
+      </Tooltip>
+      <Tooltip content="Stats" contentPlacement="bottom">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="secondary"
+          onPress={onStatsPress}
+          aria-label="Stats"
+        >
+          <SquareChartColumn />
+        </Button>
+      </Tooltip>
+      <Tooltip content="How to play" contentPlacement="bottom">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="secondary"
+          onPress={onHelpPress}
+          aria-label="Help"
+        >
+          <CircleInfoFill />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Settings" contentPlacement="bottom">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="secondary"
+          onPress={onSettingsPress}
+          aria-label="Settings"
+        >
+          <Gear />
+        </Button>
+      </Tooltip>
     </footer>
   );
 };

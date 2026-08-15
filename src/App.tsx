@@ -1,4 +1,5 @@
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
+import { useDidUpdate } from 'rooks';
 
 import type { StatsEntry } from '@/stats/types';
 
@@ -32,7 +33,7 @@ export function App() {
   const wasPlayingRef = useRef(false);
 
   const { game, state, totalPlayTime } = useGame({
-    boardSize: settings.boardSize,
+    defaultBoardSize: settings.boardSize,
   });
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -41,10 +42,9 @@ export function App() {
     !prefersReducedMotion && settings.animations,
   );
 
-  const initGame = useEffectEvent(() => game.init());
-  const pauseGame = useEffectEvent(() => game.pause());
-  const resumeGame = useEffectEvent(() => game.resume());
+  const isDialogOpen = isStatsOpen || isHelpOpen || isSettingsOpen;
 
+  // Update player's stats when game is over.
   const updateStats = useEffectEvent(() => {
     // Ignore times that were set using the "Solve" button.
     if (state.isAutoSolved) return;
@@ -70,8 +70,6 @@ export function App() {
     setStats((prevStats) => ({ ...prevStats, [settings.boardSize]: newEntry }));
   });
 
-  const isDialogOpen = isStatsOpen || isHelpOpen || isSettingsOpen;
-
   useEffect(() => {
     if (state.status === Game.Status.Over) {
       updateStats();
@@ -79,6 +77,9 @@ export function App() {
   }, [state.status]);
 
   // Pause the game if it's playing when any dialog opens.
+  const pauseGame = useEffectEvent(() => game.pause());
+  const resumeGame = useEffectEvent(() => game.resume());
+
   useEffect(() => {
     if (isDialogOpen && state.status === Game.Status.Playing) {
       pauseGame();
@@ -89,8 +90,20 @@ export function App() {
     }
   }, [isDialogOpen, state.status]);
 
-  // New image selection must start a new game.
-  useEffect(() => initGame(), [settings.image]);
+  // Board size change or new image selection must start a new game.
+  useDidUpdate(() => {
+    game.init({ boardSize: settings.boardSize });
+  }, [settings.boardSize, settings.image]);
+
+  const handleClearStatsPress = (boardSize?: Game.BoardSize) => {
+    if (boardSize) {
+      return setStats((prevStats) => ({
+        ...prevStats,
+        [boardSize]: undefined,
+      }));
+    }
+    return setStats({});
+  };
 
   return (
     <AppContainer>
@@ -115,7 +128,7 @@ export function App() {
             key={tile}
             value={tile}
             isSolved={tile === index + 1}
-            isMovable={game.isTileMovable(tile)}
+            isPressable={game.isTileMovable(tile)}
             isViewTransitionDisabled={isDialogOpen}
             onPress={() => startViewTransition(() => game.moveTile(tile))}
           />
@@ -124,6 +137,7 @@ export function App() {
         isSoundDisabled={!settings?.sound}
         isConfettiDisabled={!settings.confetti}
         isNumbersVisible={settings.showNumbers}
+        isTileGapVisible={!settings.image ? true : settings.tileGap}
         onNewGame={() => startViewTransition(() => game.init())}
         onTileMove={(dir) => startViewTransition(() => game.move(dir))}
         onGamePause={() => game.pause()}
@@ -141,7 +155,7 @@ export function App() {
         isOpen={isStatsOpen}
         onOpenChange={setStatsOpen}
         stats={stats}
-        onClearStatsPress={() => setStats({})}
+        onClearStatsPress={handleClearStatsPress}
       />
       <HelpDialog isOpen={isHelpOpen} onOpenChange={setHelpOpen} />
       <SettingsDialog

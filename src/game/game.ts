@@ -5,6 +5,10 @@ interface Position {
   column: number;
 }
 
+// Return a seeded `random` when in testing to produce consistent sequences.
+const createRandom = () =>
+  import.meta.env.MODE === 'test' ? mulberry32(123) : Math.random;
+
 export class Game {
   static readonly Status = {
     Idle: 'idle',
@@ -26,7 +30,7 @@ export class Game {
   /**
    * Board size.
    */
-  readonly boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE;
+  #boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE;
   /**
    * Current tile collection.
    */
@@ -55,28 +59,20 @@ export class Game {
    * Game state listeners.
    */
   #listeners: Set<Game.Listener> = new Set();
-  /**
-   * Random number generator function.
-   */
-  #random: () => number = Math.random;
 
   constructor(opts: Game.Options = {}) {
-    if (opts.boardSize !== undefined) {
-      this.boardSize = opts.boardSize;
-    }
-
-    if (opts.seed !== undefined) {
-      this.#random = mulberry32(opts.seed);
-    }
-
-    this.init();
+    this.init(opts);
   }
 
   /**
    * Initializes a new game.
    */
-  public init(): void {
-    this.#board = Game.createSequence(this.boardSize, true, this.#random);
+  public init(opts: Game.Options = {}): void {
+    if (opts.boardSize !== undefined) {
+      this.#boardSize = opts.boardSize;
+    }
+
+    this.#board = Game.createSequence(this.#boardSize, true);
     this.#moves = 0;
     this.#status = Game.Status.Idle;
     this.#playSessionStartedAt = null;
@@ -128,7 +124,7 @@ export class Game {
       return;
     }
 
-    this.#board = Game.createSequence(this.boardSize, false);
+    this.#board = Game.createSequence(this.#boardSize, false);
     this.#status = Game.Status.Over;
     this.#isAutoSolved = true;
 
@@ -187,7 +183,7 @@ export class Game {
     const blankPos = this.#indexToPosition(blankIndex);
     const tilePos = this.#indexToPosition(tileIndex);
 
-    const step = blankPos.row === tilePos.row ? 1 : this.boardSize;
+    const step = blankPos.row === tilePos.row ? 1 : this.#boardSize;
     const direction = tileIndex < blankIndex ? 1 : -1;
 
     for (
@@ -237,9 +233,9 @@ export class Game {
     // The requested move would go outside the board.
     if (
       targetRow < 0 ||
-      targetRow >= this.boardSize ||
+      targetRow >= this.#boardSize ||
       targetColumn < 0 ||
-      targetColumn >= this.boardSize
+      targetColumn >= this.#boardSize
     ) {
       this.#debug(
         'Cannot move tile because the requested move would go outside the board',
@@ -247,7 +243,7 @@ export class Game {
       return;
     }
 
-    const targetIndex = targetRow * this.boardSize + targetColumn;
+    const targetIndex = targetRow * this.#boardSize + targetColumn;
 
     this.moveTile(this.#board[targetIndex]);
   }
@@ -272,12 +268,10 @@ export class Game {
    *
    * @param boardSize
    * @param shuffle Whether to shuffle the sequence or not.
-   * @param random
    */
   public static createSequence(
     boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE,
     shuffle = true,
-    random: () => number = Math.random,
   ): Game.Board {
     if (boardSize < 3 || boardSize > 6) {
       throw new Error(
@@ -291,6 +285,8 @@ export class Game {
     );
 
     if (!shuffle) return sequence;
+
+    const random = createRandom();
 
     // Shuffle the values using the Fisher-Yates Shuffle algorithm.
     const shuffleSequence = () => {
@@ -391,8 +387,8 @@ export class Game {
    * @param index
    */
   #indexToPosition(index: number): Position {
-    const row = Math.floor(index / this.boardSize);
-    const column = index % this.boardSize;
+    const row = Math.floor(index / this.#boardSize);
+    const column = index % this.#boardSize;
 
     return { row, column };
   }
@@ -426,7 +422,7 @@ export class Game {
   }
 
   /**
-   * Calculates total play time which exludes time in pause.
+   * Calculates total play time which excludes time in pause.
    */
   public get totalPlayTime(): number {
     if (this.#playSessionStartedAt === null) {
@@ -462,15 +458,9 @@ export namespace Game {
     /**
      * Board size.
      *
-     * 2 for 2x2. 3 for 3x3. etc.
-     *
-     * @default 2
+     * @default Game.DEFAULT_BOARD_SIZE
      */
     boardSize?: BoardSize;
-    /**
-     * Seed for random number generator. Used for testing purposes.
-     */
-    seed?: number;
   }
 
   export interface State {

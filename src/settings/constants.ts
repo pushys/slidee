@@ -6,5 +6,6 @@ export const DEFAULT_SETTINGS = {
   confetti: true,
   animations: true,
   showNumbers: false,
+  tileGap: true,
   image: null,
 } satisfies Settings;

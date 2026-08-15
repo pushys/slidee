@@ -89,6 +89,12 @@ interface BoardProps extends ComponentProps<'section'> {
    */
   isNumbersVisible?: boolean;
   /**
+   * If `true`, a gap between tiles will be applied.
+   *
+   * @default true
+   */
+  isTileGapVisible?: boolean;
+  /**
    * Tile move event handler.
    */
   onTileMove?: (direction: Game.MoveDirection) => void;
@@ -117,6 +123,7 @@ export const Board = (props: BoardProps) => {
     isSoundDisabled = false,
     isConfettiDisabled = false,
     isNumbersVisible = false,
+    isTileGapVisible = true,
     onTileMove,
     onNewGame,
     onGamePause,
@@ -252,7 +259,8 @@ export const Board = (props: BoardProps) => {
     >
       <ul
         style={styles}
-        className={clsx(`grid ${gridMaps[size]} gap-2 select-none`, {
+        className={clsx(`grid ${gridMaps[size]} select-none text-[0px]`, {
+          'gap-2': isTileGapVisible,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
           'rounded-lg': hasImage && isGameOver,

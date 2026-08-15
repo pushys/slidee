@@ -11,6 +11,7 @@ import { Button, type ButtonProps, Chip } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
 
+import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
@@ -97,37 +98,43 @@ export const Toolbar = (props: ToolbarProps) => {
           <Dice3 />
         </Button>
         {gameStatus === Game.Status.Playing && (
-          <Button
-            isIconOnly
-            variant="danger-soft"
-            size="lg"
-            onPress={onPausePress}
-            aria-label="Pause"
-          >
-            <PauseFill />
-          </Button>
+          <Tooltip content="Pause">
+            <Button
+              isIconOnly
+              variant="danger-soft"
+              size="lg"
+              onPress={onPausePress}
+              aria-label="Pause"
+            >
+              <PauseFill />
+            </Button>
+          </Tooltip>
         )}
         {gameStatus === Game.Status.Paused && (
+          <Tooltip content="Resume">
+            <Button
+              isIconOnly
+              variant="secondary"
+              size="lg"
+              onPress={onResumePress}
+              aria-label="Resume"
+            >
+              <PlayFill />
+            </Button>
+          </Tooltip>
+        )}
+        <Tooltip content="Solve">
           <Button
             isIconOnly
             variant="secondary"
             size="lg"
-            onPress={onResumePress}
-            aria-label="Resume"
+            onPress={onSolvePress}
+            isDisabled={gameStatus === Game.Status.Over}
+            aria-label="Solve"
           >
-            <PlayFill />
+            <MagicWand />
           </Button>
-        )}
-        <Button
-          isIconOnly
-          variant="secondary"
-          size="lg"
-          onPress={onSolvePress}
-          isDisabled={gameStatus === Game.Status.Over}
-          aria-label="Solve"
-        >
-          <MagicWand />
-        </Button>
+        </Tooltip>
       </div>
       <div className="flex items-center gap-1">
         <Chip size="lg" variant="soft" className="tabular-nums">
