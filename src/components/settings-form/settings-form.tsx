@@ -295,7 +295,11 @@ export const SettingsForm = (props: SettingsFormProps) => {
                         )}
                       >
                         <Avatar className="rounded-lg w-full h-full">
-                          <Avatar.Image alt="Cat" src={img.src} />
+                          <Avatar.Image
+                            alt="Cat"
+                            loading="lazy"
+                            src={img.src}
+                          />
                         </Avatar>
                       </Radio.Content>
                     </Radio>
