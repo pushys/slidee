@@ -1,3 +1,5 @@
+import { Picture } from '@gravity-ui/icons';
+import { Chip, Link } from '@heroui/react';
 import confetti from 'canvas-confetti';
 import clsx from 'clsx';
 import {
@@ -10,6 +12,8 @@ import {
   type CSSProperties,
 } from 'react';
 import { useDocumentEventListener, useKey } from 'rooks';
+
+import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
 import { SoundManager } from '@/game/sound-manager';
@@ -63,6 +67,10 @@ interface BoardProps extends ComponentProps<'section'> {
    * Puzzle image source.
    */
   image?: string;
+  /**
+   * Image attribution object.
+   */
+  imageAttribution?: ImageAttribution;
   /**
    * Disables key press detection.
    *
@@ -119,6 +127,7 @@ export const Board = (props: BoardProps) => {
     renderTile,
     gameStatus = Game.Status.Idle,
     image,
+    imageAttribution,
     isKeyboardDisabled = false,
     isSoundDisabled = false,
     isConfettiDisabled = false,
@@ -253,7 +262,7 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'bg-surface rounded-lg shadow-surface p-2 rounded-xl',
+        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl',
         rest.className,
       )}
     >
@@ -271,6 +280,29 @@ export const Board = (props: BoardProps) => {
           {tiles.map(renderTile)}
         </BoardContext>
       </ul>
+      {hasImage && imageAttribution && gameStatus === Game.Status.Over && (
+        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm">
+          <Picture width={12} />
+          <Chip.Label>
+            Photo by{' '}
+            <Link
+              href={imageAttribution.authorUrl}
+              target="_blank"
+              className="underline underline-offset-2"
+            >
+              {imageAttribution.author}
+            </Link>{' '}
+            on{' '}
+            <Link
+              href={imageAttribution.sourceUrl}
+              target="_blank"
+              className="underline underline-offset-2"
+            >
+              {imageAttribution.source}
+            </Link>
+          </Chip.Label>
+        </Chip>
+      )}
     </section>
   );
 };

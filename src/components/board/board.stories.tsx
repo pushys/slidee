@@ -26,7 +26,7 @@ const meta = {
     tiles: { table: { readonly: true } },
     image: {
       control: { type: 'select' },
-      options: Object.values(images),
+      options: Object.values(images).map((i) => i.image),
     },
   },
   render: function Render(args) {
@@ -49,6 +49,14 @@ export const Default: Story = {
     isNumbersVisible: false,
     isTileGapVisible: true,
     image: undefined,
+    imageAttribution: {
+      author: 'John Doe',
+      authorUrl: 'https://example.com/john-doe',
+      source: 'Example',
+      sourceUrl: 'https://example.com',
+      license: 'Free',
+      licenseUrl: 'https://example.com/license',
+    },
     renderTile: (tile, index) => (
       <Tile key={tile} value={tile} isSolved={tile === index + 1} />
     ),

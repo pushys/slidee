@@ -122,7 +122,10 @@ export function App() {
         size={settings.boardSize}
         tiles={state.board}
         gameStatus={state.status}
-        image={settings.image ? images[settings.image] : undefined}
+        image={settings.image ? images[settings.image].image : undefined}
+        imageAttribution={
+          settings.image ? images[settings.image].attribution : undefined
+        }
         renderTile={(tile, index) => (
           <Tile
             key={tile}

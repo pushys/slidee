@@ -32,10 +32,7 @@ const boardOptions = [
   { value: 6, label: 'Impossible' },
 ] satisfies { value: Game.BoardSize; label: string }[];
 
-const imageOptions = Object.entries(images).map(([code, src]) => ({
-  code,
-  src,
-}));
+const imageOptions = Object.entries(images);
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -281,12 +278,12 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Ban width={32} height={32} className="text-accent" />
                     </div>
                   </div>
-                  {imageOptions.map((img) => (
+                  {imageOptions.map(([key, option]) => (
                     <Radio
-                      key={img.code}
-                      value={img.code}
+                      key={key}
+                      value={key}
                       className="aspect-square m-0"
-                      ref={image === img.code ? selectedImageRef : undefined}
+                      ref={image === key ? selectedImageRef : undefined}
                     >
                       <Radio.Content
                         className={clsx(
@@ -296,9 +293,9 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       >
                         <Avatar className="rounded-lg w-full h-full">
                           <Avatar.Image
-                            alt="Cat"
+                            alt={key}
                             loading="lazy"
-                            src={img.src}
+                            src={option.preview}
                           />
                         </Avatar>
                       </Radio.Content>
