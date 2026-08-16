@@ -272,7 +272,7 @@ export const Board = (props: BoardProps) => {
           'gap-2': isTileGapVisible,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'rounded-lg': hasImage && isGameOver,
+          'shadow-sm rounded-lg': hasImage && isGameOver,
           '!cursor-none': isGamePlaying && isCursorHidden,
         })}
       >
