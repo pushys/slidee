@@ -54,7 +54,7 @@ export const Tile = (props: TileProps) => {
     ...rest
   } = props;
 
-  const { size, hasImage, gameStatus, isNumbersVisible, isCursorHidden } =
+  const { size, hasImage, isNumbersVisible, isCursorHidden } =
     useBoardContext();
 
   const index = value - 1;
@@ -87,7 +87,6 @@ export const Tile = (props: TileProps) => {
           'pointer-events-none': !isPressable,
           'pointer-events-none opacity-0': value === Game.BLANK,
           'cursor-none': isPressable && isCursorHidden,
-          'opacity-0': hasImage && gameStatus === Game.Status.Over,
         })}
         style={hasImage ? buttonWithImageStyles : undefined}
       >

@@ -1,11 +1,13 @@
+import { sample } from 'es-toolkit';
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
 import { useDidUpdate } from 'rooks';
 
 import type { StatsEntry } from '@/stats/types';
 
-import { images } from '@/assets/images';
+import { images, type ImageKeys } from '@/assets/images';
 import { AppContainer } from '@/components/app-container';
 import { Board } from '@/components/board';
+import { Controls, type Mode } from '@/components/controls';
 import { Footer } from '@/components/footer';
 import { HelpDialog } from '@/components/help-dialog';
 import { SettingsDialog } from '@/components/settings-dialog';
@@ -19,6 +21,8 @@ import { createStartViewTransition } from '@/shared/utils/create-start-view-tran
 import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 import { useStats } from '@/stats/use-stats';
 
+const imageKeys = Object.keys(images) as unknown as ImageKeys[];
+
 /**
  * Main orchestration component of the app.
  */
@@ -26,6 +30,7 @@ export function App() {
   const [isStatsOpen, setStatsOpen] = useState(false);
   const [isHelpOpen, setHelpOpen] = useState(false);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isImagePreviewing, setImagePreviewing] = useState(false);
 
   const [stats, setStats] = useStats();
   const [settings, setSettings] = useSettings();
@@ -105,8 +110,55 @@ export function App() {
     return setStats({});
   };
 
+  const image = settings.image ? images[settings.image] : undefined;
+  const imageIndex = imageKeys.findIndex((i) => i === settings.image);
+
+  const handleRandomImagePress = () => {
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      image: sample(imageKeys),
+    }));
+  };
+
+  const handlePreviousImagePress = () => {
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      image: imageKeys[imageIndex - 1],
+    }));
+  };
+
+  const handleNextImagePress = () => {
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      image: imageKeys[imageIndex + 1],
+    }));
+  };
+
+  const handleModeChange = (mode: Mode) => {
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      image: mode === 'numbers' ? null : imageKeys[0],
+    }));
+  };
+
   return (
-    <AppContainer>
+    <AppContainer
+      controls={
+        <Controls
+          mode={image ? 'image' : 'numbers'}
+          onModeChange={handleModeChange}
+          onRandomImagePress={handleRandomImagePress}
+          onPreviousImagePress={handlePreviousImagePress}
+          onNextImagePress={handleNextImagePress}
+          onPreviewImagePressStart={() => setImagePreviewing(true)}
+          onPreviewImagePressEnd={() => setImagePreviewing(false)}
+          isPreviousImageButtonDisabled={imageIndex === 0}
+          isNextImageButtonDisabled={imageIndex === imageKeys.length - 1}
+          isPreviewImageButtonDisabled={state.status === Game.Status.Over}
+          isImagePreviewing={isImagePreviewing}
+        />
+      }
+    >
       <Toolbar
         gameStatus={state.status}
         moves={state.moves}
@@ -122,10 +174,8 @@ export function App() {
         size={settings.boardSize}
         tiles={state.board}
         gameStatus={state.status}
-        image={settings.image ? images[settings.image].image : undefined}
-        imageAttribution={
-          settings.image ? images[settings.image].attribution : undefined
-        }
+        image={image?.image}
+        imageAttribution={image?.attribution}
         renderTile={(tile, index) => (
           <Tile
             key={tile}
@@ -141,6 +191,7 @@ export function App() {
         isConfettiDisabled={!settings.confetti}
         isNumbersVisible={settings.showNumbers}
         isTileGapVisible={!settings.image ? true : settings.tileGap}
+        isImagePreviewActive={isImagePreviewing}
         onNewGame={() => startViewTransition(() => game.init())}
         onTileMove={(dir) => startViewTransition(() => game.move(dir))}
         onGamePause={() => game.pause()}

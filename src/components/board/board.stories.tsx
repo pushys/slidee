@@ -48,6 +48,7 @@ export const Default: Story = {
     isConfettiDisabled: false,
     isNumbersVisible: false,
     isTileGapVisible: true,
+    isImagePreviewActive: false,
     image: undefined,
     imageAttribution: {
       author: 'John Doe',

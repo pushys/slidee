@@ -103,6 +103,13 @@ interface BoardProps extends ComponentProps<'section'> {
    */
   isTileGapVisible?: boolean;
   /**
+   * If `true`, will display a solved image like it's game over but without the
+   * attribution.
+   *
+   * @default false
+   */
+  isImagePreviewActive?: boolean;
+  /**
    * Tile move event handler.
    */
   onTileMove?: (direction: Game.MoveDirection) => void;
@@ -133,6 +140,7 @@ export const Board = (props: BoardProps) => {
     isConfettiDisabled = false,
     isNumbersVisible = false,
     isTileGapVisible = true,
+    isImagePreviewActive = false,
     onTileMove,
     onNewGame,
     onGamePause,
@@ -235,26 +243,25 @@ export const Board = (props: BoardProps) => {
       [BoardCssVar.Size]: size,
       ...(hasImage && {
         [BoardCssVar.Image]: `url(${image})`,
-        ...(isGameOver && {
+        ...((isGameOver || isImagePreviewActive) && {
           backgroundImage: `var(${BoardCssVar.Image})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
         }),
       }),
     }),
-    [size, hasImage, image, isGameOver],
+    [size, hasImage, image, isGameOver, isImagePreviewActive],
   );
 
   const contextValue = useMemo(
     () => ({
       size,
-      gameStatus,
       hasImage,
       // Numbers for a non-image board are always visible.
       isNumbersVisible: hasImage ? isNumbersVisible : true,
       isCursorHidden,
     }),
-    [size, gameStatus, hasImage, isNumbersVisible, isCursorHidden],
+    [size, hasImage, isNumbersVisible, isCursorHidden],
   );
 
   return (
@@ -272,7 +279,8 @@ export const Board = (props: BoardProps) => {
           'gap-2': isTileGapVisible,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'shadow-sm rounded-lg': hasImage && isGameOver,
+          'shadow-sm rounded-lg [&>*]:opacity-0':
+            hasImage && (isGameOver || isImagePreviewActive),
           '!cursor-none': isGamePlaying && isCursorHidden,
         })}
       >
@@ -280,7 +288,7 @@ export const Board = (props: BoardProps) => {
           {tiles.map(renderTile)}
         </BoardContext>
       </ul>
-      {hasImage && imageAttribution && gameStatus === Game.Status.Over && (
+      {hasImage && imageAttribution && isGameOver && (
         <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm">
           <Picture width={12} />
           <Chip.Label>
