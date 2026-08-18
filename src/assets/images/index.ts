@@ -47,3 +47,5 @@ export const images = {
   toucan,
   wheat,
 };
+
+export type ImageKeys = keyof typeof images;
