@@ -121,31 +121,39 @@ export function App() {
       newImage = sample(imageKeys);
     } while (settings.image === newImage);
 
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      image: newImage,
-    }));
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: newImage,
+      }));
+    });
   };
 
   const handlePreviousImagePress = () => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      image: imageKeys[imageIndex - 1],
-    }));
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: imageKeys[imageIndex - 1],
+      }));
+    });
   };
 
   const handleNextImagePress = () => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      image: imageKeys[imageIndex + 1],
-    }));
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: imageKeys[imageIndex + 1],
+      }));
+    });
   };
 
   const handleModeChange = (mode: Mode) => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      image: mode === 'numbers' ? null : imageKeys[0],
-    }));
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: mode === 'numbers' ? null : imageKeys[0],
+      }));
+    });
   };
 
   return (
