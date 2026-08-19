@@ -30,7 +30,7 @@ export const Primary: Story = {
     elapsedTime: 0,
     personalBestTime: undefined,
     isAutoSolved: false,
-    onNewGamePress: fn(),
+    onShufflePress: fn(),
     onPausePress: fn(),
     onResumePress: fn(),
     onSolvePress: fn(),
