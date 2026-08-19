@@ -83,6 +83,7 @@ export const Tile = (props: TileProps) => {
         onPress={onPress}
         excludeFromTabOrder={!isPressable}
         className={clsx('rounded-lg shadow-sm w-full h-full', {
+          '@container': isNumbersVisible,
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
           'pointer-events-none': !isPressable,
           'pointer-events-none opacity-0': value === Game.BLANK,
@@ -92,10 +93,13 @@ export const Tile = (props: TileProps) => {
       >
         {isNumbersVisible && (
           <span
-            className={clsx('truncate font-bold text-3xl', {
-              'text-shadow-lg': hasImage,
-              'text-shadow-sm': !hasImage,
-            })}
+            className={clsx(
+              'font-bold text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))]',
+              {
+                'text-shadow-lg': hasImage,
+                'text-shadow-sm': !hasImage,
+              },
+            )}
           >
             {value}
           </span>
