@@ -172,7 +172,7 @@ export function App() {
         elapsedTime={totalPlayTime}
         personalBestTime={stats[settings.boardSize]?.best}
         isAutoSolved={state.isAutoSolved}
-        onNewGamePress={() => startViewTransition(() => game.init())}
+        onShufflePress={() => startViewTransition(() => game.init())}
         onPausePress={() => game.pause()}
         onResumePress={() => game.resume()}
         onSolvePress={() => startViewTransition(() => game.solve())}
