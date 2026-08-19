@@ -33,9 +33,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
-};
-
-export const WithControls: Story = {
-  args: { controls: <Controls /> },
+  args: { compact: false, controls: <Controls /> },
 };

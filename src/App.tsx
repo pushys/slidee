@@ -158,6 +158,7 @@ export function App() {
 
   return (
     <AppContainer
+      compact
       controls={
         <Controls
           mode={image ? 'image' : 'numbers'}
