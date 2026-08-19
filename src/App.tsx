@@ -114,9 +114,16 @@ export function App() {
   const imageIndex = imageKeys.findIndex((i) => i === settings.image);
 
   const handleRandomImagePress = () => {
+    let newImage: ImageKeys;
+
+    // Re-sample image until it doesn't match the old one.
+    do {
+      newImage = sample(imageKeys);
+    } while (settings.image === newImage);
+
     setSettings((prevSettings) => ({
       ...prevSettings,
-      image: sample(imageKeys),
+      image: newImage,
     }));
   };
 
