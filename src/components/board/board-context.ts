@@ -12,7 +12,7 @@ export interface BoardContext {
 export const BoardContext = createContext<BoardContext>({
   size: Game.DEFAULT_BOARD_SIZE,
   hasImage: false,
-  isNumbersVisible: false,
+  isNumbersVisible: true,
   isCursorHidden: false,
 });
 
