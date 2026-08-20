@@ -90,15 +90,13 @@ export const Tile = (props: TileProps) => {
           'cursor-none': isPressable && isCursorHidden,
         })}
         style={hasImage ? buttonWithImageStyles : undefined}
+        {...(!isNumbersVisible && { ['aria-label']: String(value) })}
       >
         {isNumbersVisible && (
           <span
             className={clsx(
               'font-bold text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))]',
-              {
-                'text-shadow-lg': hasImage,
-                'text-shadow-sm': !hasImage,
-              },
+              { 'text-shadow-lg': hasImage, 'text-shadow-sm': !hasImage },
             )}
           >
             {value}

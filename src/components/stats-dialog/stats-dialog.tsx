@@ -69,7 +69,9 @@ export const StatsDialog = (props: StatsDialogProps) => {
                       <Table.Column>PB</Table.Column>
                       <Table.Column>Avg</Table.Column>
                       <Table.Column>Games</Table.Column>
-                      <Table.Column />
+                      <Table.Column>
+                        <span className="sr-only">Actions</span>
+                      </Table.Column>
                     </Table.Header>
                     <Table.Body>
                       {boardSizes.map((size) => {
@@ -125,6 +127,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
                                   setBoardSize(size);
                                   setConfirmOpen(true);
                                 }}
+                                aria-label="Clear stats"
                               >
                                 <TrashBin />
                               </Button>

@@ -8,6 +8,8 @@ import {
   Picture,
   Eye,
   EyeSlash,
+  Plus,
+  Minus,
 } from '@gravity-ui/icons';
 import {
   ButtonGroup,
@@ -19,12 +21,25 @@ import {
 import clsx from 'clsx';
 
 import { Tooltip } from '@/components/tooltip';
+import { Game } from '@/game/game';
 
 export type Mode = 'numbers' | 'image';
 
 interface ControlsProps extends ComponentProps<'aside'> {
   /**
+   * Current board size.
+   *
+   * @default Game.DEFAULT_BOARD_SIZE
+   */
+  boardSize?: Game.BoardSize;
+  /**
+   * Board size change handler.
+   */
+  onBoardSizeChange?: (boardSize: Game.BoardSize) => void;
+  /**
    * Board mode.
+   *
+   * @default 'numbers'
    */
   mode?: Mode;
   /**
@@ -73,6 +88,8 @@ interface ControlsProps extends ComponentProps<'aside'> {
 
 export const Controls = (props: ControlsProps) => {
   const {
+    boardSize = Game.DEFAULT_BOARD_SIZE,
+    onBoardSizeChange,
     mode = 'numbers',
     onModeChange,
     onRandomImagePress,
@@ -87,10 +104,22 @@ export const Controls = (props: ControlsProps) => {
     ...rest
   } = props;
 
-  const handleSelectionChange = (key: Set<string | number>) => {
+  const handleModeSelectionChange = (key: Set<string | number>) => {
     const selectedKey = Array.from(key)[0] as Mode;
 
     if (selectedKey !== mode) onModeChange?.(selectedKey);
+  };
+
+  const handleIncreaseBoardSize = () => {
+    if (boardSize === 6) return;
+
+    onBoardSizeChange?.((boardSize + 1) as Game.BoardSize);
+  };
+
+  const handleDecreaseBoardSize = () => {
+    if (boardSize === 3) return;
+
+    onBoardSizeChange?.((boardSize - 1) as Game.BoardSize);
   };
 
   return (
@@ -103,7 +132,7 @@ export const Controls = (props: ControlsProps) => {
         orientation="vertical"
         selectionMode="single"
         selectedKeys={[mode]}
-        onSelectionChange={handleSelectionChange}
+        onSelectionChange={handleModeSelectionChange}
       >
         <Tooltip content="Numbers mode" contentPlacement="right">
           <ToggleButton isIconOnly id="numbers" aria-label="Numbers mode">
@@ -116,6 +145,29 @@ export const Controls = (props: ControlsProps) => {
           </ToggleButton>
         </Tooltip>
       </ToggleButtonGroup>
+      <ButtonGroup orientation="vertical">
+        <Tooltip content="Larger board" contentPlacement="right">
+          <Button
+            isIconOnly
+            onPress={handleIncreaseBoardSize}
+            isDisabled={boardSize === 6}
+            aria-label="Larger board"
+          >
+            <Plus />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Smaller board" contentPlacement="right">
+          <Button
+            isIconOnly
+            onPress={handleDecreaseBoardSize}
+            isDisabled={boardSize === 3}
+            aria-label="Smaller board"
+          >
+            <ButtonGroup.Separator />
+            <Minus />
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
       {mode === 'image' && (
         <ButtonGroup orientation="vertical">
           <Tooltip content="Random image" contentPlacement="right">

@@ -10,6 +10,12 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    boardSize: {
+      control: { type: 'select' },
+      options: [3, 4, 5, 6],
+    },
+  },
 } satisfies Meta<typeof Controls>;
 
 export default meta;
@@ -17,6 +23,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    boardSize: 4,
+    onBoardSizeChange: fn(),
     mode: 'numbers',
     onModeChange: fn(),
     onRandomImagePress: fn(),

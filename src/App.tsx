@@ -156,11 +156,19 @@ export function App() {
     });
   };
 
+  const handleBoardSizeChange = (boardSize: Game.BoardSize) => {
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({ ...prevSettings, boardSize }));
+    });
+  };
+
   return (
     <AppContainer
       compact
       controls={
         <Controls
+          boardSize={settings.boardSize}
+          onBoardSizeChange={handleBoardSizeChange}
           mode={image ? 'image' : 'numbers'}
           onModeChange={handleModeChange}
           onRandomImagePress={handleRandomImagePress}
@@ -187,14 +195,13 @@ export function App() {
         onSolvePress={() => startViewTransition(() => game.solve())}
       />
       <Board
-        size={settings.boardSize}
         tiles={state.board}
         gameStatus={state.status}
         image={image?.image}
         imageAttribution={image?.attribution}
         renderTile={(tile, index) => (
           <Tile
-            key={tile}
+            key={`${settings.boardSize}-${tile}`}
             value={tile}
             isSolved={tile === index + 1}
             isPressable={game.isTileMovable(tile)}
