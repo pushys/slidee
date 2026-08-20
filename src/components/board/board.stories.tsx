@@ -8,6 +8,8 @@ import { Game } from '@/game/game';
 import { Tile } from '../tile';
 import { Board } from './board';
 
+const sizes: Game.BoardSize[] = [3, 4, 5, 6];
+
 const meta = {
   title: 'Board',
   component: Board,
@@ -15,24 +17,21 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {
-    size: {
+    tiles: {
       control: { type: 'select' },
-      options: [3, 4, 5, 6],
+      options: sizes.map((s) => `${s}x${s}`),
+      mapping: Object.fromEntries(
+        sizes.map((s) => [`${s}x${s}`, Game.createSequence(s)]),
+      ),
     },
     gameStatus: {
       control: { type: 'select' },
       options: Object.values(Game.Status),
     },
-    tiles: { table: { readonly: true } },
     image: {
       control: { type: 'select' },
       options: Object.values(images).map((i) => i.image),
     },
-  },
-  render: function Render(args) {
-    const tiles = Game.createSequence(args.size);
-
-    return <Board {...args} tiles={tiles} />;
   },
 } satisfies Meta<typeof Board>;
 
@@ -41,7 +40,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    size: 4,
+    // Controlled by `argTypes`.
+    tiles: '3x3' as unknown as Game.Board,
     gameStatus: Game.Status.Idle,
     isKeyboardDisabled: false,
     isSoundDisabled: false,

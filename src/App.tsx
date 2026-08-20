@@ -201,7 +201,7 @@ export function App() {
         imageAttribution={image?.attribution}
         renderTile={(tile, index) => (
           <Tile
-            key={`${settings.boardSize}-${tile}`}
+            key={tile}
             value={tile}
             isSolved={tile === index + 1}
             isPressable={game.isTileMovable(tile)}

@@ -42,12 +42,6 @@ const gridMaps = {
 
 interface BoardProps extends ComponentProps<'section'> {
   /**
-   * Board size.
-   *
-   * @default Game.DEFAULT_BOARD_SIZE
-   */
-  size?: Game.BoardSize;
-  /**
    * List of tiles.
    *
    * @default [ ]
@@ -129,7 +123,6 @@ interface BoardProps extends ComponentProps<'section'> {
 
 export const Board = (props: BoardProps) => {
   const {
-    size = Game.DEFAULT_BOARD_SIZE,
     tiles = [],
     renderTile,
     gameStatus = Game.Status.Idle,
@@ -147,6 +140,11 @@ export const Board = (props: BoardProps) => {
     onGameResume,
     ...rest
   } = props;
+
+  // Derive board size from tiles so there is only one source of truth.
+  const size = Math.sqrt(tiles.length);
+
+  Game.validateBoardSize(size);
 
   const [soundManager] = useState(() => new SoundManager());
   const [isCursorHidden, setCursorHidden] = useState(false);
@@ -232,7 +230,7 @@ export const Board = (props: BoardProps) => {
     { when: !isKeyboardDisabled },
   );
 
-  // Unhide cursor once the mouse moves again.
+  // Unhide cursor once mouse moves again.
   useDocumentEventListener(
     'mousemove',
     () => isCursorHidden && setCursorHidden(false),

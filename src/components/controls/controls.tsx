@@ -111,13 +111,13 @@ export const Controls = (props: ControlsProps) => {
   };
 
   const handleIncreaseBoardSize = () => {
-    if (boardSize === 6) return;
+    if (boardSize === Game.MAX_BOARD_SIZE) return;
 
     onBoardSizeChange?.((boardSize + 1) as Game.BoardSize);
   };
 
   const handleDecreaseBoardSize = () => {
-    if (boardSize === 3) return;
+    if (boardSize === Game.MIN_BOARD_SIZE) return;
 
     onBoardSizeChange?.((boardSize - 1) as Game.BoardSize);
   };
@@ -150,7 +150,7 @@ export const Controls = (props: ControlsProps) => {
           <Button
             isIconOnly
             onPress={handleIncreaseBoardSize}
-            isDisabled={boardSize === 6}
+            isDisabled={boardSize === Game.MAX_BOARD_SIZE}
             aria-label="Larger board"
           >
             <Plus />
@@ -160,7 +160,7 @@ export const Controls = (props: ControlsProps) => {
           <Button
             isIconOnly
             onPress={handleDecreaseBoardSize}
-            isDisabled={boardSize === 3}
+            isDisabled={boardSize === Game.MIN_BOARD_SIZE}
             aria-label="Smaller board"
           >
             <ButtonGroup.Separator />
