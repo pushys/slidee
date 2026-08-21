@@ -254,12 +254,13 @@ export const Board = (props: BoardProps) => {
   const contextValue = useMemo(
     () => ({
       size,
+      gameStatus,
       hasImage,
       // Numbers for a non-image board are always visible.
       isNumbersVisible: hasImage ? isNumbersVisible : true,
       isCursorHidden,
     }),
-    [size, hasImage, isNumbersVisible, isCursorHidden],
+    [gameStatus, size, hasImage, isNumbersVisible, isCursorHidden],
   );
 
   return (
