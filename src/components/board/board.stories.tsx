@@ -8,8 +8,6 @@ import { Game } from '@/game/game';
 import { Tile } from '../tile';
 import { Board } from './board';
 
-const sizes: Game.BoardSize[] = [3, 4, 5, 6];
-
 const meta = {
   title: 'Board',
   component: Board,
@@ -19,9 +17,9 @@ const meta = {
   argTypes: {
     tiles: {
       control: { type: 'select' },
-      options: sizes.map((s) => `${s}x${s}`),
+      options: Game.BOARD_SIZES.map((s) => `${s}x${s}`),
       mapping: Object.fromEntries(
-        sizes.map((s) => [`${s}x${s}`, Game.createSequence(s)]),
+        Game.BOARD_SIZES.map((s) => [`${s}x${s}`, Game.createSequence(s)]),
       ),
     },
     gameStatus: {

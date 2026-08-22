@@ -25,9 +25,16 @@ export class Game {
   } as const;
 
   static readonly BLANK = 0;
-  static readonly DEFAULT_BOARD_SIZE = 4;
-  static readonly MIN_BOARD_SIZE: Game.BoardSize = 3;
-  static readonly MAX_BOARD_SIZE: Game.BoardSize = 6;
+  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = 4;
+  static readonly BOARD_SIZES: Game.BoardSize[] = [3, 4, 5, 6];
+
+  static get MIN_BOARD_SIZE(): Game.BoardSize {
+    return Game.BOARD_SIZES[0];
+  }
+
+  static get MAX_BOARD_SIZE(): Game.BoardSize {
+    return Game.BOARD_SIZES.at(-1)!;
+  }
 
   /**
    * Board size.
@@ -372,9 +379,18 @@ export class Game {
    * @throws If board size is invalid.
    */
   public static validateBoardSize(
-    size: number,
+    size: unknown,
   ): asserts size is Game.BoardSize {
-    const isValid = size >= Game.MIN_BOARD_SIZE && size <= Game.MAX_BOARD_SIZE;
+    let isValid = false;
+
+    if (
+      typeof size === 'number' &&
+      Number.isInteger(size) &&
+      size >= Game.MIN_BOARD_SIZE &&
+      size <= Game.MAX_BOARD_SIZE
+    ) {
+      isValid = true;
+    }
 
     if (!isValid) {
       throw new Error(`Invalid board size provided: ${size}`);

@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { fn } from 'storybook/test';
 
-import { Controls } from './controls';
+import { Game } from '@/game/game';
 
+import { Controls } from './controls';
 const meta = {
   title: 'Controls',
   component: Controls,
@@ -13,7 +14,7 @@ const meta = {
   argTypes: {
     boardSize: {
       control: { type: 'select' },
-      options: [3, 4, 5, 6],
+      options: Game.BOARD_SIZES,
     },
   },
 } satisfies Meta<typeof Controls>;
