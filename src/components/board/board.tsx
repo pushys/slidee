@@ -91,12 +91,6 @@ interface BoardProps extends ComponentProps<'section'> {
    */
   isNumbersVisible?: boolean;
   /**
-   * If `true`, a gap between tiles will be applied.
-   *
-   * @default true
-   */
-  isTileGapVisible?: boolean;
-  /**
    * If `true`, will display a solved image like it's game over but without the
    * attribution.
    *
@@ -132,7 +126,6 @@ export const Board = (props: BoardProps) => {
     isSoundDisabled = false,
     isConfettiDisabled = false,
     isNumbersVisible = false,
-    isTileGapVisible = true,
     isImagePreviewActive = false,
     onTileMove,
     onNewGame,
@@ -268,14 +261,23 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl',
+        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl transition-[width]',
+        // Careful changing these values because they are calculated with
+        // non-fractional tile widths in mind applicable for all board sizes.
+        //
+        // We must have two sets of sizes both for numbers and image modes because
+        // the former has a gap (for a better visual separation of tiles) and it's
+        // not possible to have non-fractional widths while using same ones for
+        // both modes.
+        { 'w-[316px] sm:w-[376px] md:w-[436px] lg:w-[496px]': hasImage },
+        { 'w-[308px] sm:w-[368px] md:w-[428px] lg:w-[488px]': !hasImage },
         rest.className,
       )}
     >
       <ul
         style={styles}
         className={clsx(`grid ${gridMaps[size]} select-none text-[0px]`, {
-          'gap-2': isTileGapVisible,
+          'gap-2': !hasImage,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
           'shadow-sm rounded-lg [&>*]:opacity-0':

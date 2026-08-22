@@ -47,7 +47,6 @@ export const Default: Story = {
     isSoundDisabled: false,
     isConfettiDisabled: false,
     isNumbersVisible: false,
-    isTileGapVisible: true,
     isImagePreviewActive: false,
     image: undefined,
     imageAttribution: {

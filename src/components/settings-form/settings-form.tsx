@@ -80,7 +80,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
     if (tab === 'image') {
       selectedImageRef.current?.scrollIntoView({
         behavior: 'smooth',
-        block: 'nearest',
+        block: 'center',
       });
     }
   }, [tab]);
@@ -88,7 +88,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
   return (
     <form
       id={id}
-      className="min-h-[400px]"
+      className="min-h-[431px]"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Tabs
@@ -226,27 +226,6 @@ export const SettingsForm = (props: SettingsFormProps) => {
               )}
               control={methods.control}
             />
-            <Controller
-              name="tileGap"
-              render={({ field: { value, disabled, ...field } }) => (
-                <Switch
-                  {...field}
-                  isSelected={value}
-                  isDisabled={disabled || image === null}
-                >
-                  <Switch.Content>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                    Tile gap
-                  </Switch.Content>
-                  <Description>
-                    Show gap between tiles for better visibility.
-                  </Description>
-                </Switch>
-              )}
-              control={methods.control}
-            />
           </SwitchGroup>
           <Controller
             name="image"
@@ -261,7 +240,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
                   <Label>Image</Label>
                 </div>
-                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[183px] overflow-y-auto overflow-x-hidden scrollbar-thin">
+                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin">
                   <div
                     className="aspect-square cursor-pointer m-0"
                     onClick={() => methods.setValue('image', null)}

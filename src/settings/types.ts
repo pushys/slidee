@@ -7,6 +7,5 @@ export interface Settings {
   confetti: boolean;
   animations: boolean;
   showNumbers: boolean;
-  tileGap: boolean;
   image: null | keyof typeof images;
 }
