@@ -24,7 +24,6 @@ export const Default: Story = {
   args: {
     value: 1,
     isSolved: false,
-    isPressable: false,
     isViewTransitionDisabled: false,
     onPress: fn(),
     style: { width: 100, height: 100 },

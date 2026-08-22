@@ -27,12 +27,6 @@ interface TileProps extends ComponentProps<'li'> {
    */
   isSolved?: boolean;
   /**
-   * If `true`, the tile will be an interactive button.
-   *
-   * @default false
-   */
-  isPressable?: boolean;
-  /**
    * If `true`, view transitions are disable for the tile.
    *
    * @default false
@@ -48,7 +42,6 @@ export const Tile = (props: TileProps) => {
   const {
     value,
     isSolved: isSolvedProp = false,
-    isPressable = false,
     isViewTransitionDisabled = false,
     onPress,
     ...rest
@@ -59,6 +52,7 @@ export const Tile = (props: TileProps) => {
 
   const index = value - 1;
 
+  const isPressable = !!onPress;
   const isBlank = value === Game.BLANK;
   const isSolved = isSolvedProp || isBlank;
   const isGameOver = gameStatus === Game.Status.Over;

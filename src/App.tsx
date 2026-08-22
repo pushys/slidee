@@ -164,7 +164,6 @@ export function App() {
 
   return (
     <AppContainer
-      compact
       controls={
         <Controls
           boardSize={settings.boardSize}
@@ -204,16 +203,16 @@ export function App() {
             key={tile}
             value={tile}
             isSolved={tile === index + 1}
-            isPressable={game.isTileMovable(tile)}
             isViewTransitionDisabled={isDialogOpen}
-            onPress={() => startViewTransition(() => game.moveTile(tile))}
+            {...(game.isTileMovable(tile) && {
+              onPress: () => startViewTransition(() => game.moveTile(tile)),
+            })}
           />
         )}
         isKeyboardDisabled={isDialogOpen}
         isSoundDisabled={!settings?.sound}
         isConfettiDisabled={!settings.confetti}
         isNumbersVisible={settings.showNumbers}
-        isTileGapVisible={!settings.image ? true : settings.tileGap}
         isImagePreviewActive={isImagePreviewing}
         onNewGame={() => startViewTransition(() => game.init())}
         onTileMove={(dir) => startViewTransition(() => game.move(dir))}
