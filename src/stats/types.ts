@@ -1,3 +1,4 @@
+import type { ImageKeys } from '@/assets/images';
 import type { Game } from '@/game/game';
 
 export interface StatsEntry {
@@ -13,6 +14,10 @@ export interface StatsEntry {
    * Total number of games for this board size.
    */
   games: number;
+  /**
+   * List of solved images.
+   */
+  images: ImageKeys[];
 }
 
 /**

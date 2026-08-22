@@ -51,16 +51,12 @@ export function App() {
 
   // Update player's stats when game is over.
   const updateStats = useEffectEvent(() => {
-    // Ignore times that were set using the "Solve" button.
+    // Ignore games that were won using the "Solve" button.
     if (state.isAutoSolved) return;
 
     const entry = stats[settings.boardSize];
 
-    let newEntry: StatsEntry = {
-      best: totalPlayTime,
-      average: totalPlayTime,
-      games: 1,
-    };
+    let newEntry: StatsEntry;
 
     if (entry) {
       const newGameCount = entry.games + 1;
@@ -69,6 +65,22 @@ export function App() {
         best: totalPlayTime < entry.best ? totalPlayTime : entry.best,
         average: (entry.average * entry.games + totalPlayTime) / newGameCount,
         games: newGameCount,
+        images: entry.images,
+      };
+
+      if (settings.image) {
+        const wasImageSolved = entry.images.includes(settings.image);
+
+        if (!wasImageSolved) {
+          newEntry.images = [...newEntry.images, settings.image];
+        }
+      }
+    } else {
+      newEntry = {
+        best: totalPlayTime,
+        average: totalPlayTime,
+        games: 1,
+        images: settings.image ? [settings.image] : [],
       };
     }
 
@@ -239,6 +251,7 @@ export function App() {
         onOpenChange={setSettingsOpen}
         defaultSettings={settings}
         onSettingsSave={setSettings}
+        stats={stats}
       />
     </AppContainer>
   );

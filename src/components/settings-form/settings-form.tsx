@@ -1,4 +1,4 @@
-import { Ban } from '@gravity-ui/icons';
+import { Ban, CheckShape, CheckShapeFill } from '@gravity-ui/icons';
 import {
   Avatar,
   Label,
@@ -11,9 +11,10 @@ import {
   Chip,
   Tabs,
   ScrollShadow,
+  Badge,
 } from '@heroui/react';
 import clsx from 'clsx';
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   useForm,
   type UseFormProps,
@@ -22,8 +23,9 @@ import {
 } from 'react-hook-form';
 
 import type { Settings } from '@/settings/types';
+import type { Stats } from '@/stats/types';
 
-import { images } from '@/assets/images';
+import { images, type ImageKeys } from '@/assets/images';
 import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/constants';
 import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
@@ -63,13 +65,23 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   );
 };
 
-interface SettingsFormProps extends UseFormProps<Settings> {
+export interface SettingsFormProps extends UseFormProps<Settings> {
   id?: string;
   onSubmit: (values: Settings) => void;
+  /**
+   * Stats object to show progress per image.
+   */
+  stats?: Stats;
 }
 
 export const SettingsForm = (props: SettingsFormProps) => {
-  const { id, onSubmit, defaultValues = DEFAULT_SETTINGS, ...rest } = props;
+  const {
+    id,
+    onSubmit,
+    defaultValues = DEFAULT_SETTINGS,
+    stats = {},
+    ...rest
+  } = props;
 
   const [tab, setTab] = useState<TabKey>('general');
   const selectedImageRef = useRef<HTMLDivElement>(null);
@@ -262,29 +274,55 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Ban width={32} height={32} className="text-accent" />
                     </div>
                   </div>
-                  {imageOptions.map(([key, option]) => (
-                    <Radio
-                      key={key}
-                      value={key}
-                      className="aspect-square m-0"
-                      ref={image === key ? selectedImageRef : undefined}
-                    >
-                      <Radio.Content
-                        className={clsx(
-                          'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
-                          'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
-                        )}
+                  {imageOptions.map(([key, option]) => {
+                    const imageKey = key as ImageKeys;
+
+                    const solved = Game.BOARD_SIZES.map(
+                      (size) => stats[size]?.images.includes(imageKey) ?? false,
+                    );
+                    const allSolved = solved.every((isSolved) => isSolved);
+
+                    return (
+                      <Radio
+                        key={key}
+                        value={key}
+                        className="aspect-square m-0"
+                        ref={image === key ? selectedImageRef : undefined}
                       >
-                        <Avatar className="rounded-lg w-full h-full">
-                          <Avatar.Image
-                            alt={key}
-                            loading="lazy"
-                            src={option.preview}
-                          />
-                        </Avatar>
-                      </Radio.Content>
-                    </Radio>
-                  ))}
+                        <Radio.Content
+                          className={clsx(
+                            'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
+                            'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
+                          )}
+                        >
+                          <Badge.Anchor className="w-full h-full">
+                            <Avatar className="rounded-lg w-full h-full">
+                              <Avatar.Image
+                                alt={key}
+                                loading="lazy"
+                                src={option.preview}
+                              />
+                            </Avatar>
+                            <Badge
+                              color={allSolved ? 'success' : 'accent'}
+                              size="sm"
+                              className="px-0.5 border-[var(--surface-secondary)] gap-0"
+                            >
+                              {solved.map((isSolved, index) => (
+                                <React.Fragment key={index}>
+                                  {isSolved ? (
+                                    <CheckShapeFill className="size-2" />
+                                  ) : (
+                                    <CheckShape className="size-2" />
+                                  )}
+                                </React.Fragment>
+                              ))}
+                            </Badge>
+                          </Badge.Anchor>
+                        </Radio.Content>
+                      </Radio>
+                    );
+                  })}
                 </ScrollShadow>
               </RadioGroup>
             )}
