@@ -7,11 +7,11 @@ export const cake = {
   image,
   preview,
   attribution: {
-    author: 'Davide Carpani',
-    authorUrl: 'https://unsplash.com/@dc_photo',
+    author: 'American Heritage Chocolate',
+    authorUrl: 'https://unsplash.com/@americanheritagechocolate',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/strawberry-on-white-ceramic-plate-cz6H-peo_E0',
+      'https://unsplash.com/photos/white-cake-with-chocolate-syrup-on-white-ceramic-plate-vdx5hPQhXFk',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   } satisfies ImageAttribution,

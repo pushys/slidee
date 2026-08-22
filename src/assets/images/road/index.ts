@@ -3,15 +3,15 @@ import type { ImageAttribution } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const mountains = {
+export const road = {
   image,
   preview,
   attribution: {
-    author: 'Marco Pregnolato',
-    authorUrl: 'https://unsplash.com/@marco_pregnolato',
+    author: 'Luke Stackpoole',
+    authorUrl: 'https://unsplash.com/@withluke',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/snow-covered-mountain-under-blue-sky-during-daytime-ahYX46whD8s',
+      'https://unsplash.com/photos/asphalt-road-through-mountain-landscape-ZRsJmpt9pNI',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   } satisfies ImageAttribution,

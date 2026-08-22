@@ -3,15 +3,15 @@ import type { ImageAttribution } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const mountains = {
+export const leaves = {
   image,
   preview,
   attribution: {
-    author: 'Marco Pregnolato',
-    authorUrl: 'https://unsplash.com/@marco_pregnolato',
+    author: 'Łukasz Rawa',
+    authorUrl: 'https://unsplash.com/@lukasz_rawa',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/snow-covered-mountain-under-blue-sky-during-daytime-ahYX46whD8s',
+      'https://unsplash.com/photos/dark-green-leaves-with-red-veins-CdA2yxbG1hg',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   } satisfies ImageAttribution,

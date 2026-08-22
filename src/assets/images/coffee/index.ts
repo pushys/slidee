@@ -7,11 +7,11 @@ export const coffee = {
   image,
   preview,
   attribution: {
-    author: 'Guy Basabose',
-    authorUrl: 'https://unsplash.com/@guybas',
+    author: 'Nathan Dumlao',
+    authorUrl: 'https://unsplash.com/@nate_dumlao',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/white-ceramic-cup-with-brown-liquid-on-white-ceramic-saucer-FzdEbrA3Qj0',
+      'https://unsplash.com/photos/top-view-photography-of-heart-latte-coffee-XOhI_kW_TaM',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   } satisfies ImageAttribution,
