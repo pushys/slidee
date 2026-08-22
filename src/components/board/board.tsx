@@ -134,13 +134,13 @@ export const Board = (props: BoardProps) => {
     ...rest
   } = props;
 
-  // Derive board size from tiles so there is only one source of truth.
+  // Derive board size from tiles so it's the only source of truth.
   const size = Math.sqrt(tiles.length);
 
   Game.validateBoardSize(size);
 
   const [soundManager] = useState(() => new SoundManager());
-  const [isCursorHidden, setCursorHidden] = useState(false);
+  const [isCursorHiddenState, setCursorHiddenState] = useState(false);
 
   const playSound = useEffectEvent((sound: SoundManager.Sound) => {
     if (!isSoundDisabled) {
@@ -165,6 +165,7 @@ export const Board = (props: BoardProps) => {
   const isGamePlaying = gameStatus === Game.Status.Playing;
   const isGamePaused = gameStatus === Game.Status.Paused;
   const isGameOver = gameStatus === Game.Status.Over;
+  const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
 
   useEffect(() => {
     playSound(SoundManager.Sound.Move);
@@ -182,7 +183,6 @@ export const Board = (props: BoardProps) => {
     } else if (isGameOver) {
       playSound(SoundManager.Sound.Win);
       playConfetti();
-      setCursorHidden(false);
     }
   }, [isGamePlaying, isGameOver]);
 
@@ -196,7 +196,7 @@ export const Board = (props: BoardProps) => {
       if (isMoveKey && (isGamePaused || isGameOver)) return;
 
       // Hide cursor over the board on move key press so it doesn't distract during play.
-      if (isMoveKey && !isCursorHidden) setCursorHidden(true);
+      if (isMoveKey && !isCursorHiddenState) setCursorHiddenState(true);
 
       switch (code) {
         case KeyCode.ArrowLeft:
@@ -224,10 +224,11 @@ export const Board = (props: BoardProps) => {
   );
 
   // Unhide cursor once mouse moves again.
-  useDocumentEventListener(
-    'mousemove',
-    () => isCursorHidden && setCursorHidden(false),
-  );
+  useDocumentEventListener('mousemove', () => {
+    if (isGamePlaying && isCursorHiddenState) {
+      setCursorHiddenState(false);
+    }
+  });
 
   const styles = useMemo<CSSProperties>(
     () => ({
@@ -282,7 +283,7 @@ export const Board = (props: BoardProps) => {
           'pointer-events-none': isGameOver,
           'shadow-sm rounded-lg [&>*]:opacity-0':
             hasImage && (isGameOver || isImagePreviewActive),
-          '!cursor-none': isGamePlaying && isCursorHidden,
+          'cursor-none': isCursorHidden,
         })}
       >
         <BoardContext value={contextValue}>
