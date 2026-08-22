@@ -14,7 +14,12 @@ import {
 } from '@heroui/react';
 import clsx from 'clsx';
 import { useRef, useState, useEffect } from 'react';
-import { useForm, type UseFormProps, Controller } from 'react-hook-form';
+import {
+  useForm,
+  type UseFormProps,
+  Controller,
+  useWatch,
+} from 'react-hook-form';
 
 import type { Settings } from '@/settings/types';
 
@@ -73,7 +78,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
 
   const methods = useForm<Settings>({ defaultValues, ...rest });
 
-  const image = methods.watch('image');
+  const image = useWatch({ name: 'image', control: methods.control });
 
   // Scroll to the currently selected image option.
   useEffect(() => {
