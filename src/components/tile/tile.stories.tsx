@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { fn } from 'storybook/test';
 
-import { Board } from '../board';
 import { Tile } from './tile';
 
 const meta = {
@@ -11,16 +10,11 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  render: function Render(args) {
-    return (
-      <Board
-        size={4}
-        tiles={[args.value]}
-        renderTile={() => <Tile {...args} value={args.value} />}
-        className="w-lg"
-      />
-    );
-  },
+  render: (args) => (
+    <ul>
+      <Tile {...args} />
+    </ul>
+  ),
 } satisfies Meta<typeof Tile>;
 
 export default meta;
@@ -30,7 +24,8 @@ export const Default: Story = {
   args: {
     value: 1,
     isSolved: false,
-    isPressable: false,
+    isViewTransitionDisabled: false,
     onPress: fn(),
+    style: { width: 100, height: 100 },
   },
 };

@@ -14,7 +14,7 @@ export const BoardContext = createContext<BoardContext>({
   size: Game.DEFAULT_BOARD_SIZE,
   gameStatus: Game.Status.Idle,
   hasImage: false,
-  isNumbersVisible: false,
+  isNumbersVisible: true,
   isCursorHidden: false,
 });
 

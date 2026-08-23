@@ -31,7 +31,7 @@ export const Default: Story = {
   args: {
     isOpen: true,
     stats: {
-      3: { best: 109303, average: 112009, games: 39 },
+      3: { best: 109303, average: 112009, games: 39, images: [] },
     },
     onClearStatsPress: fn(),
   },

@@ -21,8 +21,6 @@ import type { Stats } from '@/stats/types';
 import { Game } from '@/game/game';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
-const boardSizes: Game.BoardSize[] = [3, 4, 5, 6];
-
 interface StatsDialogProps extends Pick<
   ModalBackdropProps,
   'isOpen' | 'onOpenChange'
@@ -69,10 +67,12 @@ export const StatsDialog = (props: StatsDialogProps) => {
                       <Table.Column>PB</Table.Column>
                       <Table.Column>Avg</Table.Column>
                       <Table.Column>Games</Table.Column>
-                      <Table.Column />
+                      <Table.Column>
+                        <span className="sr-only">Actions</span>
+                      </Table.Column>
                     </Table.Header>
                     <Table.Body>
-                      {boardSizes.map((size) => {
+                      {Game.BOARD_SIZES.map((size) => {
                         const entry = stats[size];
 
                         return (
@@ -125,6 +125,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
                                   setBoardSize(size);
                                   setConfirmOpen(true);
                                 }}
+                                aria-label="Clear stats"
                               >
                                 <TrashBin />
                               </Button>

@@ -1,4 +1,4 @@
-import { Ban } from '@gravity-ui/icons';
+import { Ban, CheckShape, CheckShapeFill } from '@gravity-ui/icons';
 import {
   Avatar,
   Label,
@@ -11,14 +11,21 @@ import {
   Chip,
   Tabs,
   ScrollShadow,
+  Badge,
 } from '@heroui/react';
 import clsx from 'clsx';
-import { useRef, useState, useEffect } from 'react';
-import { useForm, type UseFormProps, Controller } from 'react-hook-form';
+import React, { useRef, useState, useEffect } from 'react';
+import {
+  useForm,
+  type UseFormProps,
+  Controller,
+  useWatch,
+} from 'react-hook-form';
 
 import type { Settings } from '@/settings/types';
+import type { Stats } from '@/stats/types';
 
-import { images } from '@/assets/images';
+import { images, type ImageKeys } from '@/assets/images';
 import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/constants';
 import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
@@ -32,10 +39,7 @@ const boardOptions = [
   { value: 6, label: 'Impossible' },
 ] satisfies { value: Game.BoardSize; label: string }[];
 
-const imageOptions = Object.entries(images).map(([code, src]) => ({
-  code,
-  src,
-}));
+const imageOptions = Object.entries(images);
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -61,13 +65,23 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   );
 };
 
-interface SettingsFormProps extends UseFormProps<Settings> {
+export interface SettingsFormProps extends UseFormProps<Settings> {
   id?: string;
   onSubmit: (values: Settings) => void;
+  /**
+   * Stats object to show progress per image.
+   */
+  stats?: Stats;
 }
 
 export const SettingsForm = (props: SettingsFormProps) => {
-  const { id, onSubmit, defaultValues = DEFAULT_SETTINGS, ...rest } = props;
+  const {
+    id,
+    onSubmit,
+    defaultValues = DEFAULT_SETTINGS,
+    stats = {},
+    ...rest
+  } = props;
 
   const [tab, setTab] = useState<TabKey>('general');
   const selectedImageRef = useRef<HTMLDivElement>(null);
@@ -76,14 +90,14 @@ export const SettingsForm = (props: SettingsFormProps) => {
 
   const methods = useForm<Settings>({ defaultValues, ...rest });
 
-  const image = methods.watch('image');
+  const image = useWatch({ name: 'image', control: methods.control });
 
   // Scroll to the currently selected image option.
   useEffect(() => {
     if (tab === 'image') {
       selectedImageRef.current?.scrollIntoView({
         behavior: 'smooth',
-        block: 'nearest',
+        block: 'center',
       });
     }
   }, [tab]);
@@ -91,7 +105,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
   return (
     <form
       id={id}
-      className="min-h-[400px]"
+      className="min-h-[431px]"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Tabs
@@ -229,27 +243,6 @@ export const SettingsForm = (props: SettingsFormProps) => {
               )}
               control={methods.control}
             />
-            <Controller
-              name="tileGap"
-              render={({ field: { value, disabled, ...field } }) => (
-                <Switch
-                  {...field}
-                  isSelected={value}
-                  isDisabled={disabled || image === null}
-                >
-                  <Switch.Content>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                    Tile gap
-                  </Switch.Content>
-                  <Description>
-                    Show gap between tiles for better visibility.
-                  </Description>
-                </Switch>
-              )}
-              control={methods.control}
-            />
           </SwitchGroup>
           <Controller
             name="image"
@@ -264,7 +257,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
                   <Label>Image</Label>
                 </div>
-                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[183px] overflow-y-auto overflow-x-hidden scrollbar-thin">
+                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin">
                   <div
                     className="aspect-square cursor-pointer m-0"
                     onClick={() => methods.setValue('image', null)}
@@ -281,25 +274,55 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Ban width={32} height={32} className="text-accent" />
                     </div>
                   </div>
-                  {imageOptions.map((img) => (
-                    <Radio
-                      key={img.code}
-                      value={img.code}
-                      className="aspect-square m-0"
-                      ref={image === img.code ? selectedImageRef : undefined}
-                    >
-                      <Radio.Content
-                        className={clsx(
-                          'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
-                          'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
-                        )}
+                  {imageOptions.map(([key, option]) => {
+                    const imageKey = key as ImageKeys;
+
+                    const solved = Game.BOARD_SIZES.map(
+                      (size) => stats[size]?.images.includes(imageKey) ?? false,
+                    );
+                    const allSolved = solved.every((isSolved) => isSolved);
+
+                    return (
+                      <Radio
+                        key={key}
+                        value={key}
+                        className="aspect-square m-0"
+                        ref={image === key ? selectedImageRef : undefined}
                       >
-                        <Avatar className="rounded-lg w-full h-full">
-                          <Avatar.Image alt="Cat" src={img.src} />
-                        </Avatar>
-                      </Radio.Content>
-                    </Radio>
-                  ))}
+                        <Radio.Content
+                          className={clsx(
+                            'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
+                            'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
+                          )}
+                        >
+                          <Badge.Anchor className="w-full h-full">
+                            <Avatar className="rounded-lg w-full h-full">
+                              <Avatar.Image
+                                alt={key}
+                                loading="lazy"
+                                src={option.preview}
+                              />
+                            </Avatar>
+                            <Badge
+                              color={allSolved ? 'success' : 'accent'}
+                              size="sm"
+                              className="px-0.5 border-[var(--surface-secondary)] gap-0"
+                            >
+                              {solved.map((isSolved, index) => (
+                                <React.Fragment key={index}>
+                                  {isSolved ? (
+                                    <CheckShapeFill className="size-2" />
+                                  ) : (
+                                    <CheckShape className="size-2" />
+                                  )}
+                                </React.Fragment>
+                              ))}
+                            </Badge>
+                          </Badge.Anchor>
+                        </Radio.Content>
+                      </Radio>
+                    );
+                  })}
                 </ScrollShadow>
               </RadioGroup>
             )}

@@ -1,11 +1,13 @@
+import { sample } from 'es-toolkit';
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
 import { useDidUpdate } from 'rooks';
 
 import type { StatsEntry } from '@/stats/types';
 
-import { images } from '@/assets/images';
+import { images, type ImageKeys } from '@/assets/images';
 import { AppContainer } from '@/components/app-container';
 import { Board } from '@/components/board';
+import { Controls, type Mode } from '@/components/controls';
 import { Footer } from '@/components/footer';
 import { HelpDialog } from '@/components/help-dialog';
 import { SettingsDialog } from '@/components/settings-dialog';
@@ -19,6 +21,8 @@ import { createStartViewTransition } from '@/shared/utils/create-start-view-tran
 import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 import { useStats } from '@/stats/use-stats';
 
+const imageKeys = Object.keys(images) as unknown as ImageKeys[];
+
 /**
  * Main orchestration component of the app.
  */
@@ -26,6 +30,7 @@ export function App() {
   const [isStatsOpen, setStatsOpen] = useState(false);
   const [isHelpOpen, setHelpOpen] = useState(false);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isImagePreviewing, setImagePreviewing] = useState(false);
 
   const [stats, setStats] = useStats();
   const [settings, setSettings] = useSettings();
@@ -46,16 +51,12 @@ export function App() {
 
   // Update player's stats when game is over.
   const updateStats = useEffectEvent(() => {
-    // Ignore times that were set using the "Solve" button.
+    // Ignore games that were won using the "Solve" button.
     if (state.isAutoSolved) return;
 
     const entry = stats[settings.boardSize];
 
-    let newEntry: StatsEntry = {
-      best: totalPlayTime,
-      average: totalPlayTime,
-      games: 1,
-    };
+    let newEntry: StatsEntry;
 
     if (entry) {
       const newGameCount = entry.games + 1;
@@ -64,6 +65,22 @@ export function App() {
         best: totalPlayTime < entry.best ? totalPlayTime : entry.best,
         average: (entry.average * entry.games + totalPlayTime) / newGameCount,
         games: newGameCount,
+        images: entry.images,
+      };
+
+      if (settings.image) {
+        const wasImageSolved = entry.images.includes(settings.image);
+
+        if (!wasImageSolved) {
+          newEntry.images = [...newEntry.images, settings.image];
+        }
+      }
+    } else {
+      newEntry = {
+        best: totalPlayTime,
+        average: totalPlayTime,
+        games: 1,
+        images: settings.image ? [settings.image] : [],
       };
     }
 
@@ -105,39 +122,110 @@ export function App() {
     return setStats({});
   };
 
+  const image = settings.image ? images[settings.image] : undefined;
+  const imageIndex = imageKeys.findIndex((i) => i === settings.image);
+
+  const handleRandomImagePress = () => {
+    let newImage: ImageKeys;
+
+    // Re-sample image until it doesn't match the old one.
+    do {
+      newImage = sample(imageKeys);
+    } while (settings.image === newImage);
+
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: newImage,
+      }));
+    });
+  };
+
+  const handlePreviousImagePress = () => {
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: imageKeys[imageIndex - 1],
+      }));
+    });
+  };
+
+  const handleNextImagePress = () => {
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: imageKeys[imageIndex + 1],
+      }));
+    });
+  };
+
+  const handleModeChange = (mode: Mode) => {
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        image: mode === 'numbers' ? null : imageKeys[0],
+      }));
+    });
+  };
+
+  const handleBoardSizeChange = (boardSize: Game.BoardSize) => {
+    startViewTransition(() => {
+      setSettings((prevSettings) => ({ ...prevSettings, boardSize }));
+    });
+  };
+
   return (
-    <AppContainer>
+    <AppContainer
+      controls={
+        <Controls
+          boardSize={settings.boardSize}
+          onBoardSizeChange={handleBoardSizeChange}
+          mode={image ? 'image' : 'numbers'}
+          onModeChange={handleModeChange}
+          onRandomImagePress={handleRandomImagePress}
+          onPreviousImagePress={handlePreviousImagePress}
+          onNextImagePress={handleNextImagePress}
+          onPreviewImagePressStart={() => setImagePreviewing(true)}
+          onPreviewImagePressEnd={() => setImagePreviewing(false)}
+          isPreviousImageButtonDisabled={imageIndex === 0}
+          isNextImageButtonDisabled={imageIndex === imageKeys.length - 1}
+          isPreviewImageButtonDisabled={state.status === Game.Status.Over}
+          isImagePreviewing={isImagePreviewing}
+        />
+      }
+    >
       <Toolbar
         gameStatus={state.status}
         moves={state.moves}
         elapsedTime={totalPlayTime}
         personalBestTime={stats[settings.boardSize]?.best}
         isAutoSolved={state.isAutoSolved}
-        onNewGamePress={() => startViewTransition(() => game.init())}
+        onShufflePress={() => startViewTransition(() => game.init())}
         onPausePress={() => game.pause()}
         onResumePress={() => game.resume()}
         onSolvePress={() => startViewTransition(() => game.solve())}
       />
       <Board
-        size={settings.boardSize}
         tiles={state.board}
         gameStatus={state.status}
-        image={settings.image ? images[settings.image] : undefined}
+        image={image?.image}
+        imageAttribution={image?.attribution}
         renderTile={(tile, index) => (
           <Tile
             key={tile}
             value={tile}
             isSolved={tile === index + 1}
-            isPressable={game.isTileMovable(tile)}
             isViewTransitionDisabled={isDialogOpen}
-            onPress={() => startViewTransition(() => game.moveTile(tile))}
+            {...(game.isTileMovable(tile) && {
+              onPress: () => startViewTransition(() => game.moveTile(tile)),
+            })}
           />
         )}
         isKeyboardDisabled={isDialogOpen}
         isSoundDisabled={!settings?.sound}
         isConfettiDisabled={!settings.confetti}
         isNumbersVisible={settings.showNumbers}
-        isTileGapVisible={!settings.image ? true : settings.tileGap}
+        isImagePreviewActive={isImagePreviewing}
         onNewGame={() => startViewTransition(() => game.init())}
         onTileMove={(dir) => startViewTransition(() => game.move(dir))}
         onGamePause={() => game.pause()}
@@ -163,6 +251,7 @@ export function App() {
         onOpenChange={setSettingsOpen}
         defaultSettings={settings}
         onSettingsSave={setSettings}
+        stats={stats}
       />
     </AppContainer>
   );

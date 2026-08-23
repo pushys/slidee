@@ -5,7 +5,7 @@ import {
   Clock,
   ArrowsExpand,
   CrownDiamond,
-  Dice3,
+  Shuffle,
 } from '@gravity-ui/icons';
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import clsx from 'clsx';
@@ -45,9 +45,9 @@ interface ToolbarProps extends ComponentProps<'header'> {
    */
   isAutoSolved?: boolean;
   /**
-   * "New game" button press handler.
+   * "Shuffle" button press handler.
    */
-  onNewGamePress?: ButtonProps['onPress'];
+  onShufflePress?: ButtonProps['onPress'];
   /**
    * "Pause" button press handler.
    */
@@ -69,7 +69,7 @@ export const Toolbar = (props: ToolbarProps) => {
     elapsedTime = 0,
     personalBestTime,
     isAutoSolved = false,
-    onNewGamePress,
+    onShufflePress,
     onPausePress,
     onResumePress,
     onSolvePress,
@@ -84,19 +84,23 @@ export const Toolbar = (props: ToolbarProps) => {
       <div className="flex gap-2 grow items-center">
         <Button
           size="lg"
-          onPress={onNewGamePress}
+          onPress={onShufflePress}
           className="@max-[460px]:hidden"
         >
-          New game
+          <Shuffle />
+          Shuffle
         </Button>
-        <Button
-          isIconOnly
-          size="lg"
-          onPress={onNewGamePress}
-          className="@min-[460px]:hidden"
-        >
-          <Dice3 />
-        </Button>
+        <Tooltip content="Shuffle" contentPlacement="top">
+          <Button
+            isIconOnly
+            size="lg"
+            onPress={onShufflePress}
+            className="@min-[460px]:hidden"
+            aria-label="Shuffle"
+          >
+            <Shuffle />
+          </Button>
+        </Tooltip>
         {gameStatus === Game.Status.Playing && (
           <Tooltip content="Pause">
             <Button

@@ -1,3 +1,5 @@
+import { Picture } from '@gravity-ui/icons';
+import { Chip, Link } from '@heroui/react';
 import confetti from 'canvas-confetti';
 import clsx from 'clsx';
 import {
@@ -10,6 +12,8 @@ import {
   type CSSProperties,
 } from 'react';
 import { useDocumentEventListener, useKey } from 'rooks';
+
+import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
 import { SoundManager } from '@/game/sound-manager';
@@ -38,12 +42,6 @@ const gridMaps = {
 
 interface BoardProps extends ComponentProps<'section'> {
   /**
-   * Board size.
-   *
-   * @default Game.DEFAULT_BOARD_SIZE
-   */
-  size?: Game.BoardSize;
-  /**
    * List of tiles.
    *
    * @default [ ]
@@ -63,6 +61,10 @@ interface BoardProps extends ComponentProps<'section'> {
    * Puzzle image source.
    */
   image?: string;
+  /**
+   * Image attribution object.
+   */
+  imageAttribution?: ImageAttribution;
   /**
    * Disables key press detection.
    *
@@ -89,11 +91,12 @@ interface BoardProps extends ComponentProps<'section'> {
    */
   isNumbersVisible?: boolean;
   /**
-   * If `true`, a gap between tiles will be applied.
+   * If `true`, will display a solved image like it's game over but without the
+   * attribution.
    *
-   * @default true
+   * @default false
    */
-  isTileGapVisible?: boolean;
+  isImagePreviewActive?: boolean;
   /**
    * Tile move event handler.
    */
@@ -114,16 +117,16 @@ interface BoardProps extends ComponentProps<'section'> {
 
 export const Board = (props: BoardProps) => {
   const {
-    size = Game.DEFAULT_BOARD_SIZE,
     tiles = [],
     renderTile,
     gameStatus = Game.Status.Idle,
     image,
+    imageAttribution,
     isKeyboardDisabled = false,
     isSoundDisabled = false,
     isConfettiDisabled = false,
     isNumbersVisible = false,
-    isTileGapVisible = true,
+    isImagePreviewActive = false,
     onTileMove,
     onNewGame,
     onGamePause,
@@ -131,8 +134,13 @@ export const Board = (props: BoardProps) => {
     ...rest
   } = props;
 
+  // Derive board size from tiles so it's the only source of truth.
+  const size = Math.sqrt(tiles.length);
+
+  Game.validateBoardSize(size);
+
   const [soundManager] = useState(() => new SoundManager());
-  const [isCursorHidden, setCursorHidden] = useState(false);
+  const [isCursorHiddenState, setCursorHiddenState] = useState(false);
 
   const playSound = useEffectEvent((sound: SoundManager.Sound) => {
     if (!isSoundDisabled) {
@@ -157,6 +165,7 @@ export const Board = (props: BoardProps) => {
   const isGamePlaying = gameStatus === Game.Status.Playing;
   const isGamePaused = gameStatus === Game.Status.Paused;
   const isGameOver = gameStatus === Game.Status.Over;
+  const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
 
   useEffect(() => {
     playSound(SoundManager.Sound.Move);
@@ -174,7 +183,6 @@ export const Board = (props: BoardProps) => {
     } else if (isGameOver) {
       playSound(SoundManager.Sound.Win);
       playConfetti();
-      setCursorHidden(false);
     }
   }, [isGamePlaying, isGameOver]);
 
@@ -188,7 +196,7 @@ export const Board = (props: BoardProps) => {
       if (isMoveKey && (isGamePaused || isGameOver)) return;
 
       // Hide cursor over the board on move key press so it doesn't distract during play.
-      if (isMoveKey && !isCursorHidden) setCursorHidden(true);
+      if (isMoveKey && !isCursorHiddenState) setCursorHiddenState(true);
 
       switch (code) {
         case KeyCode.ArrowLeft:
@@ -215,25 +223,26 @@ export const Board = (props: BoardProps) => {
     { when: !isKeyboardDisabled },
   );
 
-  // Unhide cursor once the mouse moves again.
-  useDocumentEventListener(
-    'mousemove',
-    () => isCursorHidden && setCursorHidden(false),
-  );
+  // Unhide cursor once mouse moves again.
+  useDocumentEventListener('mousemove', () => {
+    if (isGamePlaying && isCursorHiddenState) {
+      setCursorHiddenState(false);
+    }
+  });
 
   const styles = useMemo<CSSProperties>(
     () => ({
       [BoardCssVar.Size]: size,
       ...(hasImage && {
         [BoardCssVar.Image]: `url(${image})`,
-        ...(isGameOver && {
-          backgroundImage: `url(${image})`,
+        ...((isGameOver || isImagePreviewActive) && {
+          backgroundImage: `var(${BoardCssVar.Image})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
         }),
       }),
     }),
-    [size, hasImage, image, isGameOver],
+    [size, hasImage, image, isGameOver, isImagePreviewActive],
   );
 
   const contextValue = useMemo(
@@ -245,7 +254,7 @@ export const Board = (props: BoardProps) => {
       isNumbersVisible: hasImage ? isNumbersVisible : true,
       isCursorHidden,
     }),
-    [size, gameStatus, hasImage, isNumbersVisible, isCursorHidden],
+    [gameStatus, size, hasImage, isNumbersVisible, isCursorHidden],
   );
 
   return (
@@ -253,24 +262,57 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'bg-surface rounded-lg shadow-surface p-2 rounded-xl',
+        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl transition-[width]',
+        // Careful changing these values because they are calculated with
+        // non-fractional tile widths in mind applicable for all board sizes.
+        //
+        // We must have two sets of sizes both for numbers and image modes because
+        // the former has a gap (for a better visual separation of tiles) and it's
+        // not possible to have non-fractional widths while using same ones for
+        // both modes.
+        { 'w-[316px] sm:w-[376px] md:w-[436px] lg:w-[496px]': hasImage },
+        { 'w-[308px] sm:w-[368px] md:w-[428px] lg:w-[488px]': !hasImage },
         rest.className,
       )}
     >
       <ul
         style={styles}
         className={clsx(`grid ${gridMaps[size]} select-none text-[0px]`, {
-          'gap-2': isTileGapVisible,
+          'gap-2': !hasImage,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'rounded-lg': hasImage && isGameOver,
-          '!cursor-none': isGamePlaying && isCursorHidden,
+          'shadow-sm rounded-lg [&>*]:opacity-0':
+            hasImage && (isGameOver || isImagePreviewActive),
+          'cursor-none': isCursorHidden,
         })}
       >
         <BoardContext value={contextValue}>
           {tiles.map(renderTile)}
         </BoardContext>
       </ul>
+      {hasImage && imageAttribution && isGameOver && (
+        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm">
+          <Picture width={12} />
+          <Chip.Label>
+            Photo by{' '}
+            <Link
+              href={imageAttribution.authorUrl}
+              target="_blank"
+              className="underline underline-offset-2"
+            >
+              {imageAttribution.author}
+            </Link>{' '}
+            on{' '}
+            <Link
+              href={imageAttribution.sourceUrl}
+              target="_blank"
+              className="underline underline-offset-2"
+            >
+              {imageAttribution.source}
+            </Link>
+          </Chip.Label>
+        </Chip>
+      )}
     </section>
   );
 };

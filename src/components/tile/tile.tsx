@@ -27,12 +27,6 @@ interface TileProps extends ComponentProps<'li'> {
    */
   isSolved?: boolean;
   /**
-   * If `true`, the tile will be an interactive button.
-   *
-   * @default false
-   */
-  isPressable?: boolean;
-  /**
    * If `true`, view transitions are disable for the tile.
    *
    * @default false
@@ -47,17 +41,21 @@ interface TileProps extends ComponentProps<'li'> {
 export const Tile = (props: TileProps) => {
   const {
     value,
-    isSolved = false,
-    isPressable = false,
+    isSolved: isSolvedProp = false,
     isViewTransitionDisabled = false,
     onPress,
     ...rest
   } = props;
 
-  const { size, hasImage, gameStatus, isNumbersVisible, isCursorHidden } =
+  const { gameStatus, size, hasImage, isNumbersVisible, isCursorHidden } =
     useBoardContext();
 
   const index = value - 1;
+
+  const isPressable = !!onPress;
+  const isBlank = value === Game.BLANK;
+  const isSolved = isSolvedProp || isBlank;
+  const isGameOver = gameStatus === Game.Status.Over;
 
   const styles = useMemo<CSSProperties>(
     () => ({
@@ -83,22 +81,23 @@ export const Tile = (props: TileProps) => {
         onPress={onPress}
         excludeFromTabOrder={!isPressable}
         className={clsx('rounded-lg shadow-sm w-full h-full', {
+          '@container': isNumbersVisible,
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
-          'pointer-events-none': !isPressable,
-          'pointer-events-none opacity-0': value === Game.BLANK,
+          'pointer-events-none': !isPressable || isBlank,
           'cursor-none': isPressable && isCursorHidden,
-          'opacity-0': hasImage && gameStatus === Game.Status.Over,
+          'opacity-0': isBlank && !isGameOver,
         })}
         style={hasImage ? buttonWithImageStyles : undefined}
+        {...(!isNumbersVisible && { ['aria-label']: String(value) })}
       >
         {isNumbersVisible && (
           <span
-            className={clsx('truncate font-bold text-3xl', {
-              'text-shadow-lg': hasImage,
-              'text-shadow-sm': !hasImage,
-            })}
+            className={clsx(
+              'font-bold text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))]',
+              { 'text-shadow-lg': hasImage, 'text-shadow-sm': !hasImage },
+            )}
           >
-            {value}
+            {isBlank ? size * size : value}
           </span>
         )}
       </Button>

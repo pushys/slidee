@@ -25,7 +25,16 @@ export class Game {
   } as const;
 
   static readonly BLANK = 0;
-  static readonly DEFAULT_BOARD_SIZE = 4;
+  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = 4;
+  static readonly BOARD_SIZES: Game.BoardSize[] = [3, 4, 5, 6];
+
+  static get MIN_BOARD_SIZE(): Game.BoardSize {
+    return Game.BOARD_SIZES[0];
+  }
+
+  static get MAX_BOARD_SIZE(): Game.BoardSize {
+    return Game.BOARD_SIZES.at(-1)!;
+  }
 
   /**
    * Board size.
@@ -44,7 +53,7 @@ export class Game {
    */
   #status: Game.Status = Game.Status.Idle;
   /**
-   * Timestamp of latest moment when was play was started (after start/resume).
+   * Timestamp of latest moment when play was started (after start/resume).
    */
   #playSessionStartedAt: number | null = null;
   /**
@@ -72,7 +81,7 @@ export class Game {
       this.#boardSize = opts.boardSize;
     }
 
-    this.#board = Game.createSequence(this.#boardSize, true);
+    this.#board = Game.createSequence(this.#boardSize);
     this.#moves = 0;
     this.#status = Game.Status.Idle;
     this.#playSessionStartedAt = null;
@@ -273,11 +282,7 @@ export class Game {
     boardSize: Game.BoardSize = Game.DEFAULT_BOARD_SIZE,
     shuffle = true,
   ): Game.Board {
-    if (boardSize < 3 || boardSize > 6) {
-      throw new Error(
-        `Cannot create a sequence as an invalid board size "${boardSize}" is provided`,
-      );
-    }
+    Game.validateBoardSize(boardSize);
 
     const squared = boardSize * boardSize;
     const sequence = Array.from({ length: squared }, (_, i) =>
@@ -316,14 +321,9 @@ export class Game {
    */
   public static isSequenceSolvable(sequence: number[]): boolean {
     const length = sequence.length;
-    const N = Math.sqrt(length);
+    const size = Math.sqrt(length);
 
-    // Validate that the grid is a perfect square
-    if (!Number.isInteger(N)) {
-      throw new Error(
-        'Puzzle length must be a perfect square (e.g., 9 for 3x3, 16 for 4x4).',
-      );
-    }
+    Game.validateBoardSize(size);
 
     let inversions = 0;
     let blankRowFromBottom = 0;
@@ -333,7 +333,7 @@ export class Game {
       // Handle the blank tile.
       if (sequence[i] === Game.BLANK) {
         // Calculate row from the bottom (1-indexed).
-        blankRowFromBottom = N - Math.floor(i / N);
+        blankRowFromBottom = size - Math.floor(i / size);
         continue;
       }
 
@@ -346,7 +346,7 @@ export class Game {
     }
 
     // Apply the mathematical rules of sliding puzzle solvability.
-    if (N % 2 !== 0) {
+    if (size % 2 !== 0) {
       // Rule for odd N: solvable if inversions are even.
       return inversions % 2 === 0;
     } else {
@@ -370,6 +370,31 @@ export class Game {
     }
 
     return sequence[last] === Game.BLANK;
+  }
+
+  /**
+   * Validates whether provided number is a valid board size.
+   *
+   * @param size
+   * @throws If board size is invalid.
+   */
+  public static validateBoardSize(
+    size: unknown,
+  ): asserts size is Game.BoardSize {
+    let isValid = false;
+
+    if (
+      typeof size === 'number' &&
+      Number.isInteger(size) &&
+      size >= Game.MIN_BOARD_SIZE &&
+      size <= Game.MAX_BOARD_SIZE
+    ) {
+      isValid = true;
+    }
+
+    if (!isValid) {
+      throw new Error(`Invalid board size provided: ${size}`);
+    }
   }
 
   #stopPlaySession(): void {
