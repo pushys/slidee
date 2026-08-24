@@ -59,7 +59,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">New game:</span>
+                <span className="text-sm text-muted">Shuffle:</span>
                 <div className="flex items-center gap-2">
                   <Kbd>
                     <Kbd.Abbr keyValue="space" />
