@@ -141,7 +141,11 @@ export const Toolbar = (props: ToolbarProps) => {
         </Tooltip>
       </div>
       <div className="flex items-center gap-1">
-        <Chip size="lg" variant="soft" className="tabular-nums">
+        <Chip
+          size="lg"
+          variant="soft"
+          className="tabular-nums @max-[360px]:hidden"
+        >
           <ArrowsExpand width={12} />
           <Chip.Label>{moves}</Chip.Label>
         </Chip>
