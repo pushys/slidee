@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -13,5 +13,6 @@ export const cat2 = {
     sourceUrl: 'https://unsplash.com/photos/cat-sleeping-on-bed-pdALzg0yN-8',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['animals'],
+} satisfies ImageMetadata;

@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -14,5 +14,6 @@ export const galaxy = {
       'https://unsplash.com/photos/a-very-large-spiral-galaxy-in-the-middle-of-the-night-8-Nv8dDYtII',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['nature'],
+} satisfies ImageMetadata;

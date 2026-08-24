@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -14,5 +14,6 @@ export const robot = {
       'https://unsplash.com/photos/two-vintage-tin-robots-standing-side-by-side-ecwv2mk-cqA',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: [],
+} satisfies ImageMetadata;

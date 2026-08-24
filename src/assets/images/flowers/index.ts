@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -13,5 +13,6 @@ export const flowers = {
     sourceUrl: 'https://unsplash.com/photos/yellow-and-brown-roses-MAjtbFMV5_k',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['nature'],
+} satisfies ImageMetadata;

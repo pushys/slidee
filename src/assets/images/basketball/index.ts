@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -14,5 +14,6 @@ export const basketball = {
       'https://unsplash.com/photos/basketball-hoop-against-a-clear-blue-sky-EkE1EO70f40',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['sports'],
+} satisfies ImageMetadata;
