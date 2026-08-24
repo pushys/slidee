@@ -1,4 +1,4 @@
-import { sample } from 'es-toolkit';
+import { sample, drop } from 'es-toolkit';
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
 import { useDidUpdate } from 'rooks';
 
@@ -22,6 +22,12 @@ import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-moti
 import { useStats } from '@/stats/use-stats';
 
 const imageKeys = Object.keys(images) as unknown as ImageKeys[];
+
+// Keep history of randomly selected images to exclude them
+// when selecting a new one to avoid repeating too often.
+let recentImages: ImageKeys[] = [];
+
+const MAX_RECENT_IMAGES = 10;
 
 /**
  * Main orchestration component of the app.
@@ -128,10 +134,16 @@ export function App() {
   const handleRandomImagePress = () => {
     let newImage: ImageKeys;
 
-    // Re-sample image until it doesn't match the old one.
+    // Re-sample image until it isn't among the recently used ones.
     do {
       newImage = sample(imageKeys);
-    } while (settings.image === newImage);
+    } while (recentImages.includes(newImage));
+
+    if (recentImages.length === MAX_RECENT_IMAGES) {
+      recentImages = [...drop(recentImages, 1), newImage];
+    } else {
+      recentImages.push(newImage);
+    }
 
     startViewTransition(() => {
       setSettings((prevSettings) => ({
