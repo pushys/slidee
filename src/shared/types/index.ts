@@ -3,8 +3,10 @@ export type ImageTag =
   | 'animals'
   | 'architecture'
   | 'automotive'
+  | 'aviation'
   | 'drinks'
   | 'food'
+  | 'luxury'
   | 'nature'
   | 'sports';
 
