@@ -1,4 +1,10 @@
-import { Ban, CheckShape, CheckShapeFill } from '@gravity-ui/icons';
+import {
+  Ban,
+  CheckShape,
+  CheckShapeFill,
+  Funnel,
+  Tag as TagIcon,
+} from '@gravity-ui/icons';
 import {
   Avatar,
   Label,
@@ -12,9 +18,14 @@ import {
   Tabs,
   ScrollShadow,
   Badge,
+  Popover,
+  Button,
+  Tag,
+  TagGroup,
 } from '@heroui/react';
 import clsx from 'clsx';
-import React, { useRef, useState, useEffect } from 'react';
+import { intersection } from 'es-toolkit';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import {
   useForm,
   type UseFormProps,
@@ -23,9 +34,11 @@ import {
 } from 'react-hook-form';
 
 import type { Settings } from '@/settings/types';
+import type { ImageTag } from '@/shared/types';
 import type { Stats } from '@/stats/types';
 
 import { images, type ImageKeys } from '@/assets/images';
+import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/constants';
 import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
@@ -40,6 +53,19 @@ const boardOptions = [
 ] satisfies { value: Game.BoardSize; label: string }[];
 
 const imageOptions = Object.entries(images);
+
+const imageTagOptions = [
+  { tag: '3d', label: '3D' },
+  { tag: 'animals', label: 'Animals' },
+  { tag: 'architecture', label: 'Architecture' },
+  { tag: 'automotive', label: 'Automotive' },
+  { tag: 'aviation', label: 'Aviation' },
+  { tag: 'drinks', label: 'Drinks' },
+  { tag: 'food', label: 'Food' },
+  { tag: 'luxury', label: 'Luxury' },
+  { tag: 'nature', label: 'Nature' },
+  { tag: 'sports', label: 'Sports' },
+] satisfies { tag: ImageTag; label: string }[];
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -84,6 +110,8 @@ export const SettingsForm = (props: SettingsFormProps) => {
   } = props;
 
   const [tab, setTab] = useState<TabKey>('general');
+  const [tags, setTags] = useState<ImageTag[]>([]);
+
   const selectedImageRef = useRef<HTMLDivElement>(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -102,10 +130,18 @@ export const SettingsForm = (props: SettingsFormProps) => {
     }
   }, [tab]);
 
+  const filteredImageOptions = useMemo(() => {
+    if (tags.length < 1) return imageOptions;
+
+    return imageOptions.filter(
+      ([, image]) => intersection(image.tags, tags).length > 0,
+    );
+  }, [tags]);
+
   return (
     <form
       id={id}
-      className="min-h-[431px]"
+      className="min-h-[435px]"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Tabs
@@ -256,8 +292,46 @@ export const SettingsForm = (props: SettingsFormProps) => {
               >
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
                   <Label>Image</Label>
+                  <Popover>
+                    <Tooltip content="Filters">
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="ghost"
+                        className="w-[24px] h-[24px]"
+                      >
+                        <Funnel />
+                      </Button>
+                    </Tooltip>
+                    <Popover.Content
+                      placement="bottom right"
+                      className="max-w-64"
+                    >
+                      <Popover.Dialog>
+                        <TagGroup
+                          aria-label="Image tags"
+                          selectionMode="multiple"
+                          selectedKeys={tags}
+                          onSelectionChange={(selection) =>
+                            selection === 'all'
+                              ? setTags(imageTagOptions.map((o) => o.tag))
+                              : setTags(Array.from(selection) as ImageTag[])
+                          }
+                        >
+                          <TagGroup.List>
+                            {imageTagOptions.map((option) => (
+                              <Tag key={option.tag} id={option.tag}>
+                                <TagIcon />
+                                {option.label}
+                              </Tag>
+                            ))}
+                          </TagGroup.List>
+                        </TagGroup>
+                      </Popover.Dialog>
+                    </Popover.Content>
+                  </Popover>
                 </div>
-                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin">
+                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-gutter-stable">
                   <div
                     className="aspect-square cursor-pointer m-0"
                     onClick={() => methods.setValue('image', null)}
@@ -274,7 +348,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Ban width={32} height={32} className="text-accent" />
                     </div>
                   </div>
-                  {imageOptions.map(([key, option]) => {
+                  {filteredImageOptions.map(([key, option]) => {
                     const imageKey = key as ImageKeys;
 
                     const solved = Game.BOARD_SIZES.map(
