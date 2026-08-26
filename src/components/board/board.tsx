@@ -262,7 +262,7 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl transition-[width]',
+        'relative bg-surface shadow-surface p-2 rounded-xl transition-[width]',
         // Careful changing these values because they are calculated with
         // non-fractional tile widths in mind applicable for all board sizes.
         //
@@ -270,8 +270,8 @@ export const Board = (props: BoardProps) => {
         // the former has a gap (for a better visual separation of tiles) and it's
         // not possible to have non-fractional widths while using same ones for
         // both modes.
-        { 'w-[316px] sm:w-[376px] md:w-[436px] lg:w-[496px]': hasImage },
-        { 'w-[308px] sm:w-[368px] md:w-[428px] lg:w-[488px]': !hasImage },
+        { 'w-79 sm:w-94 md:w-109 lg:w-124': hasImage },
+        { 'w-77 sm:w-92 md:w-107 lg:w-122': !hasImage },
         rest.className,
       )}
     >
@@ -281,7 +281,7 @@ export const Board = (props: BoardProps) => {
           'gap-2': !hasImage,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'shadow-sm rounded-lg [&>*]:opacity-0':
+          'shadow-sm rounded-lg *:opacity-0':
             hasImage && (isGameOver || isImagePreviewActive),
           'cursor-none': isCursorHidden,
         })}
