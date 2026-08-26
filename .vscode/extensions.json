@@ -2,6 +2,7 @@
   "recommendations": [
     "oxc.oxc-vscode",
     "EditorConfig.EditorConfig",
-    "TypeScriptTeam.native-preview"
+    "TypeScriptTeam.native-preview",
+    "bradlc.vscode-tailwindcss"
   ]
 }
