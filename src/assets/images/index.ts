@@ -9,6 +9,7 @@ import { cake } from './cake';
 import { canyon } from './canyon';
 import { car } from './car';
 import { car2 } from './car2';
+import { car3 } from './car3';
 import { cat } from './cat';
 import { cat2 } from './cat2';
 import { chess } from './chess';
@@ -22,14 +23,18 @@ import { flower } from './flower';
 import { flowers } from './flowers';
 import { forest } from './forest';
 import { galaxy } from './galaxy';
+import { glass } from './glass';
+import { golf } from './golf';
 import { helicopter } from './helicopter';
 import { house } from './house';
+import { jetEngine } from './jet-engine';
 import { leaves } from './leaves';
 import { mailbox } from './mailbox';
 import { motorcycle } from './motorcycle';
 import { mountains } from './mountains';
 import { pancakes } from './pancakes';
 import { parrot } from './parrot';
+import { piano } from './piano';
 import { ramen } from './ramen';
 import { resort } from './resort';
 import { road } from './road';
@@ -55,6 +60,7 @@ export const images = {
   canyon,
   car,
   car2,
+  car3,
   cat,
   cat2,
   chess,
@@ -66,8 +72,11 @@ export const images = {
   fish,
   forest,
   galaxy,
+  glass,
+  golf,
   helicopter,
   house,
+  jetEngine,
   leaves,
   mailbox,
   flower,
@@ -76,6 +85,7 @@ export const images = {
   mountains,
   pancakes,
   parrot,
+  piano,
   ramen,
   resort,
   road,
