@@ -294,14 +294,19 @@ export const SettingsForm = (props: SettingsFormProps) => {
                   <Label>Image</Label>
                   <Popover>
                     <Tooltip content="Filters">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="ghost"
-                        className="w-[24px] h-[24px]"
-                      >
-                        <Funnel />
-                      </Button>
+                      <Badge.Anchor>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          className="w-[24px] h-[24px]"
+                        >
+                          <Funnel />
+                        </Button>
+                        {tags.length > 0 && (
+                          <Badge color="accent" className="min-h-3 min-w-3" />
+                        )}
+                      </Badge.Anchor>
                     </Tooltip>
                     <Popover.Content
                       placement="bottom right"
