@@ -11,13 +11,16 @@ import {
   type ComponentProps,
   type CSSProperties,
 } from 'react';
-import { useDocumentEventListener, useKey } from 'rooks';
+import {
+  useDocumentEventListener,
+  useKey,
+  usePrefersReducedMotion,
+} from 'rooks';
 
 import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
 import { SoundManager } from '@/game/sound-manager';
-import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 
 import { BoardContext } from './board-context';
 import { BoardCssVar } from './board-css-var';
