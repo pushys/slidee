@@ -32,6 +32,7 @@ import {
   Controller,
   useWatch,
 } from 'react-hook-form';
+import { usePrefersReducedMotion } from 'rooks';
 
 import type { Settings } from '@/settings/types';
 import type { ImageTag } from '@/shared/types';
@@ -41,7 +42,6 @@ import { images, type ImageKeys } from '@/assets/images';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/constants';
-import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 
 type TabKey = 'general' | 'image';
 

@@ -1,6 +1,6 @@
 import { sample, drop } from 'es-toolkit';
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
-import { useDidUpdate } from 'rooks';
+import { useDidUpdate, usePrefersReducedMotion } from 'rooks';
 
 import type { StatsEntry } from '@/stats/types';
 
@@ -18,7 +18,6 @@ import { Game } from '@/game/game';
 import { useGame } from '@/game/use-game';
 import { useSettings } from '@/settings/use-settings';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
-import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 import { useStats } from '@/stats/use-stats';
 
 const imageKeys = Object.keys(images) as unknown as ImageKeys[];
