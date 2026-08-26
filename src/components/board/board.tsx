@@ -291,7 +291,7 @@ export const Board = (props: BoardProps) => {
         </BoardContext>
       </ul>
       {hasImage && imageAttribution && isGameOver && (
-        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm">
+        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm animate-fade-in">
           <Picture width={12} />
           <Chip.Label>
             Photo by{' '}

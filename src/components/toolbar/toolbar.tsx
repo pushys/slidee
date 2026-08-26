@@ -10,9 +10,13 @@ import {
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
+import { useKey } from 'rooks';
 
+import { KeyCode } from '@/components/board/key-code';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
+import { headShake } from '@/shared/utils/animations/headShake';
+import { useAnimate } from '@/shared/utils/animations/use-animate';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
 interface ToolbarProps extends ComponentProps<'header'> {
@@ -79,6 +83,15 @@ export const Toolbar = (props: ToolbarProps) => {
   const isPbBeat =
     personalBestTime !== undefined ? personalBestTime >= elapsedTime : true;
 
+  const [ref, animate] = useAnimate<HTMLButtonElement>(...headShake);
+
+  // Let player know that the game is paused when they try to move a tile.
+  useKey(
+    [KeyCode.ArrowLeft, KeyCode.ArrowUp, KeyCode.ArrowRight, KeyCode.ArrowDown],
+    () => animate(),
+    { when: gameStatus === Game.Status.Paused },
+  );
+
   return (
     <header {...rest} className={clsx('flex @container', rest.className)}>
       <div className="flex gap-2 grow items-center">
@@ -122,6 +135,7 @@ export const Toolbar = (props: ToolbarProps) => {
               size="lg"
               onPress={onResumePress}
               aria-label="Resume"
+              ref={ref}
             >
               <PlayFill />
             </Button>
