@@ -26,7 +26,7 @@ export const SettingsDialog = (props: SettingsDialogProps) => {
   return (
     <Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Container>
-        <Modal.Dialog className="sm:max-md">
+        <Modal.Dialog className="sm:max-w-md">
           <Modal.CloseTrigger />
           <Modal.Header>
             <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">

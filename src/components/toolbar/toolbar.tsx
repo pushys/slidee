@@ -93,8 +93,8 @@ export const Toolbar = (props: ToolbarProps) => {
   );
 
   return (
-    <header {...rest} className={clsx('flex @container', rest.className)}>
-      <div className="flex gap-2 grow items-center">
+    <header {...rest} className={clsx('@container flex', rest.className)}>
+      <div className="flex grow items-center gap-2">
         <Button
           size="lg"
           onPress={onShufflePress}

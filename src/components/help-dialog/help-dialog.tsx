@@ -29,7 +29,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
               order, from 1 to the highest number. Try to solve the puzzle as
               quickly as possible!
             </Typography>
-            <Typography type="h3" className="text-sm mt-4 mb-3">
+            <Typography type="h3" className="mt-4 mb-3 text-sm">
               Controls
             </Typography>
             <div className="flex flex-col gap-3">

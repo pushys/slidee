@@ -79,7 +79,7 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   >;
 
   return (
-    <div className={clsx('grid gap-[2px] w-[40px] h-[40px]', gridMaps[size])}>
+    <div className={clsx('grid size-10 gap-0.5', gridMaps[size])}>
       {Array.from({ length: size * size - 1 }).map((_, index) => (
         <Skeleton
           key={index}
@@ -141,7 +141,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
   return (
     <form
       id={id}
-      className="min-h-[435px]"
+      className="min-h-108.75"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Tabs
@@ -229,10 +229,10 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 isDisabled={disabled}
                 onChange={(value) => field.onChange(Number(value))}
               >
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
                   <Label>Board size</Label>
                 </div>
-                <div className="grid gap-2 grid-cols-2">
+                <div className="grid grid-cols-2 gap-2">
                   {boardOptions.map((option) => (
                     <Radio
                       key={option.value}
@@ -241,7 +241,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                     >
                       <Radio.Content
                         className={clsx(
-                          'group relative flex w-full flex-row items-start justify-start gap-4 rounded-xl border border-2 border-transparent bg-surface-secondary px-4 py-3 transition-all',
+                          'group relative flex w-full flex-row items-start justify-start gap-4 rounded-xl border-2 border-transparent bg-surface-secondary px-4 py-3 transition-all',
                           'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
                         )}
                       >
@@ -290,7 +290,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 isDisabled={disabled}
                 aria-label="Image"
               >
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
                   <Label>Image</Label>
                   <Popover>
                     <Tooltip content="Filters">
@@ -299,7 +299,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                           isIconOnly
                           size="sm"
                           variant="ghost"
-                          className="w-[24px] h-[24px]"
+                          className="size-6"
                         >
                           <Funnel />
                         </Button>
@@ -336,17 +336,17 @@ export const SettingsForm = (props: SettingsFormProps) => {
                     </Popover.Content>
                   </Popover>
                 </div>
-                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-gutter-stable">
+                <ScrollShadow className="grid max-h-67.75 scrollbar-gutter-stable grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto">
                   <div
-                    className="aspect-square cursor-pointer m-0"
+                    className="m-0 aspect-square cursor-pointer"
                     onClick={() => methods.setValue('image', null)}
                   >
                     <div
                       className={clsx(
-                        'flex items-center justify-center rounded-xl bg-surface-secondary p-1 transition-all w-full h-full',
+                        'flex size-full items-center justify-center rounded-xl bg-surface-secondary p-1 transition-all',
                         {
-                          'border border-transparent border-2': image !== null,
-                          'border-accent bg-accent/10 border-2': image === null,
+                          'border-2 border-transparent': image !== null,
+                          'border-2 border-accent bg-accent/10': image === null,
                         },
                       )}
                     >
@@ -365,17 +365,17 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Radio
                         key={key}
                         value={key}
-                        className="aspect-square m-0"
+                        className="m-0 aspect-square"
                         ref={image === key ? selectedImageRef : undefined}
                       >
                         <Radio.Content
                           className={clsx(
-                            'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
+                            'size-full rounded-xl border-2 border-transparent bg-surface-secondary p-1 transition-all',
                             'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
                           )}
                         >
-                          <Badge.Anchor className="w-full h-full">
-                            <Avatar className="rounded-lg w-full h-full">
+                          <Badge.Anchor className="size-full">
+                            <Avatar className="size-full rounded-lg">
                               <Avatar.Image
                                 alt={key}
                                 loading="lazy"
@@ -385,7 +385,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                             <Badge
                               color={allSolved ? 'success' : 'accent'}
                               size="sm"
-                              className="px-0.5 border-[var(--surface-secondary)] gap-0"
+                              className="gap-0 border-surface-secondary px-0.5"
                             >
                               {solved.map((isSolved, index) => (
                                 <React.Fragment key={index}>

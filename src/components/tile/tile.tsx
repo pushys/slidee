@@ -80,7 +80,7 @@ export const Tile = (props: TileProps) => {
         variant={isSolved && !hasImage ? 'primary' : 'tertiary'}
         onPress={onPress}
         excludeFromTabOrder={!isPressable}
-        className={clsx('rounded-lg shadow-sm w-full h-full', {
+        className={clsx('size-full rounded-lg shadow-sm', {
           '@container': isNumbersVisible,
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
           'pointer-events-none': !isPressable || isBlank,
@@ -93,7 +93,7 @@ export const Tile = (props: TileProps) => {
         {isNumbersVisible && (
           <span
             className={clsx(
-              'font-bold text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))]',
+              'text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))] font-bold',
               { 'text-shadow-lg': hasImage, 'text-shadow-sm': !hasImage },
             )}
           >

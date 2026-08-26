@@ -125,7 +125,7 @@ export const Controls = (props: ControlsProps) => {
   return (
     <aside
       {...rest}
-      className={clsx('flex flex-col gap-4 mt-14', rest.className)}
+      className={clsx('mt-14 flex flex-col gap-4', rest.className)}
     >
       <ToggleButtonGroup
         disallowEmptySelection

@@ -77,7 +77,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
 
                         return (
                           <Table.Row key={size}>
-                            <Table.Cell className="font-bold min-w-10">{`${size}x${size}`}</Table.Cell>
+                            <Table.Cell className="min-w-10 font-bold">{`${size}x${size}`}</Table.Cell>
                             <Table.Cell>
                               {entry ? (
                                 <Chip
@@ -162,7 +162,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
         onOpenChange={setConfirmOpen}
       >
         <AlertDialog.Container>
-          <AlertDialog.Dialog className="sm:max-w-[400px]">
+          <AlertDialog.Dialog className="sm:max-w-100">
             <AlertDialog.CloseTrigger />
             <AlertDialog.Header>
               <AlertDialog.Icon status="danger" />

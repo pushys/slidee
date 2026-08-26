@@ -17,7 +17,7 @@ export const AppContainer = (props: AppContainerProps) => {
       <main
         {...rest}
         className={clsx(
-          'grid gap-4 grid-cols-[1fr_auto] py-4 px-2',
+          'grid grid-cols-[1fr_auto] gap-4 px-2 py-4',
           rest.className,
         )}
       >

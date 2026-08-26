@@ -265,7 +265,7 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'relative bg-surface shadow-surface p-2 rounded-xl transition-[width]',
+        'relative rounded-xl bg-surface p-2 shadow-surface transition-[width]',
         // Careful changing these values because they are calculated with
         // non-fractional tile widths in mind applicable for all board sizes.
         //
@@ -280,11 +280,11 @@ export const Board = (props: BoardProps) => {
     >
       <ul
         style={styles}
-        className={clsx(`grid ${gridMaps[size]} select-none text-[0px]`, {
+        className={clsx(`grid ${gridMaps[size]} text-[0px] select-none`, {
           'gap-2': !hasImage,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'shadow-sm rounded-lg *:opacity-0':
+          'rounded-lg shadow-sm *:opacity-0':
             hasImage && (isGameOver || isImagePreviewActive),
           'cursor-none': isCursorHidden,
         })}
@@ -294,7 +294,7 @@ export const Board = (props: BoardProps) => {
         </BoardContext>
       </ul>
       {hasImage && imageAttribution && isGameOver && (
-        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm animate-fade-in">
+        <Chip className="absolute right-4 bottom-4 animate-fade-in bg-default-soft backdrop-blur-sm">
           <Picture width={12} />
           <Chip.Label>
             Photo by{' '}
