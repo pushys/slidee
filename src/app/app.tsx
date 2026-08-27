@@ -1,10 +1,6 @@
-import { sample, drop } from 'es-toolkit';
 import { useState, useEffect, useEffectEvent, useRef } from 'react';
 import { useDidUpdate, usePrefersReducedMotion } from 'rooks';
 
-import type { StatsEntry } from '@/stats/types';
-
-import { images, type ImageKeys } from '@/assets/images';
 import { AppContainer } from '@/components/app-container';
 import { Board } from '@/components/board';
 import { Controls } from '@/components/controls';
@@ -16,17 +12,10 @@ import { Tile } from '@/components/tile';
 import { Toolbar } from '@/components/toolbar';
 import { Game } from '@/game/game';
 import { useGame } from '@/game/use-game';
-import { useSettings } from '@/settings/use-settings';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
-import { useStats } from '@/stats/use-stats';
 
-const imageKeys = Object.keys(images) as unknown as ImageKeys[];
-
-// Keep history of randomly selected images to exclude them
-// when selecting a new one to avoid repeating too often.
-let recentImages: ImageKeys[] = [];
-
-const MAX_RECENT_IMAGES = 10;
+import { useSettings } from './use-settings';
+import { useStats } from './use-stats';
 
 /**
  * Main orchestration component of the app.
@@ -37,8 +26,22 @@ export function App() {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [isImagePreviewing, setImagePreviewing] = useState(false);
 
-  const [stats, setStats] = useStats();
-  const [settings, setSettings] = useSettings();
+  const {
+    settings,
+    setSettings,
+    imageMetadata,
+    isFirstImage,
+    isLastImage,
+    enableSound,
+    disableSound,
+    setBoardSize,
+    randomImage,
+    nextImage,
+    previousImage,
+    toggleMode,
+  } = useSettings();
+
+  const [stats, setStats, clearStats] = useStats();
 
   const wasPlayingRef = useRef(false);
 
@@ -59,37 +62,11 @@ export function App() {
     // Ignore games that were won using the "Solve" button.
     if (state.isAutoSolved) return;
 
-    const entry = stats[settings.boardSize];
-
-    let newEntry: StatsEntry;
-
-    if (entry) {
-      const newGameCount = entry.games + 1;
-
-      newEntry = {
-        best: totalPlayTime < entry.best ? totalPlayTime : entry.best,
-        average: (entry.average * entry.games + totalPlayTime) / newGameCount,
-        games: newGameCount,
-        images: entry.images,
-      };
-
-      if (settings.image) {
-        const wasImageSolved = entry.images.includes(settings.image);
-
-        if (!wasImageSolved) {
-          newEntry.images = [...newEntry.images, settings.image];
-        }
-      }
-    } else {
-      newEntry = {
-        best: totalPlayTime,
-        average: totalPlayTime,
-        games: 1,
-        images: settings.image ? [settings.image] : [],
-      };
-    }
-
-    setStats((prevStats) => ({ ...prevStats, [settings.boardSize]: newEntry }));
+    setStats({
+      boardSize: settings.boardSize,
+      image: settings.image,
+      totalPlayTime,
+    });
   });
 
   useEffect(() => {
@@ -117,89 +94,21 @@ export function App() {
     game.init({ boardSize: settings.boardSize });
   }, [settings.boardSize, settings.image]);
 
-  const handleClearStatsPress = (boardSize?: Game.BoardSize) => {
-    if (boardSize) {
-      return setStats((prevStats) => ({
-        ...prevStats,
-        [boardSize]: undefined,
-      }));
-    }
-    return setStats({});
-  };
-
-  const image = settings.image ? images[settings.image] : undefined;
-  const imageIndex = imageKeys.findIndex((i) => i === settings.image);
-
-  const handleRandomImagePress = () => {
-    let newImage: ImageKeys;
-
-    // Re-sample image until it isn't among the recently used ones.
-    do {
-      newImage = sample(imageKeys);
-    } while (recentImages.includes(newImage));
-
-    if (recentImages.length === MAX_RECENT_IMAGES) {
-      recentImages = [...drop(recentImages, 1), newImage];
-    } else {
-      recentImages.push(newImage);
-    }
-
-    startViewTransition(() => {
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        image: newImage,
-      }));
-    });
-  };
-
-  const handlePreviousImagePress = () => {
-    startViewTransition(() => {
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        image: imageKeys[imageIndex - 1],
-      }));
-    });
-  };
-
-  const handleNextImagePress = () => {
-    startViewTransition(() => {
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        image: imageKeys[imageIndex + 1],
-      }));
-    });
-  };
-
-  const handleModeChange = (mode: Controls.Mode) => {
-    startViewTransition(() => {
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        image: mode === 'numbers' ? null : imageKeys[0],
-      }));
-    });
-  };
-
-  const handleBoardSizeChange = (boardSize: Game.BoardSize) => {
-    startViewTransition(() => {
-      setSettings((prevSettings) => ({ ...prevSettings, boardSize }));
-    });
-  };
-
   return (
     <AppContainer
       controls={
         <Controls
           boardSize={settings.boardSize}
-          onBoardSizeChange={handleBoardSizeChange}
-          mode={image ? 'image' : 'numbers'}
-          onModeChange={handleModeChange}
-          onRandomImagePress={handleRandomImagePress}
-          onPreviousImagePress={handlePreviousImagePress}
-          onNextImagePress={handleNextImagePress}
+          onBoardSizeChange={(s) => startViewTransition(() => setBoardSize(s))}
+          mode={imageMetadata ? 'image' : 'numbers'}
+          onModeChange={() => startViewTransition(toggleMode)}
+          onRandomImagePress={() => startViewTransition(randomImage)}
+          onPreviousImagePress={() => startViewTransition(previousImage)}
+          onNextImagePress={() => startViewTransition(nextImage)}
           onPreviewImagePressStart={() => setImagePreviewing(true)}
           onPreviewImagePressEnd={() => setImagePreviewing(false)}
-          isPreviousImageButtonDisabled={imageIndex === 0}
-          isNextImageButtonDisabled={imageIndex === imageKeys.length - 1}
+          isPreviousImageButtonDisabled={isFirstImage}
+          isNextImageButtonDisabled={isLastImage}
           isPreviewImageButtonDisabled={state.status === Game.Status.Over}
           isImagePreviewing={isImagePreviewing}
         />
@@ -219,8 +128,8 @@ export function App() {
       <Board
         tiles={state.board}
         gameStatus={state.status}
-        image={image?.image}
-        imageAttribution={image?.attribution}
+        image={imageMetadata?.image}
+        imageAttribution={imageMetadata?.attribution}
         renderTile={(tile, index) => (
           <Tile
             key={tile}
@@ -243,9 +152,9 @@ export function App() {
         onGameResume={() => game.resume()}
       />
       <Footer
-        soundEnabled={settings?.sound}
-        onSoundEnablePress={() => setSettings({ ...settings, sound: true })}
-        onSoundDisablePress={() => setSettings({ ...settings, sound: false })}
+        soundEnabled={settings.sound}
+        onSoundEnablePress={enableSound}
+        onSoundDisablePress={disableSound}
         onStatsPress={() => setStatsOpen(true)}
         onHelpPress={() => setHelpOpen(true)}
         onSettingsPress={() => setSettingsOpen(true)}
@@ -254,7 +163,7 @@ export function App() {
         isOpen={isStatsOpen}
         onOpenChange={setStatsOpen}
         stats={stats}
-        onClearStatsPress={handleClearStatsPress}
+        onClearStatsPress={clearStats}
       />
       <HelpDialog isOpen={isHelpOpen} onOpenChange={setHelpOpen} />
       <SettingsDialog
