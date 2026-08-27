@@ -3,22 +3,12 @@ import { useIntervalWhen } from 'rooks';
 
 import { Game } from './game';
 
-interface UseGameProps {
-  defaultBoardSize?: Game.BoardSize;
-}
-
-interface UseGameReturnValue {
-  game: Omit<Game, 'state' | 'totalPlayTime'>;
-  state: Game.State;
-  totalPlayTime: number;
-}
-
 /**
  * A hook wrapper around `Game`.
  *
  * @param opts
  */
-export function useGame(props: UseGameProps = {}): UseGameReturnValue {
+export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
   const { defaultBoardSize } = props;
 
   const [game] = useState(() => new Game({ boardSize: defaultBoardSize }));
@@ -44,4 +34,16 @@ export function useGame(props: UseGameProps = {}): UseGameReturnValue {
   }, [game]);
 
   return { game, state, totalPlayTime };
+}
+
+export namespace useGame {
+  export interface Props {
+    defaultBoardSize?: Game.BoardSize;
+  }
+
+  export interface ReturnValue {
+    game: Omit<Game, 'state' | 'totalPlayTime'>;
+    state: Game.State;
+    totalPlayTime: number;
+  }
 }

@@ -43,82 +43,7 @@ const gridMaps = {
   `grid-cols-${Game.BoardSize} grid-rows-${Game.BoardSize}`
 >;
 
-interface BoardProps extends ComponentProps<'section'> {
-  /**
-   * List of tiles.
-   *
-   * @default [ ]
-   */
-  tiles?: Game.Board;
-  /**
-   * Single tile renderer.
-   */
-  renderTile: (tile: number, index: number) => ReactNode;
-  /**
-   * Current game status.
-   *
-   * @default Game.Status.Idle
-   */
-  gameStatus?: Game.Status;
-  /**
-   * Puzzle image source.
-   */
-  image?: string;
-  /**
-   * Image attribution object.
-   */
-  imageAttribution?: ImageAttribution;
-  /**
-   * Disables key press detection.
-   *
-   * @default false
-   */
-  isKeyboardDisabled?: boolean;
-  /**
-   * If `true`, disables sound effects.
-   *
-   * @default false
-   */
-  isSoundDisabled?: boolean;
-  /**
-   * If `true`, the confetti effect won't triggered once the game is over.
-   *
-   * @default false
-   */
-  isConfettiDisabled?: boolean;
-  /**
-   * If `true`, when the board has an image the tiles will have numbers
-   * displayed over them.
-   *
-   * @default false
-   */
-  isNumbersVisible?: boolean;
-  /**
-   * If `true`, will display a solved image like it's game over but without the
-   * attribution.
-   *
-   * @default false
-   */
-  isImagePreviewActive?: boolean;
-  /**
-   * Tile move event handler.
-   */
-  onTileMove?: (direction: Game.MoveDirection) => void;
-  /**
-   * New game event handler.
-   */
-  onNewGame?: () => void;
-  /**
-   * Game pause event handler.
-   */
-  onGamePause?: () => void;
-  /**
-   * Game resume event handler.
-   */
-  onGameResume?: () => void;
-}
-
-export const Board = (props: BoardProps) => {
+export const Board = (props: Board.Props) => {
   const {
     tiles = [],
     renderTile,
@@ -319,3 +244,80 @@ export const Board = (props: BoardProps) => {
     </section>
   );
 };
+
+export namespace Board {
+  export interface Props extends ComponentProps<'section'> {
+    /**
+     * List of tiles.
+     *
+     * @default [ ]
+     */
+    tiles?: Game.Board;
+    /**
+     * Single tile renderer.
+     */
+    renderTile: (tile: number, index: number) => ReactNode;
+    /**
+     * Current game status.
+     *
+     * @default Game.Status.Idle
+     */
+    gameStatus?: Game.Status;
+    /**
+     * Puzzle image source.
+     */
+    image?: string;
+    /**
+     * Image attribution object.
+     */
+    imageAttribution?: ImageAttribution;
+    /**
+     * Disables key press detection.
+     *
+     * @default false
+     */
+    isKeyboardDisabled?: boolean;
+    /**
+     * If `true`, disables sound effects.
+     *
+     * @default false
+     */
+    isSoundDisabled?: boolean;
+    /**
+     * If `true`, the confetti effect won't triggered once the game is over.
+     *
+     * @default false
+     */
+    isConfettiDisabled?: boolean;
+    /**
+     * If `true`, when the board has an image the tiles will have numbers
+     * displayed over them.
+     *
+     * @default false
+     */
+    isNumbersVisible?: boolean;
+    /**
+     * If `true`, will display a solved image like it's game over but without
+     * the attribution.
+     *
+     * @default false
+     */
+    isImagePreviewActive?: boolean;
+    /**
+     * Tile move event handler.
+     */
+    onTileMove?: (direction: Game.MoveDirection) => void;
+    /**
+     * New game event handler.
+     */
+    onNewGame?: () => void;
+    /**
+     * Game pause event handler.
+     */
+    onGamePause?: () => void;
+    /**
+     * Game resume event handler.
+     */
+    onGameResume?: () => void;
+  }
+}

@@ -1,16 +1,10 @@
 import {
   Tooltip as HeroUiTooltip,
-  type TooltipProps as HeroUiTooltipProps,
+  type TooltipProps,
   type TooltipContentProps,
 } from '@heroui/react';
 
-interface TooltipProps extends HeroUiTooltipProps {
-  content?: TooltipContentProps['children'];
-  contentOffset?: TooltipContentProps['offset'];
-  contentPlacement?: TooltipContentProps['placement'];
-}
-
-export const Tooltip = (props: TooltipProps) => {
+export const Tooltip = (props: Tooltip.Props) => {
   const { content, contentOffset, contentPlacement, children, ...rest } = props;
 
   return (
@@ -26,3 +20,11 @@ export const Tooltip = (props: TooltipProps) => {
     </HeroUiTooltip>
   );
 };
+
+export namespace Tooltip {
+  export interface Props extends TooltipProps {
+    content?: TooltipContentProps['children'];
+    contentOffset?: TooltipContentProps['offset'];
+    contentPlacement?: TooltipContentProps['placement'];
+  }
+}

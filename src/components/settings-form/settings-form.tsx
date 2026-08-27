@@ -91,16 +91,7 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   );
 };
 
-export interface SettingsFormProps extends UseFormProps<Settings> {
-  id?: string;
-  onSubmit: (values: Settings) => void;
-  /**
-   * Stats object to show progress per image.
-   */
-  stats?: Stats;
-}
-
-export const SettingsForm = (props: SettingsFormProps) => {
+export const SettingsForm = (props: SettingsForm.Props) => {
   const {
     id,
     onSubmit,
@@ -411,3 +402,14 @@ export const SettingsForm = (props: SettingsFormProps) => {
     </form>
   );
 };
+
+export namespace SettingsForm {
+  export interface Props extends UseFormProps<Settings> {
+    id?: string;
+    onSubmit: (values: Settings) => void;
+    /**
+     * Stats object to show progress per image.
+     */
+    stats?: Stats;
+  }
+}

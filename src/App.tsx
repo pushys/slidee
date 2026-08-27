@@ -7,7 +7,7 @@ import type { StatsEntry } from '@/stats/types';
 import { images, type ImageKeys } from '@/assets/images';
 import { AppContainer } from '@/components/app-container';
 import { Board } from '@/components/board';
-import { Controls, type Mode } from '@/components/controls';
+import { Controls } from '@/components/controls';
 import { Footer } from '@/components/footer';
 import { HelpDialog } from '@/components/help-dialog';
 import { SettingsDialog } from '@/components/settings-dialog';
@@ -170,7 +170,7 @@ export function App() {
     });
   };
 
-  const handleModeChange = (mode: Mode) => {
+  const handleModeChange = (mode: Controls.Mode) => {
     startViewTransition(() => {
       setSettings((prevSettings) => ({
         ...prevSettings,

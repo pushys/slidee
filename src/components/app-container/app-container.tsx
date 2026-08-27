@@ -2,14 +2,7 @@ import { Toast } from '@heroui/react';
 import clsx from 'clsx';
 import React, { type ComponentProps, type ReactNode } from 'react';
 
-interface AppContainerProps extends ComponentProps<'main'> {
-  /**
-   * Board element.
-   */
-  controls?: ReactNode;
-}
-
-export const AppContainer = (props: AppContainerProps) => {
+export const AppContainer = (props: AppContainer.Props) => {
   const { controls, children, ...rest } = props;
 
   return (
@@ -28,3 +21,12 @@ export const AppContainer = (props: AppContainerProps) => {
     </React.Fragment>
   );
 };
+
+export namespace AppContainer {
+  export interface Props extends ComponentProps<'main'> {
+    /**
+     * Board element.
+     */
+    controls?: ReactNode;
+  }
+}

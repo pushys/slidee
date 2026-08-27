@@ -4,20 +4,9 @@ import { useId } from 'react';
 
 import type { Settings } from '@/settings/types';
 
-import {
-  SettingsForm,
-  type SettingsFormProps,
-} from '@/components/settings-form';
+import { SettingsForm } from '@/components/settings-form';
 
-interface SettingsDialogProps
-  extends
-    Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>,
-    Pick<SettingsFormProps, 'stats'> {
-  defaultSettings?: Settings;
-  onSettingsSave: (settings: Settings) => void;
-}
-
-export const SettingsDialog = (props: SettingsDialogProps) => {
+export const SettingsDialog = (props: SettingsDialog.Props) => {
   const { isOpen, onOpenChange, defaultSettings, onSettingsSave, stats } =
     props;
 
@@ -55,3 +44,13 @@ export const SettingsDialog = (props: SettingsDialogProps) => {
     </Modal.Backdrop>
   );
 };
+
+export namespace SettingsDialog {
+  export interface Props
+    extends
+      Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>,
+      Pick<SettingsForm.Props, 'stats'> {
+    defaultSettings?: Settings;
+    onSettingsSave: (settings: Settings) => void;
+  }
+}

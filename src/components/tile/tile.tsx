@@ -15,30 +15,7 @@ const buttonWithImageStyles = {
   backgroundPosition: `calc(var(${TileCssVar.Column}) * 100% / (var(${BoardCssVar.Size}) - 1)) calc(var(${TileCssVar.Row}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
 } satisfies CSSProperties;
 
-interface TileProps extends ComponentProps<'li'> {
-  /**
-   * Tile value.
-   */
-  value: number;
-  /**
-   * If `true`, special styles are applied to the tile.
-   *
-   * @default false
-   */
-  isSolved?: boolean;
-  /**
-   * If `true`, view transitions are disable for the tile.
-   *
-   * @default false
-   */
-  isViewTransitionDisabled?: boolean;
-  /**
-   * Inner button press handler.
-   */
-  onPress?: ButtonProps['onPress'];
-}
-
-export const Tile = (props: TileProps) => {
+export const Tile = (props: Tile.Props) => {
   const {
     value,
     isSolved: isSolvedProp = false,
@@ -104,3 +81,28 @@ export const Tile = (props: TileProps) => {
     </li>
   );
 };
+
+export namespace Tile {
+  export interface Props extends ComponentProps<'li'> {
+    /**
+     * Tile value.
+     */
+    value: number;
+    /**
+     * If `true`, special styles are applied to the tile.
+     *
+     * @default false
+     */
+    isSolved?: boolean;
+    /**
+     * If `true`, view transitions are disable for the tile.
+     *
+     * @default false
+     */
+    isViewTransitionDisabled?: boolean;
+    /**
+     * Inner button press handler.
+     */
+    onPress?: ButtonProps['onPress'];
+  }
+}

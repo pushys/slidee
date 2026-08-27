@@ -7,9 +7,7 @@ import {
   Typography,
 } from '@heroui/react';
 
-type HelpDialogProps = Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>;
-
-export const HelpDialog = (props: HelpDialogProps) => {
+export const HelpDialog = (props: HelpDialog.Props) => {
   const { isOpen, onOpenChange } = props;
 
   return (
@@ -78,3 +76,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
     </Modal.Backdrop>
   );
 };
+
+export namespace HelpDialog {
+  export type Props = Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>;
+}

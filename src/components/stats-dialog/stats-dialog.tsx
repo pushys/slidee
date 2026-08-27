@@ -21,21 +21,7 @@ import type { Stats } from '@/stats/types';
 import { Game } from '@/game/game';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
-interface StatsDialogProps extends Pick<
-  ModalBackdropProps,
-  'isOpen' | 'onOpenChange'
-> {
-  /**
-   * Stats object.
-   */
-  stats?: Stats;
-  /**
-   * Clear stats button press handler.
-   */
-  onClearStatsPress?: (boardSize?: Game.BoardSize) => void;
-}
-
-export const StatsDialog = (props: StatsDialogProps) => {
+export const StatsDialog = (props: StatsDialog.Props) => {
   const { isOpen, onOpenChange, stats = {}, onClearStatsPress } = props;
 
   const [isConfirmOpen, setConfirmOpen] = useState(false);
@@ -189,3 +175,19 @@ export const StatsDialog = (props: StatsDialogProps) => {
     </>
   );
 };
+
+export namespace StatsDialog {
+  export interface Props extends Pick<
+    ModalBackdropProps,
+    'isOpen' | 'onOpenChange'
+  > {
+    /**
+     * Stats object.
+     */
+    stats?: Stats;
+    /**
+     * Clear stats button press handler.
+     */
+    onClearStatsPress?: (boardSize?: Game.BoardSize) => void;
+  }
+}

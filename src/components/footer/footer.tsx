@@ -11,16 +11,7 @@ import { type ComponentProps } from 'react';
 
 import { Tooltip } from '@/components/tooltip';
 
-interface FooterProps extends ComponentProps<'footer'> {
-  soundEnabled?: boolean;
-  onSoundEnablePress?: ButtonProps['onPress'];
-  onSoundDisablePress?: ButtonProps['onPress'];
-  onStatsPress?: ButtonProps['onPress'];
-  onHelpPress?: ButtonProps['onPress'];
-  onSettingsPress?: ButtonProps['onPress'];
-}
-
-export const Footer = (props: FooterProps) => {
+export const Footer = (props: Footer.Props) => {
   const {
     soundEnabled = true,
     onSoundEnablePress,
@@ -86,3 +77,14 @@ export const Footer = (props: FooterProps) => {
     </footer>
   );
 };
+
+export namespace Footer {
+  export interface Props extends ComponentProps<'footer'> {
+    soundEnabled?: boolean;
+    onSoundEnablePress?: ButtonProps['onPress'];
+    onSoundDisablePress?: ButtonProps['onPress'];
+    onStatsPress?: ButtonProps['onPress'];
+    onHelpPress?: ButtonProps['onPress'];
+    onSettingsPress?: ButtonProps['onPress'];
+  }
+}
