@@ -168,11 +168,6 @@ export class Game {
       return;
     }
 
-    if (tile === Game.BLANK) {
-      this.#debug('Cannot move the blank tile itself');
-      return;
-    }
-
     if (!this.isTileMovable(tile)) {
       this.#debug(`Tile "${tile}" is not movable to the blank position`);
       return;
@@ -265,6 +260,8 @@ export class Game {
    * @param tile
    */
   public isTileMovable = (tile: number): boolean => {
+    if (tile === Game.BLANK) return false;
+
     const blankIndex = this.#board.indexOf(Game.BLANK);
     const tileIndex = this.#board.indexOf(tile);
 
