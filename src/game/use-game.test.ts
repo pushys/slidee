@@ -30,7 +30,7 @@ describe('useGame', () => {
     const { result } = renderHook(() => useGame({ defaultBoardSize: 3 }));
 
     act(() => {
-      result.current.game.solve();
+      result.current.solve();
     });
 
     expect(result.current.state).toStrictEqual({
@@ -47,25 +47,25 @@ describe('useGame', () => {
     vi.advanceTimersByTime(2000);
 
     act(() => {
-      result.current.game.moveTile(6);
+      result.current.moveTile(6);
     });
 
     vi.advanceTimersByTime(3000);
 
     act(() => {
-      result.current.game.pause();
+      result.current.pause();
     });
 
     vi.advanceTimersByTime(1000);
 
     act(() => {
-      result.current.game.resume();
+      result.current.resume();
     });
 
     vi.advanceTimersByTime(2000);
 
     act(() => {
-      result.current.game.solve();
+      result.current.solve();
     });
 
     expect(result.current.totalPlayTime).toBe(5000);

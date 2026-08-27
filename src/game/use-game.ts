@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useIntervalWhen } from 'rooks';
 
 import { Game } from './game';
@@ -33,7 +33,20 @@ export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
     return () => unsubscribe();
   }, [game]);
 
-  return { game, state, totalPlayTime };
+  return useMemo(
+    () => ({
+      state,
+      totalPlayTime,
+      init: game.init,
+      pause: game.pause,
+      resume: game.resume,
+      solve: game.solve,
+      move: game.move,
+      moveTile: game.moveTile,
+      isTileMovable: game.isTileMovable,
+    }),
+    [game, state, totalPlayTime],
+  );
 }
 
 export namespace useGame {
@@ -41,9 +54,16 @@ export namespace useGame {
     defaultBoardSize?: Game.BoardSize;
   }
 
-  export interface ReturnValue {
-    game: Omit<Game, 'state' | 'totalPlayTime'>;
-    state: Game.State;
-    totalPlayTime: number;
-  }
+  export type ReturnValue = Pick<
+    Game,
+    | 'state'
+    | 'totalPlayTime'
+    | 'init'
+    | 'pause'
+    | 'resume'
+    | 'solve'
+    | 'move'
+    | 'moveTile'
+    | 'isTileMovable'
+  >;
 }

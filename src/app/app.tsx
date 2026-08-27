@@ -45,9 +45,7 @@ export function App() {
 
   const wasPlayingRef = useRef(false);
 
-  const { game, state, totalPlayTime } = useGame({
-    defaultBoardSize: settings.boardSize,
-  });
+  const game = useGame({ defaultBoardSize: settings.boardSize });
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -60,34 +58,34 @@ export function App() {
   // Update player's stats when game is over.
   const updateStats = useEffectEvent(() => {
     // Ignore games that were won using the "Solve" button.
-    if (state.isAutoSolved) return;
+    if (game.state.isAutoSolved) return;
 
     setStats({
       boardSize: settings.boardSize,
       image: settings.image,
-      totalPlayTime,
+      totalPlayTime: game.totalPlayTime,
     });
   });
 
   useEffect(() => {
-    if (state.status === Game.Status.Over) {
+    if (game.state.status === Game.Status.Over) {
       updateStats();
     }
-  }, [state.status]);
+  }, [game.state.status]);
 
   // Pause the game if it's playing when any dialog opens.
   const pauseGame = useEffectEvent(() => game.pause());
   const resumeGame = useEffectEvent(() => game.resume());
 
   useEffect(() => {
-    if (isDialogOpen && state.status === Game.Status.Playing) {
+    if (isDialogOpen && game.state.status === Game.Status.Playing) {
       pauseGame();
       wasPlayingRef.current = true;
     } else if (!isDialogOpen && wasPlayingRef.current) {
       resumeGame();
       wasPlayingRef.current = false;
     }
-  }, [isDialogOpen, state.status]);
+  }, [isDialogOpen, game.state.status]);
 
   // Board size change or new image selection must start a new game.
   useDidUpdate(() => {
@@ -109,25 +107,25 @@ export function App() {
           onPreviewImagePressEnd={() => setImagePreviewing(false)}
           isPreviousImageButtonDisabled={isFirstImage}
           isNextImageButtonDisabled={isLastImage}
-          isPreviewImageButtonDisabled={state.status === Game.Status.Over}
+          isPreviewImageButtonDisabled={game.state.status === Game.Status.Over}
           isImagePreviewing={isImagePreviewing}
         />
       }
     >
       <Toolbar
-        gameStatus={state.status}
-        moves={state.moves}
-        elapsedTime={totalPlayTime}
+        gameStatus={game.state.status}
+        moves={game.state.moves}
+        elapsedTime={game.totalPlayTime}
         personalBestTime={stats[settings.boardSize]?.best}
-        isAutoSolved={state.isAutoSolved}
+        isAutoSolved={game.state.isAutoSolved}
         onShufflePress={() => startViewTransition(() => game.init())}
         onPausePress={() => game.pause()}
         onResumePress={() => game.resume()}
         onSolvePress={() => startViewTransition(() => game.solve())}
       />
       <Board
-        tiles={state.board}
-        gameStatus={state.status}
+        tiles={game.state.board}
+        gameStatus={game.state.status}
         image={imageMetadata?.image}
         imageAttribution={imageMetadata?.attribution}
         renderTile={(tile, index) => (
