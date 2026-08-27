@@ -1,5 +1,5 @@
 import { omit } from 'es-toolkit';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import type { ImageKeys } from '@/assets/images';
 import type { Stats, StatsEntry } from '@/stats/types';
@@ -59,7 +59,10 @@ export function useStats(): useStats.ReturnValue {
     [setStats],
   );
 
-  return [stats, updateStats, clearStats];
+  return useMemo(
+    () => ({ stats, updateStats, clearStats }),
+    [stats, updateStats, clearStats],
+  );
 }
 
 export namespace useStats {
@@ -69,9 +72,9 @@ export namespace useStats {
     image: ImageKeys | null;
   }
 
-  export type ReturnValue = [
-    Stats,
-    (data: UpdateStatePayload) => void,
-    (boardSize?: Game.BoardSize) => void,
-  ];
+  export interface ReturnValue {
+    stats: Stats;
+    updateStats: (data: UpdateStatePayload) => void;
+    clearStats: (boardSize?: Game.BoardSize) => void;
+  }
 }

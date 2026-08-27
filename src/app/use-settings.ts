@@ -16,22 +16,7 @@ let recentImages: ImageKeys[] = [];
 
 const MAX_RECENT_IMAGES = 10;
 
-interface UseSettingsReturnValue {
-  settings: Settings;
-  setSettings: Dispatch<SetStateAction<Settings>>;
-  imageMetadata: ImageMetadata | undefined;
-  isFirstImage: boolean;
-  isLastImage: boolean;
-  enableSound: () => void;
-  disableSound: () => void;
-  setBoardSize: (boardSize: Game.BoardSize) => void;
-  randomImage: () => void;
-  previousImage: () => void;
-  nextImage: () => void;
-  toggleMode: () => void;
-}
-
-export function useSettings(): UseSettingsReturnValue {
+export function useSettings(): useSettings.ReturnValue {
   const [settings, setSettings] = useSettingsStorage();
 
   const imageMetadata = settings.image ? images[settings.image] : undefined;
@@ -109,4 +94,21 @@ export function useSettings(): UseSettingsReturnValue {
     nextImage,
     toggleMode,
   };
+}
+
+export namespace useSettings {
+  export interface ReturnValue {
+    settings: Settings;
+    setSettings: Dispatch<SetStateAction<Settings>>;
+    imageMetadata: ImageMetadata | undefined;
+    isFirstImage: boolean;
+    isLastImage: boolean;
+    enableSound: () => void;
+    disableSound: () => void;
+    setBoardSize: (boardSize: Game.BoardSize) => void;
+    randomImage: () => void;
+    previousImage: () => void;
+    nextImage: () => void;
+    toggleMode: () => void;
+  }
 }
