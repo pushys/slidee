@@ -28,6 +28,7 @@
     "es-toolkit": "1.51.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-error-boundary": "6.1.3",
     "react-hook-form": "7.85.0",
     "rooks": "9.9.0",
     "tailwindcss": "4.3.3",

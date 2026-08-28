@@ -7,19 +7,22 @@ import { SettingsDialog } from './components/dialogs/settings-dialog';
 import { StatsDialog } from './components/dialogs/stats-dialog';
 import { Footer } from './components/footer';
 import { Toolbar } from './components/toolbar';
-import { AppProvider } from './providers/AppProvider';
+import { AppProvider } from './providers/app-provider';
+import { ErrorBoundary } from './providers/error-boundary';
 
 export const App = () => {
   return (
-    <AppProvider>
-      <AppContainer controls={<Controls />}>
-        <Toolbar />
-        <Board />
-        <Footer />
-        <StatsDialog />
-        <HelpDialog />
-        <SettingsDialog />
-      </AppContainer>
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <AppContainer controls={<Controls />}>
+          <Toolbar />
+          <Board />
+          <Footer />
+          <StatsDialog />
+          <HelpDialog />
+          <SettingsDialog />
+        </AppContainer>
+      </AppProvider>
+    </ErrorBoundary>
   );
 };
