@@ -24,8 +24,15 @@ export class Game {
     Down: 'down',
   } as const;
 
+  static readonly BoardSize = {
+    Small: 3,
+    Medium: 4,
+    Large: 5,
+    ExtraLarge: 6,
+  } as const;
+
   static readonly BLANK = 0;
-  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = 4;
+  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = Game.BoardSize.Medium;
   static readonly BOARD_SIZES: Game.BoardSize[] = [3, 4, 5, 6];
 
   static get MIN_BOARD_SIZE(): Game.BoardSize {
@@ -476,7 +483,7 @@ export class Game {
 export namespace Game {
   export type Board = readonly number[];
 
-  export type BoardSize = 3 | 4 | 5 | 6;
+  export type BoardSize = (typeof Game.BoardSize)[keyof typeof Game.BoardSize];
 
   export interface Options {
     /**
