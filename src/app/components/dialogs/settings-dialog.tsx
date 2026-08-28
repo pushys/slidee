@@ -5,7 +5,7 @@ import { useAppContext } from '../../app-context';
 export const SettingsDialog = () => {
   const {
     dialog,
-    setDialog,
+    closeDialog,
     settings: { settings, setSettings },
     stats: { stats },
   } = useAppContext();
@@ -13,7 +13,7 @@ export const SettingsDialog = () => {
   return (
     <SettingsDialogView
       isOpen={dialog === 'settings'}
-      onOpenChange={() => setDialog(null)}
+      onOpenChange={closeDialog}
       defaultSettings={settings}
       onSettingsSave={setSettings}
       stats={stats}

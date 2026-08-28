@@ -4,9 +4,15 @@ import {
   useEffectEvent,
   useRef,
   useMemo,
+  useCallback,
   type PropsWithChildren,
 } from 'react';
-import { useDidUpdate, usePrefersReducedMotion } from 'rooks';
+import {
+  useDidUpdate,
+  usePrefersReducedMotion,
+  useDocumentEventListener,
+  useWindowEventListener,
+} from 'rooks';
 
 import { Game } from '@/game/game';
 import { useGame } from '@/game/use-game';
@@ -15,6 +21,8 @@ import { createStartViewTransition } from '@/shared/utils/create-start-view-tran
 import { AppContext } from '../app-context';
 import { useSettings } from '../use-settings';
 import { useStats } from '../use-stats';
+
+type PauseReason = 'dialog' | 'lost-focus';
 
 export function AppProvider(props: PropsWithChildren) {
   const [dialog, setDialog] = useState<AppContext.Dialog | null>(null);
@@ -25,8 +33,9 @@ export function AppProvider(props: PropsWithChildren) {
 
   const { boardSize, animations, image } = settings.settings;
 
-  const wasPlayingRef = useRef(false);
   const game = useGame({ defaultBoardSize: settings.settings.boardSize });
+
+  const pauseReasonRef = useRef<PauseReason>(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -53,27 +62,59 @@ export function AppProvider(props: PropsWithChildren) {
     }
   }, [game.state.status]);
 
-  // Pause the game if it's playing when any dialog opens.
-  const pauseGame = useEffectEvent(() => game.pause());
-  const resumeGame = useEffectEvent(() => game.resume());
-
-  useEffect(() => {
-    if (dialog && game.state.status === Game.Status.Playing) {
-      pauseGame();
-      wasPlayingRef.current = true;
-    } else if (!dialog && wasPlayingRef.current) {
-      resumeGame();
-      wasPlayingRef.current = false;
-    }
-  }, [dialog, game.state.status]);
-
   // Board size change or new image selection must start a new game.
   useDidUpdate(() => game.init({ boardSize }), [boardSize, image]);
+
+  const handleFocusLoss = () => {
+    if (game.state.status === 'playing') {
+      game.pause();
+      pauseReasonRef.current = 'lost-focus';
+    }
+  };
+
+  const handleFocusGain = () => {
+    if (pauseReasonRef.current === 'lost-focus') {
+      game.resume();
+      pauseReasonRef.current = null;
+    }
+  };
+
+  useWindowEventListener('blur', handleFocusLoss);
+  useWindowEventListener('focus', handleFocusGain);
+  useDocumentEventListener(
+    'visibilitychange',
+    document.hidden ? handleFocusLoss : handleFocusGain,
+  );
+
+  const openDialog = useCallback(
+    (dialogCode: AppContext.Dialog) => {
+      setDialog(dialogCode);
+
+      if (game.state.status === Game.Status.Playing) {
+        game.pause();
+        pauseReasonRef.current = 'dialog';
+      }
+    },
+    [game],
+  );
+
+  const closeDialog = useCallback(() => {
+    setDialog(null);
+
+    if (
+      game.state.status === Game.Status.Paused &&
+      pauseReasonRef.current === 'dialog'
+    ) {
+      game.resume();
+      pauseReasonRef.current = null;
+    }
+  }, [game]);
 
   const contextValue = useMemo(
     () => ({
       dialog,
-      setDialog,
+      openDialog,
+      closeDialog,
       isImagePreviewing,
       setImagePreviewing,
       settings,
@@ -83,7 +124,8 @@ export function AppProvider(props: PropsWithChildren) {
     }),
     [
       dialog,
-      setDialog,
+      openDialog,
+      closeDialog,
       isImagePreviewing,
       setImagePreviewing,
       settings,

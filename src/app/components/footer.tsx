@@ -4,7 +4,7 @@ import { useAppContext } from '../app-context';
 
 export const Footer = () => {
   const {
-    setDialog,
+    openDialog,
     settings: { settings, enableSound, disableSound },
   } = useAppContext();
 
@@ -13,9 +13,9 @@ export const Footer = () => {
       soundEnabled={settings.sound}
       onSoundEnablePress={enableSound}
       onSoundDisablePress={disableSound}
-      onStatsPress={() => setDialog('stats')}
-      onHelpPress={() => setDialog('help')}
-      onSettingsPress={() => setDialog('settings')}
+      onStatsPress={() => openDialog('stats')}
+      onHelpPress={() => openDialog('help')}
+      onSettingsPress={() => openDialog('settings')}
     />
   );
 };

@@ -12,7 +12,8 @@ import type { useStats } from './use-stats';
 
 export interface AppContext {
   dialog: AppContext.Dialog | null;
-  setDialog: Dispatch<SetStateAction<AppContext.Dialog | null>>;
+  openDialog: (dialog: AppContext.Dialog) => void;
+  closeDialog: () => void;
   isImagePreviewing: boolean;
   setImagePreviewing: Dispatch<SetStateAction<boolean>>;
   settings: useSettings.ReturnValue;

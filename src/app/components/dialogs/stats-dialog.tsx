@@ -5,14 +5,14 @@ import { useAppContext } from '../../app-context';
 export const StatsDialog = () => {
   const {
     dialog,
-    setDialog,
+    closeDialog,
     stats: { stats, clearStats },
   } = useAppContext();
 
   return (
     <StatsDialogView
       isOpen={dialog === 'stats'}
-      onOpenChange={() => setDialog(null)}
+      onOpenChange={closeDialog}
       stats={stats}
       onClearStatsPress={clearStats}
     />
