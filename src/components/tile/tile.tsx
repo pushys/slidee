@@ -9,10 +9,12 @@ import { Game } from '@/game/game';
 import { TileCssVar } from './tile-css-var';
 
 const buttonWithImageStyles = {
+  '--bg-pos-x': `calc(var(${TileCssVar.Column}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
+  '--bg-pos-y': `calc(var(${TileCssVar.Row}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
   backgroundImage: `var(${BoardCssVar.Image})`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: `calc(var(${BoardCssVar.Size}) * 100%)`,
-  backgroundPosition: `calc(var(${TileCssVar.Column}) * 100% / (var(${BoardCssVar.Size}) - 1)) calc(var(${TileCssVar.Row}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
+  backgroundPosition: 'var(--bg-pos-x) var(--bg-pos-y)',
 } satisfies CSSProperties;
 
 export const Tile = (props: Tile.Props) => {
