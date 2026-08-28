@@ -1,12 +1,12 @@
 import { sample, drop } from 'es-toolkit';
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
 
-import type { Settings } from '@/settings/types';
+import type { Settings } from '@/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
 
 import { images, type ImageKeys } from '@/assets/images';
 import { Game } from '@/game/game';
-import { useSettings as useSettingsStorage } from '@/settings/use-settings';
+import { useLocalStorageSettings } from '@/settings/use-local-storage-settings';
 
 const imageKeys = Object.keys(images) as unknown as ImageKeys[];
 
@@ -17,7 +17,7 @@ let recentImages: ImageKeys[] = [];
 const MAX_RECENT_IMAGES = 10;
 
 export function useSettings(): useSettings.ReturnValue {
-  const [settings, setSettings] = useSettingsStorage();
+  const [settings, setSettings] = useLocalStorageSettings();
 
   const imageMetadata = settings.image ? images[settings.image] : undefined;
   const imageIndex = imageKeys.findIndex((i) => i === settings.image);

@@ -2,13 +2,13 @@ import { omit } from 'es-toolkit';
 import { useCallback, useMemo } from 'react';
 
 import type { ImageKeys } from '@/assets/images';
-import type { Stats, StatsEntry } from '@/stats/types';
+import type { Stats, StatsEntry } from '@/stats/stats.schema';
 
 import { Game } from '@/game/game';
-import { useStats as useStatsStorage } from '@/stats/use-stats';
+import { useLocalStorageStats } from '@/stats/use-local-storage-stats';
 
 export function useStats(): useStats.ReturnValue {
-  const [stats, setStats] = useStatsStorage();
+  const [stats, setStats] = useLocalStorageStats();
 
   const updateStats = useCallback(
     ({ boardSize, totalPlayTime, image }: useStats.UpdateStatePayload) =>

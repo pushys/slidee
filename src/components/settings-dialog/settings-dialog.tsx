@@ -2,7 +2,7 @@ import { Gear } from '@gravity-ui/icons';
 import { Modal, Button, type ModalBackdropProps } from '@heroui/react';
 import { useId } from 'react';
 
-import type { Settings } from '@/settings/types';
+import type { Settings } from '@/settings/settings.schema';
 
 import { SettingsForm } from '@/components/settings-form';
 

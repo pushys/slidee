@@ -34,14 +34,14 @@ import {
 } from 'react-hook-form';
 import { usePrefersReducedMotion } from 'rooks';
 
-import type { Settings } from '@/settings/types';
+import type { Settings } from '@/settings/settings.schema';
 import type { ImageTag } from '@/shared/types';
-import type { Stats } from '@/stats/types';
+import type { Stats } from '@/stats/stats.schema';
 
 import { images, type ImageKeys } from '@/assets/images';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
-import { DEFAULT_SETTINGS } from '@/settings/constants';
+import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
 

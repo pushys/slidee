@@ -1,8 +1,3 @@
-import type { StatsEntry } from './types';
+import { STORAGE_PREFIX } from '@/shared/constants';
 
-export const DEFAULT_STATS_ENTRY = {
-  best: 0,
-  average: 0,
-  games: 0,
-  images: [],
-} satisfies StatsEntry;
+export const STATS_STORAGE_KEY = `${STORAGE_PREFIX}.stats`;

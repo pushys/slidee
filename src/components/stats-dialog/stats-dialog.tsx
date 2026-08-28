@@ -16,7 +16,7 @@ import {
 } from '@heroui/react';
 import { useState } from 'react';
 
-import type { Stats } from '@/stats/types';
+import type { Stats } from '@/stats/stats.schema';
 
 import { Game } from '@/game/game';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
