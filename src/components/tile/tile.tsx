@@ -9,36 +9,15 @@ import { Game } from '@/game/game';
 import { TileCssVar } from './tile-css-var';
 
 const buttonWithImageStyles = {
+  '--bg-pos-x': `calc(var(${TileCssVar.Column}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
+  '--bg-pos-y': `calc(var(${TileCssVar.Row}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
   backgroundImage: `var(${BoardCssVar.Image})`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: `calc(var(${BoardCssVar.Size}) * 100%)`,
-  backgroundPosition: `calc(var(${TileCssVar.Column}) * 100% / (var(${BoardCssVar.Size}) - 1)) calc(var(${TileCssVar.Row}) * 100% / (var(${BoardCssVar.Size}) - 1))`,
+  backgroundPosition: 'var(--bg-pos-x) var(--bg-pos-y)',
 } satisfies CSSProperties;
 
-interface TileProps extends ComponentProps<'li'> {
-  /**
-   * Tile value.
-   */
-  value: number;
-  /**
-   * If `true`, special styles are applied to the tile.
-   *
-   * @default false
-   */
-  isSolved?: boolean;
-  /**
-   * If `true`, view transitions are disable for the tile.
-   *
-   * @default false
-   */
-  isViewTransitionDisabled?: boolean;
-  /**
-   * Inner button press handler.
-   */
-  onPress?: ButtonProps['onPress'];
-}
-
-export const Tile = (props: TileProps) => {
+export const Tile = (props: Tile.Props) => {
   const {
     value,
     isSolved: isSolvedProp = false,
@@ -80,7 +59,7 @@ export const Tile = (props: TileProps) => {
         variant={isSolved && !hasImage ? 'primary' : 'tertiary'}
         onPress={onPress}
         excludeFromTabOrder={!isPressable}
-        className={clsx('rounded-lg shadow-sm w-full h-full', {
+        className={clsx('size-full rounded-lg shadow-sm', {
           '@container': isNumbersVisible,
           'bg-emerald-700 hover:bg-emerald-600': isSolved && !hasImage,
           'pointer-events-none': !isPressable || isBlank,
@@ -93,7 +72,7 @@ export const Tile = (props: TileProps) => {
         {isNumbersVisible && (
           <span
             className={clsx(
-              'font-bold text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))]',
+              'text-[clamp(var(--text-3xl),40cqw,var(--text-4xl))] font-bold',
               { 'text-shadow-lg': hasImage, 'text-shadow-sm': !hasImage },
             )}
           >
@@ -104,3 +83,28 @@ export const Tile = (props: TileProps) => {
     </li>
   );
 };
+
+export namespace Tile {
+  export interface Props extends ComponentProps<'li'> {
+    /**
+     * Tile value.
+     */
+    value: number;
+    /**
+     * If `true`, special styles are applied to the tile.
+     *
+     * @default false
+     */
+    isSolved?: boolean;
+    /**
+     * If `true`, view transitions are disable for the tile.
+     *
+     * @default false
+     */
+    isViewTransitionDisabled?: boolean;
+    /**
+     * Inner button press handler.
+     */
+    onPress?: ButtonProps['onPress'];
+  }
+}

@@ -23,70 +23,7 @@ import clsx from 'clsx';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 
-export type Mode = 'numbers' | 'image';
-
-interface ControlsProps extends ComponentProps<'aside'> {
-  /**
-   * Current board size.
-   *
-   * @default Game.DEFAULT_BOARD_SIZE
-   */
-  boardSize?: Game.BoardSize;
-  /**
-   * Board size change handler.
-   */
-  onBoardSizeChange?: (boardSize: Game.BoardSize) => void;
-  /**
-   * Board mode.
-   *
-   * @default 'numbers'
-   */
-  mode?: Mode;
-  /**
-   * Mode change handler
-   */
-  onModeChange?: (mode: Mode) => void;
-  /**
-   * "Random image" button press handler.
-   */
-  onRandomImagePress?: ButtonProps['onPress'];
-  /**
-   * "Previous image" button press handler.
-   */
-  onPreviousImagePress?: ButtonProps['onPress'];
-  /**
-   * "Next image" button press handler.
-   */
-  onNextImagePress?: ButtonProps['onPress'];
-  /**
-   * "Preview image" button press start handler.
-   */
-  onPreviewImagePressStart?: ButtonProps['onPressStart'];
-  /**
-   * "Preview image" button press end handler.
-   */
-  onPreviewImagePressEnd?: ButtonProps['onPressEnd'];
-  /**
-   * "Previous image" button disabled state.
-   */
-  isPreviousImageButtonDisabled?: boolean;
-  /**
-   * "Next image" button disabled state.
-   */
-  isNextImageButtonDisabled?: boolean;
-  /**
-   * "Preview image" button disabled state.
-   */
-  isPreviewImageButtonDisabled?: boolean;
-  /**
-   * If image is currently being previewed.
-   *
-   * @default false
-   */
-  isImagePreviewing?: boolean;
-}
-
-export const Controls = (props: ControlsProps) => {
+export const Controls = (props: Controls.Props) => {
   const {
     boardSize = Game.DEFAULT_BOARD_SIZE,
     onBoardSizeChange,
@@ -105,7 +42,7 @@ export const Controls = (props: ControlsProps) => {
   } = props;
 
   const handleModeSelectionChange = (key: Set<string | number>) => {
-    const selectedKey = Array.from(key)[0] as Mode;
+    const selectedKey = Array.from(key)[0] as Controls.Mode;
 
     if (selectedKey !== mode) onModeChange?.(selectedKey);
   };
@@ -125,7 +62,7 @@ export const Controls = (props: ControlsProps) => {
   return (
     <aside
       {...rest}
-      className={clsx('flex flex-col gap-4 mt-14', rest.className)}
+      className={clsx('mt-14 flex flex-col gap-4', rest.className)}
     >
       <ToggleButtonGroup
         disallowEmptySelection
@@ -218,3 +155,68 @@ export const Controls = (props: ControlsProps) => {
     </aside>
   );
 };
+
+export namespace Controls {
+  export type Mode = 'numbers' | 'image';
+
+  export interface Props extends ComponentProps<'aside'> {
+    /**
+     * Current board size.
+     *
+     * @default Game.DEFAULT_BOARD_SIZE
+     */
+    boardSize?: Game.BoardSize;
+    /**
+     * Board size change handler.
+     */
+    onBoardSizeChange?: (boardSize: Game.BoardSize) => void;
+    /**
+     * Board mode.
+     *
+     * @default 'numbers'
+     */
+    mode?: Mode;
+    /**
+     * Mode change handler
+     */
+    onModeChange?: (mode: Mode) => void;
+    /**
+     * "Random image" button press handler.
+     */
+    onRandomImagePress?: ButtonProps['onPress'];
+    /**
+     * "Previous image" button press handler.
+     */
+    onPreviousImagePress?: ButtonProps['onPress'];
+    /**
+     * "Next image" button press handler.
+     */
+    onNextImagePress?: ButtonProps['onPress'];
+    /**
+     * "Preview image" button press start handler.
+     */
+    onPreviewImagePressStart?: ButtonProps['onPressStart'];
+    /**
+     * "Preview image" button press end handler.
+     */
+    onPreviewImagePressEnd?: ButtonProps['onPressEnd'];
+    /**
+     * "Previous image" button disabled state.
+     */
+    isPreviousImageButtonDisabled?: boolean;
+    /**
+     * "Next image" button disabled state.
+     */
+    isNextImageButtonDisabled?: boolean;
+    /**
+     * "Preview image" button disabled state.
+     */
+    isPreviewImageButtonDisabled?: boolean;
+    /**
+     * If image is currently being previewed.
+     *
+     * @default false
+     */
+    isImagePreviewing?: boolean;
+  }
+}

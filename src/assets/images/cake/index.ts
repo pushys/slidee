@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -14,5 +14,6 @@ export const cake = {
       'https://unsplash.com/photos/white-cake-with-chocolate-syrup-on-white-ceramic-plate-vdx5hPQhXFk',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['food'],
+} satisfies ImageMetadata;

@@ -7,9 +7,7 @@ import {
   Typography,
 } from '@heroui/react';
 
-type HelpDialogProps = Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>;
-
-export const HelpDialog = (props: HelpDialogProps) => {
+export const HelpDialog = (props: HelpDialog.Props) => {
   const { isOpen, onOpenChange } = props;
 
   return (
@@ -29,7 +27,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
               order, from 1 to the highest number. Try to solve the puzzle as
               quickly as possible!
             </Typography>
-            <Typography type="h3" className="text-sm mt-4 mb-3">
+            <Typography type="h3" className="mt-4 mb-3 text-sm">
               Controls
             </Typography>
             <div className="flex flex-col gap-3">
@@ -59,7 +57,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">New game:</span>
+                <span className="text-sm text-muted">Shuffle:</span>
                 <div className="flex items-center gap-2">
                   <Kbd>
                     <Kbd.Abbr keyValue="space" />
@@ -78,3 +76,7 @@ export const HelpDialog = (props: HelpDialogProps) => {
     </Modal.Backdrop>
   );
 };
+
+export namespace HelpDialog {
+  export type Props = Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>;
+}

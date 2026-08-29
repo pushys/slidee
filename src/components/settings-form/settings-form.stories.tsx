@@ -15,7 +15,7 @@ const meta = {
     return (
       <>
         <SettingsForm {...args} id="settings-form" />
-        <Button type="submit" form="settings-form" className="w-100 mt-4">
+        <Button type="submit" form="settings-form" className="mt-4 w-100">
           Save
         </Button>
       </>

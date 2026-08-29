@@ -1,10 +1,3 @@
-import type { Settings } from './types';
+import { STORAGE_PREFIX } from '@/shared/constants';
 
-export const DEFAULT_SETTINGS = {
-  sound: true,
-  boardSize: 4,
-  confetti: true,
-  animations: true,
-  showNumbers: false,
-  image: null,
-} satisfies Settings;
+export const SETTINGS_STORAGE_KEY = `${STORAGE_PREFIX}.settings`;

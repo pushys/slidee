@@ -2,22 +2,11 @@ import { Gear } from '@gravity-ui/icons';
 import { Modal, Button, type ModalBackdropProps } from '@heroui/react';
 import { useId } from 'react';
 
-import type { Settings } from '@/settings/types';
+import type { Settings } from '@/settings/settings.schema';
 
-import {
-  SettingsForm,
-  type SettingsFormProps,
-} from '@/components/settings-form';
+import { SettingsForm } from '@/components/settings-form';
 
-interface SettingsDialogProps
-  extends
-    Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>,
-    Pick<SettingsFormProps, 'stats'> {
-  defaultSettings?: Settings;
-  onSettingsSave: (settings: Settings) => void;
-}
-
-export const SettingsDialog = (props: SettingsDialogProps) => {
+export const SettingsDialog = (props: SettingsDialog.Props) => {
   const { isOpen, onOpenChange, defaultSettings, onSettingsSave, stats } =
     props;
 
@@ -26,7 +15,7 @@ export const SettingsDialog = (props: SettingsDialogProps) => {
   return (
     <Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Container>
-        <Modal.Dialog className="sm:max-md">
+        <Modal.Dialog className="sm:max-w-md">
           <Modal.CloseTrigger />
           <Modal.Header>
             <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
@@ -55,3 +44,13 @@ export const SettingsDialog = (props: SettingsDialogProps) => {
     </Modal.Backdrop>
   );
 };
+
+export namespace SettingsDialog {
+  export interface Props
+    extends
+      Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>,
+      Pick<SettingsForm.Props, 'stats'> {
+    defaultSettings?: Settings;
+    onSettingsSave: (settings: Settings) => void;
+  }
+}

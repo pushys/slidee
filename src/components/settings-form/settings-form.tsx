@@ -1,4 +1,10 @@
-import { Ban, CheckShape, CheckShapeFill } from '@gravity-ui/icons';
+import {
+  Ban,
+  CheckShape,
+  CheckShapeFill,
+  Funnel,
+  Tag as TagIcon,
+} from '@gravity-ui/icons';
 import {
   Avatar,
   Label,
@@ -12,23 +18,30 @@ import {
   Tabs,
   ScrollShadow,
   Badge,
+  Popover,
+  Button,
+  Tag,
+  TagGroup,
 } from '@heroui/react';
 import clsx from 'clsx';
-import React, { useRef, useState, useEffect } from 'react';
+import { intersection } from 'es-toolkit';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import {
   useForm,
   type UseFormProps,
   Controller,
   useWatch,
 } from 'react-hook-form';
+import { usePrefersReducedMotion } from 'rooks';
 
-import type { Settings } from '@/settings/types';
-import type { Stats } from '@/stats/types';
+import type { Settings } from '@/settings/settings.schema';
+import type { ImageTag } from '@/shared/types';
+import type { Stats } from '@/stats/stats.schema';
 
 import { images, type ImageKeys } from '@/assets/images';
+import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
-import { DEFAULT_SETTINGS } from '@/settings/constants';
-import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
+import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
 
@@ -40,6 +53,20 @@ const boardOptions = [
 ] satisfies { value: Game.BoardSize; label: string }[];
 
 const imageOptions = Object.entries(images);
+
+const imageTagOptions = [
+  { tag: '3d', label: '3D' },
+  { tag: 'animals', label: 'Animals' },
+  { tag: 'architecture', label: 'Architecture' },
+  { tag: 'art', label: 'Art' },
+  { tag: 'automotive', label: 'Automotive' },
+  { tag: 'aviation', label: 'Aviation' },
+  { tag: 'drinks', label: 'Drinks' },
+  { tag: 'food', label: 'Food' },
+  { tag: 'luxury', label: 'Luxury' },
+  { tag: 'nature', label: 'Nature' },
+  { tag: 'sports', label: 'Sports' },
+] satisfies { tag: ImageTag; label: string }[];
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -53,7 +80,7 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   >;
 
   return (
-    <div className={clsx('grid gap-[2px] w-[40px] h-[40px]', gridMaps[size])}>
+    <div className={clsx('grid size-10 gap-0.5', gridMaps[size])}>
       {Array.from({ length: size * size - 1 }).map((_, index) => (
         <Skeleton
           key={index}
@@ -65,16 +92,7 @@ const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   );
 };
 
-export interface SettingsFormProps extends UseFormProps<Settings> {
-  id?: string;
-  onSubmit: (values: Settings) => void;
-  /**
-   * Stats object to show progress per image.
-   */
-  stats?: Stats;
-}
-
-export const SettingsForm = (props: SettingsFormProps) => {
+export const SettingsForm = (props: SettingsForm.Props) => {
   const {
     id,
     onSubmit,
@@ -84,6 +102,8 @@ export const SettingsForm = (props: SettingsFormProps) => {
   } = props;
 
   const [tab, setTab] = useState<TabKey>('general');
+  const [tags, setTags] = useState<ImageTag[]>([]);
+
   const selectedImageRef = useRef<HTMLDivElement>(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -102,10 +122,18 @@ export const SettingsForm = (props: SettingsFormProps) => {
     }
   }, [tab]);
 
+  const filteredImageOptions = useMemo(() => {
+    if (tags.length < 1) return imageOptions;
+
+    return imageOptions.filter(
+      ([, image]) => intersection(image.tags, tags).length > 0,
+    );
+  }, [tags]);
+
   return (
     <form
       id={id}
-      className="min-h-[431px]"
+      className="min-h-108.75"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Tabs
@@ -193,10 +221,10 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 isDisabled={disabled}
                 onChange={(value) => field.onChange(Number(value))}
               >
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
                   <Label>Board size</Label>
                 </div>
-                <div className="grid gap-2 grid-cols-2">
+                <div className="grid grid-cols-2 gap-2">
                   {boardOptions.map((option) => (
                     <Radio
                       key={option.value}
@@ -205,7 +233,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                     >
                       <Radio.Content
                         className={clsx(
-                          'group relative flex w-full flex-row items-start justify-start gap-4 rounded-xl border border-2 border-transparent bg-surface-secondary px-4 py-3 transition-all',
+                          'group relative flex w-full flex-row items-start justify-start gap-4 rounded-xl border-2 border-transparent bg-surface-secondary px-4 py-3 transition-all',
                           'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
                         )}
                       >
@@ -254,27 +282,70 @@ export const SettingsForm = (props: SettingsFormProps) => {
                 isDisabled={disabled}
                 aria-label="Image"
               >
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
                   <Label>Image</Label>
+                  <Popover>
+                    <Tooltip content="Filters">
+                      <Badge.Anchor>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          className="size-6"
+                        >
+                          <Funnel />
+                        </Button>
+                        {tags.length > 0 && (
+                          <Badge color="accent" className="min-h-3 min-w-3" />
+                        )}
+                      </Badge.Anchor>
+                    </Tooltip>
+                    <Popover.Content
+                      placement="bottom right"
+                      className="max-w-64"
+                    >
+                      <Popover.Dialog>
+                        <TagGroup
+                          aria-label="Image tags"
+                          selectionMode="multiple"
+                          selectedKeys={tags}
+                          onSelectionChange={(selection) =>
+                            selection === 'all'
+                              ? setTags(imageTagOptions.map((o) => o.tag))
+                              : setTags(Array.from(selection) as ImageTag[])
+                          }
+                        >
+                          <TagGroup.List>
+                            {imageTagOptions.map((option) => (
+                              <Tag key={option.tag} id={option.tag}>
+                                <TagIcon />
+                                {option.label}
+                              </Tag>
+                            ))}
+                          </TagGroup.List>
+                        </TagGroup>
+                      </Popover.Dialog>
+                    </Popover.Content>
+                  </Popover>
                 </div>
-                <ScrollShadow className="grid grid-cols-4 gap-2 max-h-[271px] overflow-y-auto overflow-x-hidden scrollbar-thin">
+                <ScrollShadow className="grid max-h-67.75 scrollbar-gutter-stable grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto">
                   <div
-                    className="aspect-square cursor-pointer m-0"
+                    className="m-0 aspect-square cursor-pointer"
                     onClick={() => methods.setValue('image', null)}
                   >
                     <div
                       className={clsx(
-                        'flex items-center justify-center rounded-xl bg-surface-secondary p-1 transition-all w-full h-full',
+                        'flex size-full items-center justify-center rounded-xl bg-surface-secondary p-1 transition-all',
                         {
-                          'border border-transparent border-2': image !== null,
-                          'border-accent bg-accent/10 border-2': image === null,
+                          'border-2 border-transparent': image !== null,
+                          'border-2 border-accent bg-accent/10': image === null,
                         },
                       )}
                     >
                       <Ban width={32} height={32} className="text-accent" />
                     </div>
                   </div>
-                  {imageOptions.map(([key, option]) => {
+                  {filteredImageOptions.map(([key, option]) => {
                     const imageKey = key as ImageKeys;
 
                     const solved = Game.BOARD_SIZES.map(
@@ -286,17 +357,17 @@ export const SettingsForm = (props: SettingsFormProps) => {
                       <Radio
                         key={key}
                         value={key}
-                        className="aspect-square m-0"
+                        className="m-0 aspect-square"
                         ref={image === key ? selectedImageRef : undefined}
                       >
                         <Radio.Content
                           className={clsx(
-                            'rounded-xl border border-transparent border-2 bg-surface-secondary p-1 transition-all w-full h-full',
+                            'size-full rounded-xl border-2 border-transparent bg-surface-secondary p-1 transition-all',
                             'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
                           )}
                         >
-                          <Badge.Anchor className="w-full h-full">
-                            <Avatar className="rounded-lg w-full h-full">
+                          <Badge.Anchor className="size-full">
+                            <Avatar className="size-full rounded-lg">
                               <Avatar.Image
                                 alt={key}
                                 loading="lazy"
@@ -306,7 +377,7 @@ export const SettingsForm = (props: SettingsFormProps) => {
                             <Badge
                               color={allSolved ? 'success' : 'accent'}
                               size="sm"
-                              className="px-0.5 border-[var(--surface-secondary)] gap-0"
+                              className="gap-0 border-surface-secondary px-0.5"
                             >
                               {solved.map((isSolved, index) => (
                                 <React.Fragment key={index}>
@@ -332,3 +403,14 @@ export const SettingsForm = (props: SettingsFormProps) => {
     </form>
   );
 };
+
+export namespace SettingsForm {
+  export interface Props extends UseFormProps<Settings> {
+    id?: string;
+    onSubmit: (values: Settings) => void;
+    /**
+     * Stats object to show progress per image.
+     */
+    stats?: Stats;
+  }
+}

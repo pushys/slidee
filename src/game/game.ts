@@ -24,8 +24,15 @@ export class Game {
     Down: 'down',
   } as const;
 
+  static readonly BoardSize = {
+    Small: 3,
+    Medium: 4,
+    Large: 5,
+    ExtraLarge: 6,
+  } as const;
+
   static readonly BLANK = 0;
-  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = 4;
+  static readonly DEFAULT_BOARD_SIZE: Game.BoardSize = Game.BoardSize.Medium;
   static readonly BOARD_SIZES: Game.BoardSize[] = [3, 4, 5, 6];
 
   static get MIN_BOARD_SIZE(): Game.BoardSize {
@@ -75,8 +82,10 @@ export class Game {
 
   /**
    * Initializes a new game.
+   *
+   * @param opts
    */
-  public init(opts: Game.Options = {}): void {
+  public init = (opts: Game.Options = {}): void => {
     if (opts.boardSize !== undefined) {
       this.#boardSize = opts.boardSize;
     }
@@ -90,12 +99,12 @@ export class Game {
 
     this.#emitGameState();
     this.#debug('New game initialized');
-  }
+  };
 
   /**
    * Pauses the game.
    */
-  public pause(): void {
+  public pause = (): void => {
     if (!this.isPlaying) {
       this.#debug('Cannot pause game that is not playing');
       return;
@@ -106,12 +115,12 @@ export class Game {
     this.#stopPlaySession();
     this.#emitGameState();
     this.#debug('Game paused');
-  }
+  };
 
   /**
    * Resumes the paused game.
    */
-  public resume(): void {
+  public resume = (): void => {
     if (!this.isPaused) {
       this.#debug('Cannot resume game that is not paused');
       return;
@@ -122,12 +131,12 @@ export class Game {
 
     this.#emitGameState();
     this.#debug('Game resumed');
-  }
+  };
 
   /**
    * Solves the game.
    */
-  public solve(): void {
+  public solve = (): void => {
     if (this.isOver) {
       this.#debug('Cannot solve game that is over');
       return;
@@ -140,7 +149,7 @@ export class Game {
     this.#stopPlaySession();
     this.#emitGameState();
     this.#debug('Game solved');
-  }
+  };
 
   /**
    * Subscribes to the game state.
@@ -148,26 +157,21 @@ export class Game {
    * @param listener
    * @returns Unsubscribe callback.
    */
-  public subscribe(listener: Game.Listener): () => void {
+  public subscribe = (listener: Game.Listener): (() => void) => {
     this.#listeners.add(listener);
     this.#debug('Listener added');
 
     return () => this.#listeners.delete(listener);
-  }
+  };
 
   /**
    * Moves a tile.
    *
    * @param tile
    */
-  public moveTile(tile: number): void {
+  public moveTile = (tile: number): void => {
     if (this.isPaused || this.isOver) {
       this.#debug('Cannot move a tile when the game is either paused or over');
-      return;
-    }
-
-    if (tile === Game.BLANK) {
-      this.#debug('Cannot move the blank tile itself');
       return;
     }
 
@@ -217,7 +221,7 @@ export class Game {
     }
 
     this.#emitGameState();
-  }
+  };
 
   /**
    * Moves a tile by direction. Used when a move is initiated by player's
@@ -225,7 +229,7 @@ export class Game {
    *
    * @param direction
    */
-  public move(direction: Game.MoveDirection): void {
+  public move = (direction: Game.MoveDirection): void => {
     if (this.isPaused || this.isOver) {
       this.#debug('Cannot move a tile when the game is either paused or over');
       return;
@@ -255,14 +259,16 @@ export class Game {
     const targetIndex = targetRow * this.#boardSize + targetColumn;
 
     this.moveTile(this.#board[targetIndex]);
-  }
+  };
 
   /**
    * Checks whether a tile is movable.
    *
    * @param tile
    */
-  public isTileMovable(tile: number): boolean {
+  public isTileMovable = (tile: number): boolean => {
+    if (tile === Game.BLANK) return false;
+
     const blankIndex = this.#board.indexOf(Game.BLANK);
     const tileIndex = this.#board.indexOf(tile);
 
@@ -270,7 +276,7 @@ export class Game {
     const tilePos = this.#indexToPosition(tileIndex);
 
     return blankPos.row === tilePos.row || blankPos.column === tilePos.column;
-  }
+  };
 
   /**
    * Generate a solvable sequence of tiles.
@@ -477,7 +483,7 @@ export class Game {
 export namespace Game {
   export type Board = readonly number[];
 
-  export type BoardSize = 3 | 4 | 5 | 6;
+  export type BoardSize = (typeof Game.BoardSize)[keyof typeof Game.BoardSize];
 
   export interface Options {
     /**

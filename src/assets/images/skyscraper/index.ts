@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -13,5 +13,6 @@ export const skyscraper = {
     sourceUrl: 'https://unsplash.com/photos/a-tall-glass-building-tWFP-DibMRk',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['architecture'],
+} satisfies ImageMetadata;

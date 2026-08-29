@@ -11,13 +11,16 @@ import {
   type ComponentProps,
   type CSSProperties,
 } from 'react';
-import { useDocumentEventListener, useKey } from 'rooks';
+import {
+  useDocumentEventListener,
+  useKey,
+  usePrefersReducedMotion,
+} from 'rooks';
 
 import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
 import { SoundManager } from '@/game/sound-manager';
-import { usePrefersReducedMotion } from '@/shared/utils/use-prefers-reduced-motion';
 
 import { BoardContext } from './board-context';
 import { BoardCssVar } from './board-css-var';
@@ -40,82 +43,7 @@ const gridMaps = {
   `grid-cols-${Game.BoardSize} grid-rows-${Game.BoardSize}`
 >;
 
-interface BoardProps extends ComponentProps<'section'> {
-  /**
-   * List of tiles.
-   *
-   * @default [ ]
-   */
-  tiles?: Game.Board;
-  /**
-   * Single tile renderer.
-   */
-  renderTile: (tile: number, index: number) => ReactNode;
-  /**
-   * Current game status.
-   *
-   * @default Game.Status.Idle
-   */
-  gameStatus?: Game.Status;
-  /**
-   * Puzzle image source.
-   */
-  image?: string;
-  /**
-   * Image attribution object.
-   */
-  imageAttribution?: ImageAttribution;
-  /**
-   * Disables key press detection.
-   *
-   * @default false
-   */
-  isKeyboardDisabled?: boolean;
-  /**
-   * If `true`, disables sound effects.
-   *
-   * @default false
-   */
-  isSoundDisabled?: boolean;
-  /**
-   * If `true`, the confetti effect won't triggered once the game is over.
-   *
-   * @default false
-   */
-  isConfettiDisabled?: boolean;
-  /**
-   * If `true`, when the board has an image the tiles will have numbers
-   * displayed over them.
-   *
-   * @default false
-   */
-  isNumbersVisible?: boolean;
-  /**
-   * If `true`, will display a solved image like it's game over but without the
-   * attribution.
-   *
-   * @default false
-   */
-  isImagePreviewActive?: boolean;
-  /**
-   * Tile move event handler.
-   */
-  onTileMove?: (direction: Game.MoveDirection) => void;
-  /**
-   * New game event handler.
-   */
-  onNewGame?: () => void;
-  /**
-   * Game pause event handler.
-   */
-  onGamePause?: () => void;
-  /**
-   * Game resume event handler.
-   */
-  onGameResume?: () => void;
-}
-
-export const Board = (props: BoardProps) => {
+export const Board = (props: Board.Props) => {
   const {
     tiles = [],
     renderTile,
@@ -262,7 +190,7 @@ export const Board = (props: BoardProps) => {
       aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
-        'relative bg-surface rounded-lg shadow-surface p-2 rounded-xl transition-[width]',
+        'relative rounded-xl bg-surface p-2 shadow-surface transition-[width]',
         // Careful changing these values because they are calculated with
         // non-fractional tile widths in mind applicable for all board sizes.
         //
@@ -270,18 +198,18 @@ export const Board = (props: BoardProps) => {
         // the former has a gap (for a better visual separation of tiles) and it's
         // not possible to have non-fractional widths while using same ones for
         // both modes.
-        { 'w-[316px] sm:w-[376px] md:w-[436px] lg:w-[496px]': hasImage },
-        { 'w-[308px] sm:w-[368px] md:w-[428px] lg:w-[488px]': !hasImage },
+        { 'w-79 sm:w-94 md:w-109 lg:w-124': hasImage },
+        { 'w-77 sm:w-92 md:w-107 lg:w-122': !hasImage },
         rest.className,
       )}
     >
       <ul
         style={styles}
-        className={clsx(`grid ${gridMaps[size]} select-none text-[0px]`, {
+        className={clsx(`grid ${gridMaps[size]} text-[0px] select-none`, {
           'gap-2': !hasImage,
           'pointer-events-none grayscale-75 transition': isGamePaused,
           'pointer-events-none': isGameOver,
-          'shadow-sm rounded-lg [&>*]:opacity-0':
+          'rounded-lg shadow-sm *:opacity-0':
             hasImage && (isGameOver || isImagePreviewActive),
           'cursor-none': isCursorHidden,
         })}
@@ -291,7 +219,7 @@ export const Board = (props: BoardProps) => {
         </BoardContext>
       </ul>
       {hasImage && imageAttribution && isGameOver && (
-        <Chip className="absolute right-4 bottom-4 bg-default-soft backdrop-blur-sm">
+        <Chip className="absolute right-4 bottom-4 animate-fade-in bg-default-soft backdrop-blur-sm">
           <Picture width={12} />
           <Chip.Label>
             Photo by{' '}
@@ -316,3 +244,80 @@ export const Board = (props: BoardProps) => {
     </section>
   );
 };
+
+export namespace Board {
+  export interface Props extends ComponentProps<'section'> {
+    /**
+     * List of tiles.
+     *
+     * @default [ ]
+     */
+    tiles?: Game.Board;
+    /**
+     * Single tile renderer.
+     */
+    renderTile: (tile: number, index: number) => ReactNode;
+    /**
+     * Current game status.
+     *
+     * @default Game.Status.Idle
+     */
+    gameStatus?: Game.Status;
+    /**
+     * Puzzle image source.
+     */
+    image?: string;
+    /**
+     * Image attribution object.
+     */
+    imageAttribution?: ImageAttribution;
+    /**
+     * Disables key press detection.
+     *
+     * @default false
+     */
+    isKeyboardDisabled?: boolean;
+    /**
+     * If `true`, disables sound effects.
+     *
+     * @default false
+     */
+    isSoundDisabled?: boolean;
+    /**
+     * If `true`, the confetti effect won't triggered once the game is over.
+     *
+     * @default false
+     */
+    isConfettiDisabled?: boolean;
+    /**
+     * If `true`, when the board has an image the tiles will have numbers
+     * displayed over them.
+     *
+     * @default false
+     */
+    isNumbersVisible?: boolean;
+    /**
+     * If `true`, will display a solved image like it's game over but without
+     * the attribution.
+     *
+     * @default false
+     */
+    isImagePreviewActive?: boolean;
+    /**
+     * Tile move event handler.
+     */
+    onTileMove?: (direction: Game.MoveDirection) => void;
+    /**
+     * New game event handler.
+     */
+    onNewGame?: () => void;
+    /**
+     * Game pause event handler.
+     */
+    onGamePause?: () => void;
+    /**
+     * Game resume event handler.
+     */
+    onGameResume?: () => void;
+  }
+}

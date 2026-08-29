@@ -1,4 +1,4 @@
-import type { ImageAttribution } from '@/shared/types';
+import type { ImageMetadata } from '@/shared/types';
 
 import image from './image.avif';
 import preview from './preview.avif';
@@ -14,5 +14,6 @@ export const mountains = {
       'https://unsplash.com/photos/snow-covered-mountain-under-blue-sky-during-daytime-ahYX46whD8s',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
-  } satisfies ImageAttribution,
-} as const;
+  },
+  tags: ['nature'],
+} satisfies ImageMetadata;

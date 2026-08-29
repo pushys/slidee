@@ -10,59 +10,16 @@ import {
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
+import { useKey } from 'rooks';
 
+import { KeyCode } from '@/components/board/key-code';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
+import { headShake } from '@/shared/utils/animations/headShake';
+import { useAnimate } from '@/shared/utils/animations/use-animate';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
-interface ToolbarProps extends ComponentProps<'header'> {
-  /**
-   * Current game status.
-   *
-   * @default Game.Status.Idle
-   */
-  gameStatus?: Game.Status;
-  /**
-   * Current game number of moves.
-   *
-   * @default 0
-   */
-  moves?: number;
-  /**
-   * Current game elapsed time in milliseconds.
-   *
-   * @default null
-   */
-  elapsedTime?: number;
-  /**
-   * Best personal time in milliseconds.
-   */
-  personalBestTime?: number;
-  /**
-   * If `true`, the elapsed time will be marked.
-   *
-   * @default false
-   */
-  isAutoSolved?: boolean;
-  /**
-   * "Shuffle" button press handler.
-   */
-  onShufflePress?: ButtonProps['onPress'];
-  /**
-   * "Pause" button press handler.
-   */
-  onPausePress?: ButtonProps['onPress'];
-  /**
-   * "Resume" button press handler.
-   */
-  onResumePress?: ButtonProps['onPress'];
-  /**
-   * "Solve" button press handler.
-   */
-  onSolvePress?: ButtonProps['onPress'];
-}
-
-export const Toolbar = (props: ToolbarProps) => {
+export const Toolbar = (props: Toolbar.Props) => {
   const {
     gameStatus = Game.Status.Idle,
     moves = 0,
@@ -79,9 +36,18 @@ export const Toolbar = (props: ToolbarProps) => {
   const isPbBeat =
     personalBestTime !== undefined ? personalBestTime >= elapsedTime : true;
 
+  const [ref, animate] = useAnimate<HTMLButtonElement>(...headShake);
+
+  // Let player know that the game is paused when they try to move a tile.
+  useKey(
+    [KeyCode.ArrowLeft, KeyCode.ArrowUp, KeyCode.ArrowRight, KeyCode.ArrowDown],
+    () => animate(),
+    { when: gameStatus === Game.Status.Paused },
+  );
+
   return (
-    <header {...rest} className={clsx('flex @container', rest.className)}>
-      <div className="flex gap-2 grow items-center">
+    <header {...rest} className={clsx('@container flex', rest.className)}>
+      <div className="flex grow items-center gap-2">
         <Button
           size="lg"
           onPress={onShufflePress}
@@ -122,6 +88,7 @@ export const Toolbar = (props: ToolbarProps) => {
               size="lg"
               onPress={onResumePress}
               aria-label="Resume"
+              ref={ref}
             >
               <PlayFill />
             </Button>
@@ -141,7 +108,11 @@ export const Toolbar = (props: ToolbarProps) => {
         </Tooltip>
       </div>
       <div className="flex items-center gap-1">
-        <Chip size="lg" variant="soft" className="tabular-nums">
+        <Chip
+          size="lg"
+          variant="soft"
+          className="tabular-nums @max-[360px]:hidden"
+        >
           <ArrowsExpand width={12} />
           <Chip.Label>{moves}</Chip.Label>
         </Chip>
@@ -176,3 +147,52 @@ export const Toolbar = (props: ToolbarProps) => {
     </header>
   );
 };
+
+export namespace Toolbar {
+  export interface Props extends ComponentProps<'header'> {
+    /**
+     * Current game status.
+     *
+     * @default Game.Status.Idle
+     */
+    gameStatus?: Game.Status;
+    /**
+     * Current game number of moves.
+     *
+     * @default 0
+     */
+    moves?: number;
+    /**
+     * Current game elapsed time in milliseconds.
+     *
+     * @default null
+     */
+    elapsedTime?: number;
+    /**
+     * Best personal time in milliseconds.
+     */
+    personalBestTime?: number;
+    /**
+     * If `true`, the elapsed time will be marked.
+     *
+     * @default false
+     */
+    isAutoSolved?: boolean;
+    /**
+     * "Shuffle" button press handler.
+     */
+    onShufflePress?: ButtonProps['onPress'];
+    /**
+     * "Pause" button press handler.
+     */
+    onPausePress?: ButtonProps['onPress'];
+    /**
+     * "Resume" button press handler.
+     */
+    onResumePress?: ButtonProps['onPress'];
+    /**
+     * "Solve" button press handler.
+     */
+    onSolvePress?: ButtonProps['onPress'];
+  }
+}

@@ -16,26 +16,12 @@ import {
 } from '@heroui/react';
 import { useState } from 'react';
 
-import type { Stats } from '@/stats/types';
+import type { Stats } from '@/stats/stats.schema';
 
 import { Game } from '@/game/game';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
-interface StatsDialogProps extends Pick<
-  ModalBackdropProps,
-  'isOpen' | 'onOpenChange'
-> {
-  /**
-   * Stats object.
-   */
-  stats?: Stats;
-  /**
-   * Clear stats button press handler.
-   */
-  onClearStatsPress?: (boardSize?: Game.BoardSize) => void;
-}
-
-export const StatsDialog = (props: StatsDialogProps) => {
+export const StatsDialog = (props: StatsDialog.Props) => {
   const { isOpen, onOpenChange, stats = {}, onClearStatsPress } = props;
 
   const [isConfirmOpen, setConfirmOpen] = useState(false);
@@ -77,7 +63,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
 
                         return (
                           <Table.Row key={size}>
-                            <Table.Cell className="font-bold min-w-10">{`${size}x${size}`}</Table.Cell>
+                            <Table.Cell className="min-w-10 font-bold">{`${size}x${size}`}</Table.Cell>
                             <Table.Cell>
                               {entry ? (
                                 <Chip
@@ -162,7 +148,7 @@ export const StatsDialog = (props: StatsDialogProps) => {
         onOpenChange={setConfirmOpen}
       >
         <AlertDialog.Container>
-          <AlertDialog.Dialog className="sm:max-w-[400px]">
+          <AlertDialog.Dialog className="sm:max-w-100">
             <AlertDialog.CloseTrigger />
             <AlertDialog.Header>
               <AlertDialog.Icon status="danger" />
@@ -189,3 +175,19 @@ export const StatsDialog = (props: StatsDialogProps) => {
     </>
   );
 };
+
+export namespace StatsDialog {
+  export interface Props extends Pick<
+    ModalBackdropProps,
+    'isOpen' | 'onOpenChange'
+  > {
+    /**
+     * Stats object.
+     */
+    stats?: Stats;
+    /**
+     * Clear stats button press handler.
+     */
+    onClearStatsPress?: (boardSize?: Game.BoardSize) => void;
+  }
+}
