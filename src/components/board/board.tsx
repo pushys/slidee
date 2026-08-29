@@ -48,7 +48,7 @@ export const Board = (props: Board.Props) => {
     tiles = [],
     renderTile,
     gameStatus = Game.Status.Idle,
-    image,
+    imageSrc,
     previewImageSrc,
     imageAttribution,
     isKeyboardDisabled = false,
@@ -90,7 +90,7 @@ export const Board = (props: Board.Props) => {
     }
   });
 
-  const hasImage = !!image;
+  const hasImage = !!imageSrc;
   const isGamePlaying = gameStatus === Game.Status.Playing;
   const isGamePaused = gameStatus === Game.Status.Paused;
   const isGameOver = gameStatus === Game.Status.Over;
@@ -162,8 +162,8 @@ export const Board = (props: Board.Props) => {
   const styles = useMemo<CSSProperties>(
     () => ({
       [BoardCssVar.Size]: size,
-      ...(image && {
-        [BoardCssVar.Image]: `url(${image})`,
+      ...(imageSrc && {
+        [BoardCssVar.Image]: `url(${imageSrc})`,
         ...(previewImageSrc && {
           [BoardCssVar.PreviewImage]: `url(${previewImageSrc})`,
         }),
@@ -174,7 +174,7 @@ export const Board = (props: Board.Props) => {
         }),
       }),
     }),
-    [size, image, previewImageSrc, isGameOver, isImagePreviewActive],
+    [size, imageSrc, previewImageSrc, isGameOver, isImagePreviewActive],
   );
 
   const contextValue = useMemo(
@@ -270,7 +270,7 @@ export namespace Board {
     /**
      * Puzzle image source.
      */
-    image?: string;
+    imageSrc?: string;
     /**
      * Puzzle preview image source.
      */

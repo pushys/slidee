@@ -33,7 +33,7 @@ export const Board = () => {
     <BoardView
       tiles={game.state.board}
       gameStatus={game.state.status}
-      image={imageMetadata?.image}
+      imageSrc={imageMetadata?.image}
       previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
       renderTile={renderTile}
