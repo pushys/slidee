@@ -34,6 +34,7 @@ export const Board = () => {
       tiles={game.state.board}
       gameStatus={game.state.status}
       image={imageMetadata?.image}
+      previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
       renderTile={renderTile}
       isKeyboardDisabled={!!dialog}
