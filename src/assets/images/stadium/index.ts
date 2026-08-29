@@ -7,11 +7,11 @@ export const stadium = {
   image,
   preview,
   attribution: {
-    author: 'Finn',
-    authorUrl: 'https://unsplash.com/@finn_staygold',
+    author: 'Alex Azabache',
+    authorUrl: 'https://unsplash.com/@alexazabache',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-stadium-filled-with-lots-of-red-seats-J_R1BJtd_NU',
+      'https://unsplash.com/photos/green-soccer-field-inside-stadium-1cPWeb3Ud30',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

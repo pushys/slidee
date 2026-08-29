@@ -26,7 +26,7 @@ const meta = {
       control: { type: 'select' },
       options: Object.values(Game.Status),
     },
-    image: {
+    imageSrc: {
       control: { type: 'select' },
       options: Object.values(images).map((i) => i.image),
     },
@@ -46,7 +46,7 @@ export const Default: Story = {
     isConfettiDisabled: false,
     isNumbersVisible: false,
     isImagePreviewActive: false,
-    image: undefined,
+    imageSrc: undefined,
     imageAttribution: {
       author: 'John Doe',
       authorUrl: 'https://example.com/john-doe',

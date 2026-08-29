@@ -5,6 +5,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import path from 'node:path';
 import oxlintPlugin from 'vite-plugin-oxlint';
+import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
@@ -19,6 +20,21 @@ export default defineConfig(({ mode }) => {
         presets: [reactCompilerPreset()],
       }),
       oxlintPlugin({ failOnError: isTest, failOnWarning: isTest }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        workbox: {
+          // Additionally to default static files also cache fonts and sounds because they don't change frequently.
+          globPatterns: ['**/*.{js,css,html,woff2,mp3,wav}'],
+          // Use runtime caching for images and their previews.
+          runtimeCaching: [
+            {
+              urlPattern: /\.(?:avif)$/i,
+              handler: 'CacheFirst',
+              options: { cacheName: 'images' },
+            },
+          ],
+        },
+      }),
     ],
     resolve: {
       tsconfigPaths: true,
