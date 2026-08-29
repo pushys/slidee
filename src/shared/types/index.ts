@@ -2,6 +2,7 @@ export type ImageTag =
   | '3d'
   | 'animals'
   | 'architecture'
+  | 'art'
   | 'automotive'
   | 'aviation'
   | 'drinks'

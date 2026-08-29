@@ -58,6 +58,7 @@ const imageTagOptions = [
   { tag: '3d', label: '3D' },
   { tag: 'animals', label: 'Animals' },
   { tag: 'architecture', label: 'Architecture' },
+  { tag: 'art', label: 'Art' },
   { tag: 'automotive', label: 'Automotive' },
   { tag: 'aviation', label: 'Aviation' },
   { tag: 'drinks', label: 'Drinks' },
