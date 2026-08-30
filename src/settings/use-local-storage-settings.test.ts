@@ -44,7 +44,7 @@ describe('useLocalStorageSettings', () => {
     expect(result.current[0]).toStrictEqual(DEFAULT_SETTINGS);
   });
 
-  it('should use default setting values instead of failing validation', () => {
+  it('should substitute missing values with default ones', () => {
     localStorage.setItem(
       SETTINGS_STORAGE_KEY,
       JSON.stringify({ boardSize: 5, image: 'building' }),
@@ -60,6 +60,24 @@ describe('useLocalStorageSettings', () => {
       showNumbers: true,
       image: 'building',
     } satisfies Settings);
+  });
+
+  it('should substitute invalid values with default ones', () => {
+    localStorage.setItem(
+      SETTINGS_STORAGE_KEY,
+      JSON.stringify({
+        sound: 'yes',
+        boardSize: '5',
+        confetti: 'no',
+        animations: 1,
+        showNumbers: NaN,
+        image: 'test',
+      }),
+    );
+
+    const { result } = renderHook(() => useLocalStorageSettings());
+
+    expect(result.current[0]).toStrictEqual(DEFAULT_SETTINGS);
   });
 
   it('should persist new settings data to local storage', () => {
