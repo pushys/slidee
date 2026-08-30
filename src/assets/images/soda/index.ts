@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const statue = {
+export const soda = {
   image,
   preview,
   attribution: {
-    author: 'SIMON LEE',
-    authorUrl: 'https://unsplash.com/@simonppt',
+    author: 'Alexey',
+    authorUrl: 'https://unsplash.com/@alexeysharovatov',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/female-bust-with-gold-kintsugi-repairs-IEgvy4o3byM',
+      'https://unsplash.com/photos/two-cans-of-coca-cola-sitting-on-top-of-a-piece-of-luggage-Ws8PWgPFaTQ',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['3d', 'art'],
+  tags: ['drinks'],
 } satisfies ImageMetadata;

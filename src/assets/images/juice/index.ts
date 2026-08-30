@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const galaxy = {
+export const juice = {
   image,
   preview,
   attribution: {
-    author: 'NASA Hubble Space Telescope',
-    authorUrl: 'https://unsplash.com/@hubblespacetelescope',
+    author: 'Francesca Hotchin',
+    authorUrl: 'https://unsplash.com/@franhotchin',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-very-large-spiral-galaxy-in-the-middle-of-the-night-8-Nv8dDYtII',
+      'https://unsplash.com/photos/strawberry-juice-beside-strawberry-fruits-DSxurmhrfuc',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['nature', 'space'],
+  tags: ['drinks'],
 } satisfies ImageMetadata;

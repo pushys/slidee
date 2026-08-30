@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const galaxy = {
+export const car4 = {
   image,
   preview,
   attribution: {
-    author: 'NASA Hubble Space Telescope',
-    authorUrl: 'https://unsplash.com/@hubblespacetelescope',
+    author: 'Dhiva Krishna',
+    authorUrl: 'https://unsplash.com/@dhivakrishna',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-very-large-spiral-galaxy-in-the-middle-of-the-night-8-Nv8dDYtII',
+      'https://unsplash.com/photos/black-mercedes-benz-car-YApS6TjKJ9c',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['nature', 'space'],
+  tags: ['automotive'],
 } satisfies ImageMetadata;

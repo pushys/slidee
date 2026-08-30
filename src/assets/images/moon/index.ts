@@ -3,15 +3,15 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const galaxy = {
+export const moon = {
   image,
   preview,
   attribution: {
-    author: 'NASA Hubble Space Telescope',
-    authorUrl: 'https://unsplash.com/@hubblespacetelescope',
+    author: 'NASA',
+    authorUrl: 'https://unsplash.com/@nasa',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-very-large-spiral-galaxy-in-the-middle-of-the-night-8-Nv8dDYtII',
+      'https://unsplash.com/photos/close-up-view-of-the-moons-surface-3WXJ3DUz8zI',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

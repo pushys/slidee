@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const drinks = {
+export const airplane2 = {
   image,
   preview,
   attribution: {
-    author: 'Alexey',
-    authorUrl: 'https://unsplash.com/@alexeysharovatov',
+    author: 'Chris Leipelt',
+    authorUrl: 'https://unsplash.com/@cleipelt',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/two-cans-of-coca-cola-sitting-on-top-of-a-piece-of-luggage-Ws8PWgPFaTQ',
+      'https://unsplash.com/photos/white-and-blue-airplane-on-airport-during-daytime-pRQCTeQTDwE',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['drinks'],
+  tags: ['aviation'],
 } satisfies ImageMetadata;

@@ -9,6 +9,7 @@ export type ImageTag =
   | 'food'
   | 'luxury'
   | 'nature'
+  | 'space'
   | 'sports';
 
 export interface ImageMetadata {

@@ -65,6 +65,7 @@ const imageTagOptions = [
   { tag: 'food', label: 'Food' },
   { tag: 'luxury', label: 'Luxury' },
   { tag: 'nature', label: 'Nature' },
+  { tag: 'space', label: 'Space' },
   { tag: 'sports', label: 'Sports' },
 ] satisfies { tag: ImageTag; label: string }[];
 

@@ -3,15 +3,14 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const galaxy = {
+export const stars = {
   image,
   preview,
   attribution: {
-    author: 'NASA Hubble Space Telescope',
-    authorUrl: 'https://unsplash.com/@hubblespacetelescope',
+    author: 'Ivana Cajina',
+    authorUrl: 'https://unsplash.com/@von_co',
     source: 'Unsplash',
-    sourceUrl:
-      'https://unsplash.com/photos/a-very-large-spiral-galaxy-in-the-middle-of-the-night-8-Nv8dDYtII',
+    sourceUrl: 'https://unsplash.com/photos/milky-way-asuyh-_ZX54',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
