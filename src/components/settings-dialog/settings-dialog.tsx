@@ -7,8 +7,14 @@ import type { Settings } from '@/settings/settings.schema';
 import { SettingsForm } from '@/components/settings-form';
 
 export const SettingsDialog = (props: SettingsDialog.Props) => {
-  const { isOpen, onOpenChange, defaultSettings, onSettingsSave, stats } =
-    props;
+  const {
+    isOpen,
+    onOpenChange,
+    defaultSettings,
+    onSettingsSave,
+    images,
+    stats,
+  } = props;
 
   const formId = `form-${useId()}`;
 
@@ -28,6 +34,7 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
               id={formId}
               defaultValues={defaultSettings}
               onSubmit={onSettingsSave}
+              images={images}
               stats={stats}
             />
           </Modal.Body>
@@ -49,7 +56,7 @@ export namespace SettingsDialog {
   export interface Props
     extends
       Pick<ModalBackdropProps, 'isOpen' | 'onOpenChange'>,
-      Pick<SettingsForm.Props, 'stats'> {
+      Pick<SettingsForm.Props, 'images' | 'stats'> {
     defaultSettings?: Settings;
     onSettingsSave: (settings: Settings) => void;
   }

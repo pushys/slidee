@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs } from 'storybook/preview-api';
 import { fn } from 'storybook/test';
 
+import { images } from '@/assets/images';
+
 import { SettingsDialog } from './settings-dialog';
 
 const meta = {
@@ -29,6 +31,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    images,
     isOpen: true,
     onSettingsSave: fn(),
   },

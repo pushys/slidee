@@ -1,3 +1,4 @@
+import { images } from '@/assets/images';
 import { SettingsDialog as SettingsDialogView } from '@/components/settings-dialog';
 
 import { useAppContext } from '../../app-context';
@@ -16,6 +17,7 @@ export const SettingsDialog = () => {
       onOpenChange={closeDialog}
       defaultSettings={settings}
       onSettingsSave={setSettings}
+      images={images}
       stats={stats}
     />
   );

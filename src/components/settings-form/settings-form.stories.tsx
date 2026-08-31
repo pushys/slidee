@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@heroui/react';
 import { fn } from 'storybook/test';
 
+import { images } from '@/assets/images';
+
 import { SettingsForm } from './settings-form';
 
 const meta = {
@@ -27,5 +29,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { onSubmit: fn() },
+  args: { images, onSubmit: fn() },
 };
