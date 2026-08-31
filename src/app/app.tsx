@@ -9,20 +9,23 @@ import { Footer } from './components/footer';
 import { Toolbar } from './components/toolbar';
 import { AppProvider } from './providers/app-provider';
 import { ErrorBoundary } from './providers/error-boundary';
+import { Suspense } from './providers/suspense';
 
 export const App = () => {
   return (
     <ErrorBoundary>
-      <AppProvider>
-        <AppContainer controls={<Controls />}>
-          <Toolbar />
-          <Board />
-          <Footer />
-          <StatsDialog />
-          <HelpDialog />
-          <SettingsDialog />
-        </AppContainer>
-      </AppProvider>
+      <Suspense>
+        <AppProvider>
+          <AppContainer controls={<Controls />}>
+            <Toolbar />
+            <Board />
+            <Footer />
+            <StatsDialog />
+            <HelpDialog />
+            <SettingsDialog />
+          </AppContainer>
+        </AppProvider>
+      </Suspense>
     </ErrorBoundary>
   );
 };
