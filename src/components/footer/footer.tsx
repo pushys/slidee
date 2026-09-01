@@ -8,6 +8,7 @@ import {
 import { Button, type ButtonProps } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '@/components/tooltip';
 
@@ -22,13 +23,15 @@ export const Footer = (props: Footer.Props) => {
     ...rest
   } = props;
 
+  const { t } = useTranslation();
+
   return (
     <footer
       {...rest}
       className={clsx('flex justify-center gap-2', rest.className)}
     >
       <Tooltip
-        content={soundEnabled ? 'Sound off' : 'Sound on'}
+        content={soundEnabled ? t('footer.soundOff') : t('footer.soundOn')}
         contentPlacement="bottom"
       >
         <Button
@@ -36,40 +39,40 @@ export const Footer = (props: Footer.Props) => {
           size="sm"
           variant={soundEnabled ? 'secondary' : 'danger-soft'}
           onPress={soundEnabled ? onSoundDisablePress : onSoundEnablePress}
-          aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
+          aria-label={soundEnabled ? t('footer.soundOff') : t('footer.soundOn')}
         >
           {soundEnabled ? <VolumeFill /> : <VolumeXmarkFill />}
         </Button>
       </Tooltip>
-      <Tooltip content="Stats" contentPlacement="bottom">
+      <Tooltip content={t('footer.stats')} contentPlacement="bottom">
         <Button
           isIconOnly
           size="sm"
           variant="secondary"
           onPress={onStatsPress}
-          aria-label="Stats"
+          aria-label={t('footer.stats')}
         >
           <SquareChartColumn />
         </Button>
       </Tooltip>
-      <Tooltip content="How to play" contentPlacement="bottom">
+      <Tooltip content={t('footer.howToPlay')} contentPlacement="bottom">
         <Button
           isIconOnly
           size="sm"
           variant="secondary"
           onPress={onHelpPress}
-          aria-label="Help"
+          aria-label={t('footer.howToPlay')}
         >
           <CircleInfoFill />
         </Button>
       </Tooltip>
-      <Tooltip content="Settings" contentPlacement="bottom">
+      <Tooltip content={t('footer.settings')} contentPlacement="bottom">
         <Button
           isIconOnly
           size="sm"
           variant="secondary"
           onPress={onSettingsPress}
-          aria-label="Settings"
+          aria-label={t('footer.settings')}
         >
           <Gear />
         </Button>

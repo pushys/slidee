@@ -21,6 +21,7 @@ import {
 import clsx from 'clsx';
 import { intersection, last } from 'es-toolkit';
 import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
 import type { ImageKeys } from '@/assets/images';
@@ -29,21 +30,6 @@ import type { ImageMetadata, ImageTag } from '@/shared/types';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { useControlledState } from '@/shared/utils/use-controlled-state';
-
-const imageTagOptions = [
-  { tag: '3d', label: '3D' },
-  { tag: 'animals', label: 'Animals' },
-  { tag: 'architecture', label: 'Architecture' },
-  { tag: 'art', label: 'Art' },
-  { tag: 'automotive', label: 'Automotive' },
-  { tag: 'aviation', label: 'Aviation' },
-  { tag: 'drinks', label: 'Drinks' },
-  { tag: 'food', label: 'Food' },
-  { tag: 'luxury', label: 'Luxury' },
-  { tag: 'nature', label: 'Nature' },
-  { tag: 'space', label: 'Space' },
-  { tag: 'sports', label: 'Sports' },
-] satisfies { tag: ImageTag; label: string }[];
 
 export const ImagePicker = (props: ImagePicker.Props) => {
   const {
@@ -56,6 +42,8 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     getIsImageSolved,
     ...rest
   } = props;
+
+  const { t } = useTranslation();
 
   const [selectedKeys, setSelectedKeys] = useControlledState(
     selectedKeysProp,
@@ -105,18 +93,33 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     return setSelectedKeys(new Set(keys));
   };
 
+  const imageTagOptions = [
+    { tag: '3d', label: t('imageTags.3d') },
+    { tag: 'animals', label: t('imageTags.animals') },
+    { tag: 'architecture', label: t('imageTags.architecture') },
+    { tag: 'art', label: t('imageTags.art') },
+    { tag: 'automotive', label: t('imageTags.automotive') },
+    { tag: 'aviation', label: t('imageTags.aviation') },
+    { tag: 'drinks', label: t('imageTags.drinks') },
+    { tag: 'food', label: t('imageTags.food') },
+    { tag: 'luxury', label: t('imageTags.luxury') },
+    { tag: 'nature', label: t('imageTags.nature') },
+    { tag: 'space', label: t('imageTags.space') },
+    { tag: 'sports', label: t('imageTags.sports') },
+  ] satisfies { tag: ImageTag; label: string }[];
+
   return (
     <CheckboxGroup
       variant="secondary"
-      aria-label="Image"
+      aria-label={t('imagePicker.label')}
       {...rest}
       value={Array.from(selectedKeys)}
       onChange={handleChange}
     >
       <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-        <Label>Image</Label>
+        <Label>{t('imagePicker.label')}</Label>
         <Popover>
-          <Tooltip content="Filters">
+          <Tooltip content={t('imagePicker.filters.label')}>
             <Badge.Anchor>
               <Button isIconOnly size="sm" variant="ghost" className="size-6">
                 <Funnel />
@@ -129,7 +132,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
           <Popover.Content placement="bottom right" className="max-w-64">
             <Popover.Dialog>
               <TagGroup
-                aria-label="Image tags"
+                aria-label={t('imagePicker.filters.imageTags')}
                 selectionMode="multiple"
                 selectedKeys={tags}
                 onSelectionChange={(selection) =>

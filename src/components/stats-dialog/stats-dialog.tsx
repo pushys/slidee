@@ -15,6 +15,7 @@ import {
   toast,
 } from '@heroui/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { Stats } from '@/stats/stats.schema';
 
@@ -24,11 +25,13 @@ import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 export const StatsDialog = (props: StatsDialog.Props) => {
   const { isOpen, onOpenChange, stats = {}, onClearStatsPress } = props;
 
+  const { t } = useTranslation();
+
   const [isConfirmOpen, setConfirmOpen] = useState(false);
   const [boardSize, setBoardSize] = useState<Game.BoardSize | undefined>();
 
   const handleClearStats = () => {
-    toast.success('Stats cleared');
+    toast.success(t('statsDialog.clearSuccessMessage'));
     onClearStatsPress?.(boardSize);
   };
 
@@ -42,19 +45,29 @@ export const StatsDialog = (props: StatsDialog.Props) => {
               <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
                 <SquareChartColumn className="size-5" />
               </Modal.Icon>
-              <Modal.Heading>Your stats</Modal.Heading>
+              <Modal.Heading>{t('statsDialog.title')}</Modal.Heading>
             </Modal.Header>
             <Modal.Body>
               <Table variant="secondary">
                 <Table.ScrollContainer>
-                  <Table.Content aria-label="Player statistics">
+                  <Table.Content>
                     <Table.Header>
-                      <Table.Column isRowHeader>Board</Table.Column>
-                      <Table.Column>PB</Table.Column>
-                      <Table.Column>Avg</Table.Column>
-                      <Table.Column>Games</Table.Column>
+                      <Table.Column isRowHeader>
+                        {t('statsDialog.tableColumns.board')}
+                      </Table.Column>
                       <Table.Column>
-                        <span className="sr-only">Actions</span>
+                        {t('statsDialog.tableColumns.personalBest')}
+                      </Table.Column>
+                      <Table.Column>
+                        {t('statsDialog.tableColumns.average')}
+                      </Table.Column>
+                      <Table.Column>
+                        {t('statsDialog.tableColumns.games')}
+                      </Table.Column>
+                      <Table.Column>
+                        <span className="sr-only">
+                          {t('statsDialog.tableColumns.actions')}
+                        </span>
                       </Table.Column>
                     </Table.Header>
                     <Table.Body>
@@ -78,7 +91,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                                 </Chip>
                               ) : (
                                 <Typography color="muted" type="body-sm">
-                                  Not set
+                                  {t('statsDialog.timeNotSet')}
                                 </Typography>
                               )}
                             </Table.Cell>
@@ -96,7 +109,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                                 </Chip>
                               ) : (
                                 <Typography color="muted" type="body-sm">
-                                  Not set
+                                  {t('statsDialog.timeNotSet')}
                                 </Typography>
                               )}
                             </Table.Cell>
@@ -111,7 +124,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                                   setBoardSize(size);
                                   setConfirmOpen(true);
                                 }}
-                                aria-label="Clear stats"
+                                aria-label={t('statsDialog.clearStats')}
                               >
                                 <TrashBin />
                               </Button>
@@ -134,10 +147,10 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                 }}
               >
                 <TrashBin />
-                Clear all
+                {t('statsDialog.clearAll')}
               </Button>
               <Button slot="close" variant="secondary">
-                Close
+                {t('common.close')}
               </Button>
             </Modal.Footer>
           </Modal.Dialog>
@@ -154,19 +167,19 @@ export const StatsDialog = (props: StatsDialog.Props) => {
               <AlertDialog.Icon status="danger" />
               <AlertDialog.Heading>
                 {boardSize
-                  ? `Clear stats for ${boardSize}x${boardSize} board?`
-                  : 'Clear all stats?'}
+                  ? t('alerts.clearStats.title.board', { size: boardSize })
+                  : t('alerts.clearStats.title.all')}
               </AlertDialog.Heading>
             </AlertDialog.Header>
             <AlertDialog.Body>
-              <p>This action cannot be undone.</p>
+              <p>{t('alerts.clearStats.description')}</p>
             </AlertDialog.Body>
             <AlertDialog.Footer>
               <Button slot="close" variant="tertiary">
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button slot="close" variant="danger" onPress={handleClearStats}>
-                Clear
+                {t('common.clear')}
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Dialog>

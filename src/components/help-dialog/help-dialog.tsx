@@ -6,9 +6,12 @@ import {
   Kbd,
   Typography,
 } from '@heroui/react';
+import { useTranslation } from 'react-i18next';
 
 export const HelpDialog = (props: HelpDialog.Props) => {
   const { isOpen, onOpenChange } = props;
+
+  const { t } = useTranslation();
 
   return (
     <Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -19,20 +22,20 @@ export const HelpDialog = (props: HelpDialog.Props) => {
             <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
               <CircleInfoFill className="size-5" />
             </Modal.Icon>
-            <Modal.Heading>How to play</Modal.Heading>
+            <Modal.Heading>{t('helpDialog.title')}</Modal.Heading>
           </Modal.Header>
           <Modal.Body>
             <Typography color="muted" type="body-sm">
-              Slide the tiles into the empty space to arrange the numbers in
-              order, from 1 to the highest number. Try to solve the puzzle as
-              quickly as possible!
+              {t('helpDialog.description')}
             </Typography>
             <Typography type="h3" className="mt-4 mb-3 text-sm">
-              Controls
+              {t('helpDialog.controls.title')}
             </Typography>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">Move tiles:</span>
+                <span className="text-sm text-muted">
+                  {t('helpDialog.controls.moveTiles')}:
+                </span>
                 <div className="flex items-center gap-2">
                   <Kbd>
                     <Kbd.Abbr keyValue="up" />
@@ -49,7 +52,9 @@ export const HelpDialog = (props: HelpDialog.Props) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">Pause/resume:</span>
+                <span className="text-sm text-muted">
+                  {t('helpDialog.controls.pauseResume')}:
+                </span>
                 <div className="flex items-center gap-2">
                   <Kbd>
                     <Kbd.Content>P</Kbd.Content>
@@ -57,7 +62,9 @@ export const HelpDialog = (props: HelpDialog.Props) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted">Shuffle:</span>
+                <span className="text-sm text-muted">
+                  {t('helpDialog.controls.shuffle')}:
+                </span>
                 <div className="flex items-center gap-2">
                   <Kbd>
                     <Kbd.Abbr keyValue="space" />
@@ -68,7 +75,7 @@ export const HelpDialog = (props: HelpDialog.Props) => {
           </Modal.Body>
           <Modal.Footer>
             <Button slot="close" variant="secondary">
-              OK
+              {t('common.ok')}
             </Button>
           </Modal.Footer>
         </Modal.Dialog>

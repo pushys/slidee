@@ -1,3 +1,131 @@
 {
-  "appName": "Slidee"
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "retry": "Retry",
+    "ok": "OK",
+    "close": "Close"
+  },
+  "toolbar": {
+    "shuffle": "Shuffle",
+    "pause": "Pause",
+    "resume": "Resume",
+    "solve": "Solve"
+  },
+  "board": {
+    "imageAttribution": "Photo by <authorLink>{{author}}</authorLink> on <sourceLink>{{source}}</sourceLink>"
+  },
+  "controls": {
+    "numbersMode": "Numbers mode",
+    "imageMode": "Image mode",
+    "largerBoard": "Larger board",
+    "smallerBoard": "Smaller board",
+    "randomImage": "Random image",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "holdToPreview": "Hold to preview"
+  },
+  "footer": {
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "stats": "Stats",
+    "howToPlay": "How to play",
+    "settings": "Settings"
+  },
+  "settingsForm": {
+    "tabs": {
+      "general": "General",
+      "image": "Image"
+    },
+    "sound": {
+      "label": "Sound effects"
+    },
+    "animations": {
+      "label": "Sliding animations",
+      "systemControlledMessage": "Controlled by your system"
+    },
+    "confetti": {
+      "label": "Confetti",
+      "description": "Play a confetti effect after a game is over."
+    },
+    "boardSize": {
+      "label": "Board size",
+      "options": {
+        "3": "Easy",
+        "4": "Medium",
+        "5": "Hard",
+        "6": "Expert"
+      }
+    },
+    "numbers": {
+      "label": "Show numbers",
+      "description": "Display numbers on image tiles."
+    }
+  },
+  "statsDialog": {
+    "title": "Your stats",
+    "tableColumns": {
+      "board": "Board",
+      "personalBest": "PB",
+      "average": "Avg",
+      "games": "Games",
+      "actions": "Actions"
+    },
+    "clearSuccessMessage": "Stats cleared",
+    "timeNotSet": "Not set",
+    "clearAll": "Clear all",
+    "clearStats": "Clear stats"
+  },
+  "helpDialog": {
+    "title": "How to play",
+    "description": "Slide the tiles into the empty space to arrange the numbers in order, from 1 to the highest number. Try to solve the puzzle as quickly as possible!",
+    "controls": {
+      "title": "Controls",
+      "moveTiles": "Move tiles",
+      "pauseResume": "Pause/resume",
+      "shuffle": "Shuffle"
+    }
+  },
+  "settingsDialog": {
+    "title": "Settings"
+  },
+  "imageTags": {
+    "3d": "3D",
+    "animals": "Animals",
+    "architecture": "Architecture",
+    "art": "Art",
+    "automotive": "Automotive",
+    "aviation": "Aviation",
+    "drinks": "Drinks",
+    "food": "Food",
+    "luxury": "Luxury",
+    "nature": "Nature",
+    "space": "Space",
+    "sports": "Sports"
+  },
+  "imagePicker": {
+    "label": "Image",
+    "filters": {
+      "label": "Filters",
+      "imageTags": "Images tags"
+    }
+  },
+  "alerts": {
+    "clearStats": {
+      "title": {
+        "all": "Clear all stats?",
+        "board": "Clear stats for {{size}}x{{size}} board?"
+      },
+      "description": "This action cannot be undone."
+    },
+    "clearStorage": {
+      "title": "Clear storage",
+      "description": "The issue might be in corrupt storage data. This action will clear game's settings and statistics. Continue?"
+    }
+  },
+  "errors": {
+    "title": "Error",
+    "somethingWentWrong": "Something went wrong."
+  }
 }

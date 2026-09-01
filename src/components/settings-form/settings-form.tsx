@@ -17,6 +17,7 @@ import {
   Controller,
   useWatch,
 } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
 import type { Settings } from '@/settings/settings.schema';
@@ -27,13 +28,6 @@ import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
-
-const boardOptions = [
-  { value: 3, label: 'Easy' },
-  { value: 4, label: 'Classic' },
-  { value: 5, label: 'Difficult' },
-  { value: 6, label: 'Impossible' },
-] satisfies { value: Game.BoardSize; label: string }[];
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -69,6 +63,8 @@ export const SettingsForm = (props: SettingsForm.Props) => {
     ...rest
   } = props;
 
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState<TabKey>('general');
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -76,6 +72,12 @@ export const SettingsForm = (props: SettingsForm.Props) => {
   const methods = useForm<Settings>({ defaultValues, ...rest });
 
   const image = useWatch({ name: 'image', control: methods.control });
+
+  const boardOptions = Game.BOARD_SIZES.map((size) => ({
+    value: size,
+    label: `${size}x${size}`,
+    description: t(`settingsForm.boardSize.options.${size}`),
+  })) satisfies { value: Game.BoardSize; label: string; description: string }[];
 
   return (
     <form
@@ -89,13 +91,13 @@ export const SettingsForm = (props: SettingsForm.Props) => {
         className="w-full"
       >
         <Tabs.ListContainer>
-          <Tabs.List aria-label="Options">
+          <Tabs.List>
             <Tabs.Tab id="general">
-              General
+              {t('settingsForm.tabs.general')}
               <Tabs.Indicator />
             </Tabs.Tab>
             <Tabs.Tab id="image">
-              Image
+              {t('settingsForm.tabs.image')}
               <Tabs.Indicator />
             </Tabs.Tab>
           </Tabs.List>
@@ -111,7 +113,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Sound effects
+                    {t('settingsForm.sound.label')}
                   </Switch.Content>
                 </Switch>
               )}
@@ -128,10 +130,12 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Sliding animations
+                    {t('settingsForm.animations.label')}
                     {prefersReducedMotion && (
                       <Chip size="sm" color="warning" variant="soft">
-                        <Chip.Label>Controlled by your system</Chip.Label>
+                        <Chip.Label>
+                          {t('settingsForm.animations.systemControlledMessage')}
+                        </Chip.Label>
                       </Chip>
                     )}
                   </Switch.Content>
@@ -147,10 +151,10 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Confetti
+                    {t('settingsForm.confetti.label')}
                   </Switch.Content>
                   <Description>
-                    Play a confetti effect after a game is over.
+                    {t('settingsForm.confetti.description')}
                   </Description>
                 </Switch>
               )}
@@ -169,7 +173,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                 onChange={(value) => field.onChange(Number(value))}
               >
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-                  <Label>Board size</Label>
+                  <Label>{t('settingsForm.boardSize.label')}</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {boardOptions.map((option) => (
@@ -187,7 +191,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                         <BoardSkeleton size={option.value} />
                         <div className="flex flex-col gap-1">
                           <span>{option.label}</span>
-                          <Description>{`${option.value}x${option.value}`}</Description>
+                          <Description>{option.description}</Description>
                         </div>
                       </Radio.Content>
                     </Radio>
@@ -211,9 +215,11 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Show numbers
+                    {t('settingsForm.numbers.label')}
                   </Switch.Content>
-                  <Description>Display numbers on image tiles.</Description>
+                  <Description>
+                    {t('settingsForm.numbers.description')}
+                  </Description>
                 </Switch>
               )}
               control={methods.control}

@@ -1,0 +1,131 @@
+{
+  "common": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "clear": "Очистить",
+    "retry": "Попробовать снова",
+    "ok": "OK",
+    "close": "Закрыть"
+  },
+  "toolbar": {
+    "shuffle": "Перемешать",
+    "pause": "Пауза",
+    "resume": "Продолжить",
+    "solve": "Решить"
+  },
+  "board": {
+    "imageAttribution": "Фото от <authorLink>{{author}}</authorLink> на <sourceLink>{{source}}</sourceLink>"
+  },
+  "controls": {
+    "numbersMode": "Цифры",
+    "imageMode": "Изображение",
+    "largerBoard": "Большее поле",
+    "smallerBoard": "Меньшее поле",
+    "randomImage": "Случайное изображение",
+    "previousImage": "Предыдущее изображение",
+    "nextImage": "Следующее изображение",
+    "holdToPreview": "Предпросмотр"
+  },
+  "footer": {
+    "soundOn": "Включить звук",
+    "soundOff": "Выключить звук",
+    "stats": "Статистика",
+    "howToPlay": "Как играть",
+    "settings": "Настройки"
+  },
+  "settingsForm": {
+    "tabs": {
+      "general": "Основное",
+      "image": "Изображение"
+    },
+    "sound": {
+      "label": "Звуки"
+    },
+    "animations": {
+      "label": "Анимации",
+      "systemControlledMessage": "Управляется вашей системой"
+    },
+    "confetti": {
+      "label": "Конфетти",
+      "description": "Показывать эффект конфетти по окончании игры."
+    },
+    "boardSize": {
+      "label": "Размер поля",
+      "options": {
+        "3": "Лёгкий",
+        "4": "Средний",
+        "5": "Сложный",
+        "6": "Эксперт"
+      }
+    },
+    "numbers": {
+      "label": "Показывать числа",
+      "description": "Отображать числа поверх плиток."
+    }
+  },
+  "statsDialog": {
+    "title": "Ваша статистика",
+    "tableColumns": {
+      "board": "Поле",
+      "personalBest": "Лучшее время",
+      "average": "Среднее время",
+      "games": "Игры",
+      "actions": "Действия"
+    },
+    "clearSuccessMessage": "Статистика очищена",
+    "timeNotSet": "Не установлено",
+    "clearAll": "Очистить всё",
+    "clearStats": "Очистить статистику"
+  },
+  "helpDialog": {
+    "title": "Как играть",
+    "description": "Перемещайте плитки в свободное место, чтобы расставить цифры по порядку — от 1 до наибольшего числа. Постарайтесь решить головоломку как можно быстрее!",
+    "controls": {
+      "title": "Управление",
+      "moveTiles": "Перемещение плиток",
+      "pauseResume": "Пауза и продолжение",
+      "shuffle": "Перемешать"
+    }
+  },
+  "settingsDialog": {
+    "title": "Настройки"
+  },
+  "imageTags": {
+    "3d": "3D",
+    "animals": "Животные",
+    "architecture": "Архитектура",
+    "art": "Искусство",
+    "automotive": "Авто и мото",
+    "aviation": "Авиация",
+    "drinks": "Напитки",
+    "food": "Еда",
+    "luxury": "Роскошь",
+    "nature": "Природа",
+    "space": "Космос",
+    "sports": "Спорт"
+  },
+  "imagePicker": {
+    "label": "Изображение",
+    "filters": {
+      "label": "Фильтры",
+      "imageTags": "Теги изображений"
+    }
+  },
+  "alerts": {
+    "clearStats": {
+      "title": {
+        "all": "Очистить всю статистику?",
+        "board": "Очистить статистику для поля {{size}}x{{size}}?"
+      },
+      "description": "Это действие необратимо."
+    },
+    "clearStorage": {
+      "title": "Очистить хранилище",
+      "description": "Возможно, проблема связана с повреждением сохранённых данных. Это действие очистит настройки и статистику игры. Продолжить?"
+    }
+  },
+  "errors": {
+    "title": "Ошибка",
+    "somethingWentWrong": "Что-то пошло не так."
+  }
+}

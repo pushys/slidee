@@ -1,6 +1,7 @@
 import { Gear } from '@gravity-ui/icons';
 import { Modal, Button, type ModalBackdropProps } from '@heroui/react';
 import { useId } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { Settings } from '@/settings/settings.schema';
 
@@ -16,6 +17,8 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
     stats,
   } = props;
 
+  const { t } = useTranslation();
+
   const formId = `form-${useId()}`;
 
   return (
@@ -27,7 +30,7 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
             <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
               <Gear className="size-5" />
             </Modal.Icon>
-            <Modal.Heading>Settings</Modal.Heading>
+            <Modal.Heading>{t('settingsDialog.title')}</Modal.Heading>
           </Modal.Header>
           <Modal.Body>
             <SettingsForm
@@ -40,10 +43,10 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
           </Modal.Body>
           <Modal.Footer>
             <Button slot="close" variant="secondary">
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button slot="close" type="submit" form={formId}>
-              Save
+              {t('common.save')}
             </Button>
           </Modal.Footer>
         </Modal.Dialog>
