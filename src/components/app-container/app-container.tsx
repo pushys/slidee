@@ -10,7 +10,7 @@ export const AppContainer = (props: AppContainer.Props) => {
       <main
         {...rest}
         className={clsx(
-          'grid grid-cols-[1fr_auto] gap-4 px-2 py-4',
+          'grid animate-fade-in grid-cols-[1fr_auto] gap-4 px-2 py-4',
           rest.className,
         )}
       >
