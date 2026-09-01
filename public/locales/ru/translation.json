@@ -31,7 +31,12 @@
     "soundOff": "Выключить звук",
     "stats": "Статистика",
     "howToPlay": "Как играть",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "language": {
+      "label": "Язык: {{lang}}",
+      "radioGroupLabel": "Сменить язык",
+      "changeSuccessMessage": "Язык сменён на {{lang}}"
+    }
   },
   "settingsForm": {
     "tabs": {
@@ -127,5 +132,9 @@
   "errors": {
     "title": "Ошибка",
     "somethingWentWrong": "Что-то пошло не так."
+  },
+  "languages": {
+    "en": "English",
+    "ru": "Русский"
   }
 }
