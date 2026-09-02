@@ -7,7 +7,7 @@ import { withModal } from '@/testing/storybook/decorators/with-modal';
 import { StatsDialog } from './stats-dialog';
 
 const meta = {
-  title: 'StatsDialog',
+  title: 'Dialogs/StatsDialog',
   component: StatsDialog,
   parameters: {
     layout: 'centered',

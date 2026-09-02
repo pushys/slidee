@@ -1,4 +1,4 @@
-import { StatsDialog as StatsDialogView } from '@/components/stats-dialog';
+import { StatsDialog as StatsDialogView } from '@/components/dialogs/stats-dialog';
 
 import { useAppContext } from '../../app-context';
 

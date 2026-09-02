@@ -1,5 +1,5 @@
 import { images } from '@/assets/images';
-import { SettingsDialog as SettingsDialogView } from '@/components/settings-dialog';
+import { SettingsDialog as SettingsDialogView } from '@/components/dialogs/settings-dialog';
 
 import { useAppContext } from '../../app-context';
 

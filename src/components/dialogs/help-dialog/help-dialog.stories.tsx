@@ -1,27 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { fn } from 'storybook/test';
-
-import { images } from '@/assets/images';
 import { withModal } from '@/testing/storybook/decorators/with-modal';
 
-import { SettingsDialog } from './settings-dialog';
+import { HelpDialog } from './help-dialog';
 
 const meta = {
-  title: 'SettingsDialog',
-  component: SettingsDialog,
+  title: 'Dialogs/HelpDialog',
+  component: HelpDialog,
   parameters: {
     layout: 'centered',
   },
   decorators: [withModal],
-} satisfies Meta<typeof SettingsDialog>;
+} satisfies Meta<typeof HelpDialog>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    images,
-    onSettingsSave: fn(),
-  },
+  args: {},
 };
