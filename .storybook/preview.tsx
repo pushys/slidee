@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import type { Preview } from '@storybook/react-vite';
 
 import { Spinner } from '@heroui/react';
