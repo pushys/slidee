@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         workbox: {
           // Additionally to default static files also cache fonts and sounds because they don't change frequently.
-          globPatterns: ['**/*.{js,css,html,woff2,mp3,wav}'],
+          globPatterns: ['**/*.{js,css,html,woff,woff2,mp3,wav}'],
           runtimeCaching: [
             {
               urlPattern: /\.(?:avif)$/i,
