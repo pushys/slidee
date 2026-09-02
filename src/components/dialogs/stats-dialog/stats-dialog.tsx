@@ -49,7 +49,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
         <Modal.Body>
           <Table variant="secondary">
             <Table.ScrollContainer>
-              <Table.Content>
+              <Table.Content aria-label={t('statsDialog.title')}>
                 <Table.Header>
                   <Table.Column isRowHeader>
                     {t('statsDialog.tableColumns.board')}
