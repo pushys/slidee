@@ -4,17 +4,8 @@ import { useAppContext } from '../../app-context';
 
 export const StatsDialog = () => {
   const {
-    dialog,
-    closeDialog,
     stats: { stats, clearStats },
   } = useAppContext();
 
-  return (
-    <StatsDialogView
-      isOpen={dialog === 'stats'}
-      onOpenChange={closeDialog}
-      stats={stats}
-      onClearStatsPress={clearStats}
-    />
-  );
+  return <StatsDialogView stats={stats} onClearStatsPress={clearStats} />;
 };
