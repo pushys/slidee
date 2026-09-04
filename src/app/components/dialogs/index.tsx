@@ -16,7 +16,11 @@ export const Dialogs = () => {
   const { dialog, isDialogOpen, closeDialog } = useAppContext();
 
   return (
-    <Modal.Backdrop isOpen={isDialogOpen} onOpenChange={closeDialog}>
+    <Modal.Backdrop
+      variant="blur"
+      isOpen={isDialogOpen}
+      onOpenChange={closeDialog}
+    >
       <Suspense fallback={<Spinner className="text-white" />}>
         <Modal.Container>
           {dialog === 'stats' && <StatsDialog />}
