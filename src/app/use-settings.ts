@@ -40,23 +40,28 @@ export function useSettings(): useSettings.ReturnValue {
   );
 
   const randomImage = useCallback(() => {
-    let newImage: ImageKeys;
+    setSettings((prevSettings) => {
+      let newImage: ImageKeys;
 
-    // Re-sample image until it isn't among the recently used ones.
-    do {
-      newImage = sample(imageKeys);
-    } while (recentImages.includes(newImage));
+      // Re-sample image until it isn't among recently used or matches previous.
+      do {
+        newImage = sample(imageKeys);
+      } while (
+        recentImages.includes(newImage) ||
+        newImage === prevSettings.image
+      );
 
-    if (recentImages.length === MAX_RECENT_IMAGES) {
-      recentImages = [...drop(recentImages, 1), newImage];
-    } else {
-      recentImages.push(newImage);
-    }
+      if (recentImages.length === MAX_RECENT_IMAGES) {
+        recentImages = [...drop(recentImages, 1), newImage];
+      } else {
+        recentImages.push(newImage);
+      }
 
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      image: newImage,
-    }));
+      return {
+        ...prevSettings,
+        image: newImage,
+      };
+    });
   }, [setSettings]);
 
   const previousImage = useCallback(() => {

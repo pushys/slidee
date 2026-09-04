@@ -1,12 +1,4 @@
 import {
-  Ban,
-  CheckShape,
-  CheckShapeFill,
-  Funnel,
-  Tag as TagIcon,
-} from '@gravity-ui/icons';
-import {
-  Avatar,
   Label,
   Radio,
   RadioGroup,
@@ -16,57 +8,26 @@ import {
   SwitchGroup,
   Chip,
   Tabs,
-  ScrollShadow,
-  Badge,
-  Popover,
-  Button,
-  Tag,
-  TagGroup,
 } from '@heroui/react';
 import clsx from 'clsx';
-import { intersection } from 'es-toolkit';
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import {
   useForm,
   type UseFormProps,
   Controller,
   useWatch,
 } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
 import type { Settings } from '@/settings/settings.schema';
-import type { ImageTag } from '@/shared/types';
 import type { Stats } from '@/stats/stats.schema';
 
-import { images, type ImageKeys } from '@/assets/images';
-import { Tooltip } from '@/components/tooltip';
+import { ImagePicker } from '@/components/image-picker';
 import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
-
-const boardOptions = [
-  { value: 3, label: 'Easy' },
-  { value: 4, label: 'Classic' },
-  { value: 5, label: 'Difficult' },
-  { value: 6, label: 'Impossible' },
-] satisfies { value: Game.BoardSize; label: string }[];
-
-const imageOptions = Object.entries(images);
-
-const imageTagOptions = [
-  { tag: '3d', label: '3D' },
-  { tag: 'animals', label: 'Animals' },
-  { tag: 'architecture', label: 'Architecture' },
-  { tag: 'art', label: 'Art' },
-  { tag: 'automotive', label: 'Automotive' },
-  { tag: 'aviation', label: 'Aviation' },
-  { tag: 'drinks', label: 'Drinks' },
-  { tag: 'food', label: 'Food' },
-  { tag: 'luxury', label: 'Luxury' },
-  { tag: 'nature', label: 'Nature' },
-  { tag: 'sports', label: 'Sports' },
-] satisfies { tag: ImageTag; label: string }[];
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
   const gridMaps = {
@@ -97,14 +58,14 @@ export const SettingsForm = (props: SettingsForm.Props) => {
     id,
     onSubmit,
     defaultValues = DEFAULT_SETTINGS,
+    images,
     stats = {},
     ...rest
   } = props;
 
-  const [tab, setTab] = useState<TabKey>('general');
-  const [tags, setTags] = useState<ImageTag[]>([]);
+  const { t } = useTranslation();
 
-  const selectedImageRef = useRef<HTMLDivElement>(null);
+  const [tab, setTab] = useState<TabKey>('general');
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -112,23 +73,11 @@ export const SettingsForm = (props: SettingsForm.Props) => {
 
   const image = useWatch({ name: 'image', control: methods.control });
 
-  // Scroll to the currently selected image option.
-  useEffect(() => {
-    if (tab === 'image') {
-      selectedImageRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [tab]);
-
-  const filteredImageOptions = useMemo(() => {
-    if (tags.length < 1) return imageOptions;
-
-    return imageOptions.filter(
-      ([, image]) => intersection(image.tags, tags).length > 0,
-    );
-  }, [tags]);
+  const boardOptions = Game.BOARD_SIZES.map((size) => ({
+    value: size,
+    label: `${size}x${size}`,
+    description: t(`settingsForm.boardSize.options.${size}`),
+  })) satisfies { value: Game.BoardSize; label: string; description: string }[];
 
   return (
     <form
@@ -142,13 +91,13 @@ export const SettingsForm = (props: SettingsForm.Props) => {
         className="w-full"
       >
         <Tabs.ListContainer>
-          <Tabs.List aria-label="Options">
+          <Tabs.List>
             <Tabs.Tab id="general">
-              General
+              {t('settingsForm.tabs.general')}
               <Tabs.Indicator />
             </Tabs.Tab>
             <Tabs.Tab id="image">
-              Image
+              {t('settingsForm.tabs.image')}
               <Tabs.Indicator />
             </Tabs.Tab>
           </Tabs.List>
@@ -164,7 +113,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Sound effects
+                    {t('settingsForm.sound.label')}
                   </Switch.Content>
                 </Switch>
               )}
@@ -181,10 +130,12 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Sliding animations
+                    {t('settingsForm.animations.label')}
                     {prefersReducedMotion && (
                       <Chip size="sm" color="warning" variant="soft">
-                        <Chip.Label>Controlled by your system</Chip.Label>
+                        <Chip.Label>
+                          {t('settingsForm.animations.systemControlledMessage')}
+                        </Chip.Label>
                       </Chip>
                     )}
                   </Switch.Content>
@@ -200,10 +151,10 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Confetti
+                    {t('settingsForm.confetti.label')}
                   </Switch.Content>
                   <Description>
-                    Play a confetti effect after a game is over.
+                    {t('settingsForm.confetti.description')}
                   </Description>
                 </Switch>
               )}
@@ -222,7 +173,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                 onChange={(value) => field.onChange(Number(value))}
               >
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-                  <Label>Board size</Label>
+                  <Label>{t('settingsForm.boardSize.label')}</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {boardOptions.map((option) => (
@@ -240,7 +191,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                         <BoardSkeleton size={option.value} />
                         <div className="flex flex-col gap-1">
                           <span>{option.label}</span>
-                          <Description>{`${option.value}x${option.value}`}</Description>
+                          <Description>{option.description}</Description>
                         </div>
                       </Radio.Content>
                     </Radio>
@@ -264,9 +215,11 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
-                    Show numbers
+                    {t('settingsForm.numbers.label')}
                   </Switch.Content>
-                  <Description>Display numbers on image tiles.</Description>
+                  <Description>
+                    {t('settingsForm.numbers.description')}
+                  </Description>
                 </Switch>
               )}
               control={methods.control}
@@ -275,127 +228,23 @@ export const SettingsForm = (props: SettingsForm.Props) => {
           <Controller
             name="image"
             control={methods.control}
-            render={({ field: { disabled, ...field } }) => (
-              <RadioGroup
-                {...field}
-                variant="secondary"
-                isDisabled={disabled}
-                aria-label="Image"
-              >
-                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-                  <Label>Image</Label>
-                  <Popover>
-                    <Tooltip content="Filters">
-                      <Badge.Anchor>
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          variant="ghost"
-                          className="size-6"
-                        >
-                          <Funnel />
-                        </Button>
-                        {tags.length > 0 && (
-                          <Badge color="accent" className="min-h-3 min-w-3" />
-                        )}
-                      </Badge.Anchor>
-                    </Tooltip>
-                    <Popover.Content
-                      placement="bottom right"
-                      className="max-w-64"
-                    >
-                      <Popover.Dialog>
-                        <TagGroup
-                          aria-label="Image tags"
-                          selectionMode="multiple"
-                          selectedKeys={tags}
-                          onSelectionChange={(selection) =>
-                            selection === 'all'
-                              ? setTags(imageTagOptions.map((o) => o.tag))
-                              : setTags(Array.from(selection) as ImageTag[])
-                          }
-                        >
-                          <TagGroup.List>
-                            {imageTagOptions.map((option) => (
-                              <Tag key={option.tag} id={option.tag}>
-                                <TagIcon />
-                                {option.label}
-                              </Tag>
-                            ))}
-                          </TagGroup.List>
-                        </TagGroup>
-                      </Popover.Dialog>
-                    </Popover.Content>
-                  </Popover>
-                </div>
-                <ScrollShadow className="grid max-h-67.75 scrollbar-gutter-stable grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto">
-                  <div
-                    className="m-0 aspect-square cursor-pointer"
-                    onClick={() => methods.setValue('image', null)}
-                  >
-                    <div
-                      className={clsx(
-                        'flex size-full items-center justify-center rounded-xl bg-surface-secondary p-1 transition-all',
-                        {
-                          'border-2 border-transparent': image !== null,
-                          'border-2 border-accent bg-accent/10': image === null,
-                        },
-                      )}
-                    >
-                      <Ban width={32} height={32} className="text-accent" />
-                    </div>
-                  </div>
-                  {filteredImageOptions.map(([key, option]) => {
-                    const imageKey = key as ImageKeys;
-
-                    const solved = Game.BOARD_SIZES.map(
-                      (size) => stats[size]?.images.includes(imageKey) ?? false,
-                    );
-                    const allSolved = solved.every((isSolved) => isSolved);
-
-                    return (
-                      <Radio
-                        key={key}
-                        value={key}
-                        className="m-0 aspect-square"
-                        ref={image === key ? selectedImageRef : undefined}
-                      >
-                        <Radio.Content
-                          className={clsx(
-                            'size-full rounded-xl border-2 border-transparent bg-surface-secondary p-1 transition-all',
-                            'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
-                          )}
-                        >
-                          <Badge.Anchor className="size-full">
-                            <Avatar className="size-full rounded-lg">
-                              <Avatar.Image
-                                alt={key}
-                                loading="lazy"
-                                src={option.preview}
-                              />
-                            </Avatar>
-                            <Badge
-                              color={allSolved ? 'success' : 'accent'}
-                              size="sm"
-                              className="gap-0 border-surface-secondary px-0.5"
-                            >
-                              {solved.map((isSolved, index) => (
-                                <React.Fragment key={index}>
-                                  {isSolved ? (
-                                    <CheckShapeFill className="size-2" />
-                                  ) : (
-                                    <CheckShape className="size-2" />
-                                  )}
-                                </React.Fragment>
-                              ))}
-                            </Badge>
-                          </Badge.Anchor>
-                        </Radio.Content>
-                      </Radio>
-                    );
-                  })}
-                </ScrollShadow>
-              </RadioGroup>
+            render={({ field }) => (
+              <ImagePicker
+                images={images}
+                name={field.name}
+                ref={field.ref}
+                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                onSelectionChange={(selection) =>
+                  field.onChange(
+                    selection.size === 0 ? null : [...selection][0],
+                  )
+                }
+                onBlur={field.onBlur}
+                className="max-h-75.75"
+                getIsImageSolved={(size, key) =>
+                  stats?.[size]?.images.includes(key) ?? false
+                }
+              />
             )}
           />
         </Tabs.Panel>
@@ -405,7 +254,8 @@ export const SettingsForm = (props: SettingsForm.Props) => {
 };
 
 export namespace SettingsForm {
-  export interface Props extends UseFormProps<Settings> {
+  export interface Props
+    extends UseFormProps<Settings>, Pick<ImagePicker.Props, 'images'> {
     id?: string;
     onSubmit: (values: Settings) => void;
     /**

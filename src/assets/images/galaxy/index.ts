@@ -15,5 +15,5 @@ export const galaxy = {
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['nature'],
+  tags: ['nature', 'space'],
 } satisfies ImageMetadata;

@@ -7,11 +7,11 @@ export const building3 = {
   image,
   preview,
   attribution: {
-    author: 'Weliton Soranzo',
-    authorUrl: 'https://unsplash.com/@welframes',
+    author: 'Jens Riesenberg',
+    authorUrl: 'https://unsplash.com/@infernisvox',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/modern-apartment-building-with-copper-balconies-2FepFcRfqjs',
+      'https://unsplash.com/photos/a-tall-building-with-lots-of-windows-next-to-a-parking-meter-f_7oN-oCRgg',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

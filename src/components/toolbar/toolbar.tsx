@@ -10,6 +10,7 @@ import {
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import clsx from 'clsx';
 import { type ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useKey } from 'rooks';
 
 import { KeyCode } from '@/components/board/key-code';
@@ -33,6 +34,8 @@ export const Toolbar = (props: Toolbar.Props) => {
     ...rest
   } = props;
 
+  const { t } = useTranslation();
+
   const isPbBeat =
     personalBestTime !== undefined ? personalBestTime >= elapsedTime : true;
 
@@ -54,54 +57,54 @@ export const Toolbar = (props: Toolbar.Props) => {
           className="@max-[460px]:hidden"
         >
           <Shuffle />
-          Shuffle
+          {t('toolbar.shuffle')}
         </Button>
-        <Tooltip content="Shuffle" contentPlacement="top">
+        <Tooltip content={t('toolbar.shuffle')} contentPlacement="top">
           <Button
             isIconOnly
             size="lg"
             onPress={onShufflePress}
             className="@min-[460px]:hidden"
-            aria-label="Shuffle"
+            aria-label={t('toolbar.shuffle')}
           >
             <Shuffle />
           </Button>
         </Tooltip>
         {gameStatus === Game.Status.Playing && (
-          <Tooltip content="Pause">
+          <Tooltip content={t('toolbar.pause')}>
             <Button
               isIconOnly
               variant="danger-soft"
               size="lg"
               onPress={onPausePress}
-              aria-label="Pause"
+              aria-label={t('toolbar.pause')}
             >
               <PauseFill />
             </Button>
           </Tooltip>
         )}
         {gameStatus === Game.Status.Paused && (
-          <Tooltip content="Resume">
+          <Tooltip content={t('toolbar.resume')}>
             <Button
               isIconOnly
               variant="secondary"
               size="lg"
               onPress={onResumePress}
-              aria-label="Resume"
+              aria-label={t('toolbar.resume')}
               ref={ref}
             >
               <PlayFill />
             </Button>
           </Tooltip>
         )}
-        <Tooltip content="Solve">
+        <Tooltip content={t('toolbar.solve')}>
           <Button
             isIconOnly
             variant="secondary"
             size="lg"
             onPress={onSolvePress}
             isDisabled={gameStatus === Game.Status.Over}
-            aria-label="Solve"
+            aria-label={t('toolbar.solve')}
           >
             <MagicWand />
           </Button>

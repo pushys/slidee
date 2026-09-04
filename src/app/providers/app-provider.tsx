@@ -26,6 +26,7 @@ type PauseReason = 'dialog' | 'lost-focus';
 
 export function AppProvider(props: PropsWithChildren) {
   const [dialog, setDialog] = useState<AppContext.Dialog | null>(null);
+  const [isDialogOpen, setDialogOpen] = useState(false);
   const [isImagePreviewing, setImagePreviewing] = useState(false);
 
   const settings = useSettings();
@@ -89,6 +90,7 @@ export function AppProvider(props: PropsWithChildren) {
   const openDialog = useCallback(
     (dialogCode: AppContext.Dialog) => {
       setDialog(dialogCode);
+      setDialogOpen(true);
 
       if (game.state.status === Game.Status.Playing) {
         game.pause();
@@ -99,7 +101,7 @@ export function AppProvider(props: PropsWithChildren) {
   );
 
   const closeDialog = useCallback(() => {
-    setDialog(null);
+    setDialogOpen(false);
 
     if (
       game.state.status === Game.Status.Paused &&
@@ -113,6 +115,7 @@ export function AppProvider(props: PropsWithChildren) {
   const contextValue = useMemo(
     () => ({
       dialog,
+      isDialogOpen,
       openDialog,
       closeDialog,
       isImagePreviewing,
@@ -124,6 +127,7 @@ export function AppProvider(props: PropsWithChildren) {
     }),
     [
       dialog,
+      isDialogOpen,
       openDialog,
       closeDialog,
       isImagePreviewing,

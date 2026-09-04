@@ -12,6 +12,7 @@ import type { useStats } from './use-stats';
 
 export interface AppContext {
   dialog: AppContext.Dialog | null;
+  isDialogOpen: boolean;
   openDialog: (dialog: AppContext.Dialog) => void;
   closeDialog: () => void;
   isImagePreviewing: boolean;

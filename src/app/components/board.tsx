@@ -7,7 +7,7 @@ import { useAppContext } from '../app-context';
 
 export const Board = () => {
   const {
-    dialog,
+    isDialogOpen,
     isImagePreviewing,
     settings: { settings, imageMetadata },
     game,
@@ -20,13 +20,13 @@ export const Board = () => {
         key={tile}
         value={tile}
         isSolved={tile === index + 1}
-        isViewTransitionDisabled={!!dialog}
+        isViewTransitionDisabled={isDialogOpen}
         {...(game.isTileMovable(tile) && {
           onPress: () => startViewTransition(() => game.moveTile(tile)),
         })}
       />
     ),
-    [dialog, game, startViewTransition],
+    [isDialogOpen, game, startViewTransition],
   );
 
   return (
@@ -37,7 +37,7 @@ export const Board = () => {
       previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
       renderTile={renderTile}
-      isKeyboardDisabled={!!dialog}
+      isKeyboardDisabled={isDialogOpen}
       isSoundDisabled={!settings?.sound}
       isConfettiDisabled={!settings.confetti}
       isNumbersVisible={settings.showNumbers}

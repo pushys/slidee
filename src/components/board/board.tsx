@@ -11,6 +11,7 @@ import {
   type ComponentProps,
   type CSSProperties,
 } from 'react';
+import { Trans } from 'react-i18next';
 import {
   useDocumentEventListener,
   useKey,
@@ -191,7 +192,6 @@ export const Board = (props: Board.Props) => {
 
   return (
     <section
-      aria-label="Sliding puzzle board"
       {...rest}
       className={clsx(
         'relative rounded-xl bg-surface p-2 shadow-surface transition-[width]',
@@ -226,22 +226,29 @@ export const Board = (props: Board.Props) => {
         <Chip className="absolute right-4 bottom-4 animate-fade-in bg-default-soft backdrop-blur-sm">
           <Picture width={12} />
           <Chip.Label>
-            Photo by{' '}
-            <Link
-              href={imageAttribution.authorUrl}
-              target="_blank"
-              className="underline underline-offset-2"
-            >
-              {imageAttribution.author}
-            </Link>{' '}
-            on{' '}
-            <Link
-              href={imageAttribution.sourceUrl}
-              target="_blank"
-              className="underline underline-offset-2"
-            >
-              {imageAttribution.source}
-            </Link>
+            <Trans
+              i18nKey="board.imageAttribution"
+              components={{
+                authorLink: (
+                  <Link
+                    href={imageAttribution.authorUrl}
+                    target="_blank"
+                    className="underline underline-offset-2"
+                  />
+                ),
+                sourceLink: (
+                  <Link
+                    href={imageAttribution.sourceUrl}
+                    target="_blank"
+                    className="underline underline-offset-2"
+                  />
+                ),
+              }}
+              values={{
+                author: imageAttribution.author,
+                source: imageAttribution.source,
+              }}
+            />
           </Chip.Label>
         </Chip>
       )}

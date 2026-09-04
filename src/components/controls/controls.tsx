@@ -19,6 +19,7 @@ import {
   ToggleButton,
 } from '@heroui/react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
@@ -40,6 +41,8 @@ export const Controls = (props: Controls.Props) => {
     isImagePreviewing = false,
     ...rest
   } = props;
+
+  const { t } = useTranslation();
 
   const handleModeSelectionChange = (key: Set<string | number>) => {
     const selectedKey = Array.from(key)[0] as Controls.Mode;
@@ -71,34 +74,42 @@ export const Controls = (props: Controls.Props) => {
         selectedKeys={[mode]}
         onSelectionChange={handleModeSelectionChange}
       >
-        <Tooltip content="Numbers mode" contentPlacement="right">
-          <ToggleButton isIconOnly id="numbers" aria-label="Numbers mode">
+        <Tooltip content={t('controls.numbersMode')} contentPlacement="right">
+          <ToggleButton
+            isIconOnly
+            id="numbers"
+            aria-label={t('controls.numbersMode')}
+          >
             <SquareHashtag />
           </ToggleButton>
         </Tooltip>
-        <Tooltip content="Image mode" contentPlacement="right">
-          <ToggleButton isIconOnly id="image" aria-label="Image mode">
+        <Tooltip content={t('controls.imageMode')} contentPlacement="right">
+          <ToggleButton
+            isIconOnly
+            id="image"
+            aria-label={t('controls.imageMode')}
+          >
             <Picture />
           </ToggleButton>
         </Tooltip>
       </ToggleButtonGroup>
       <ButtonGroup orientation="vertical">
-        <Tooltip content="Larger board" contentPlacement="right">
+        <Tooltip content={t('controls.largerBoard')} contentPlacement="right">
           <Button
             isIconOnly
             onPress={handleIncreaseBoardSize}
             isDisabled={boardSize === Game.MAX_BOARD_SIZE}
-            aria-label="Larger board"
+            aria-label={t('controls.largerBoard')}
           >
             <Plus />
           </Button>
         </Tooltip>
-        <Tooltip content="Smaller board" contentPlacement="right">
+        <Tooltip content={t('controls.smallerBoard')} contentPlacement="right">
           <Button
             isIconOnly
             onPress={handleDecreaseBoardSize}
             isDisabled={boardSize === Game.MIN_BOARD_SIZE}
-            aria-label="Smaller board"
+            aria-label={t('controls.smallerBoard')}
           >
             <ButtonGroup.Separator />
             <Minus />
@@ -107,44 +118,50 @@ export const Controls = (props: Controls.Props) => {
       </ButtonGroup>
       {mode === 'image' && (
         <ButtonGroup orientation="vertical">
-          <Tooltip content="Random image" contentPlacement="right">
+          <Tooltip content={t('controls.randomImage')} contentPlacement="right">
             <Button
               isIconOnly
               onPress={onRandomImagePress}
-              aria-label="Random image"
+              aria-label={t('controls.randomImage')}
             >
               <Dice3 />
             </Button>
           </Tooltip>
-          <Tooltip content="Previous image" contentPlacement="right">
+          <Tooltip
+            content={t('controls.previousImage')}
+            contentPlacement="right"
+          >
             <Button
               isIconOnly
               onPress={onPreviousImagePress}
               isDisabled={isPreviousImageButtonDisabled}
-              aria-label="Previous image"
+              aria-label={t('controls.previousImage')}
             >
               <ButtonGroup.Separator />
               <ChevronUp />
             </Button>
           </Tooltip>
-          <Tooltip content="Next image" contentPlacement="right">
+          <Tooltip content={t('controls.nextImage')} contentPlacement="right">
             <Button
               isIconOnly
               onPress={onNextImagePress}
               isDisabled={isNextImageButtonDisabled}
-              aria-label="Next image"
+              aria-label={t('controls.nextImage')}
             >
               <ButtonGroup.Separator />
               <ChevronDown />
             </Button>
           </Tooltip>
-          <Tooltip content="Hold to preview" contentPlacement="right">
+          <Tooltip
+            content={t('controls.holdToPreview')}
+            contentPlacement="right"
+          >
             <Button
               isIconOnly
               isDisabled={isPreviewImageButtonDisabled}
               onPressStart={onPreviewImagePressStart}
               onPressEnd={onPreviewImagePressEnd}
-              aria-label="Hold to preview"
+              aria-label={t('controls.holdToPreview')}
             >
               <ButtonGroup.Separator />
               {isImagePreviewing ? <Eye /> : <EyeSlash />}
