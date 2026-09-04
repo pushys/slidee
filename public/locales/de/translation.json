@@ -1,0 +1,142 @@
+{
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "clear": "Löschen",
+    "retry": "Erneut versuchen",
+    "ok": "OK",
+    "close": "Schließen"
+  },
+  "toolbar": {
+    "shuffle": "Mischen",
+    "pause": "Pausieren",
+    "resume": "Fortsetzen",
+    "solve": "Lösen"
+  },
+  "board": {
+    "imageAttribution": "Foto von <authorLink>{{author}}</authorLink> auf <sourceLink>{{source}}</sourceLink>"
+  },
+  "controls": {
+    "numbersMode": "Zahlenmodus",
+    "imageMode": "Bildmodus",
+    "largerBoard": "Größeres Spielfeld",
+    "smallerBoard": "Kleineres Spielfeld",
+    "randomImage": "Zufälliges Bild",
+    "previousImage": "Vorheriges Bild",
+    "nextImage": "Nächstes Bild",
+    "holdToPreview": "Zum Anzeigen gedrückt halten"
+  },
+  "footer": {
+    "soundOn": "Ton an",
+    "soundOff": "Ton aus",
+    "stats": "Statistiken",
+    "howToPlay": "Spielanleitung",
+    "settings": "Einstellungen",
+    "language": {
+      "label": "Sprache: {{lang}}",
+      "radioGroupLabel": "Sprache ändern",
+      "changeSuccessMessage": "Sprache auf {{lang}} geändert"
+    }
+  },
+  "settingsForm": {
+    "tabs": {
+      "general": "Allgemein",
+      "image": "Bild"
+    },
+    "sound": {
+      "label": "Soundeffekte"
+    },
+    "animations": {
+      "label": "Schiebeanimationen",
+      "systemControlledMessage": "Vom System gesteuert"
+    },
+    "confetti": {
+      "label": "Konfetti",
+      "description": "Nach Abschluss eines Spiels einen Konfetti-Effekt anzeigen."
+    },
+    "boardSize": {
+      "label": "Spielfeldgröße",
+      "options": {
+        "3": "Leicht",
+        "4": "Mittel",
+        "5": "Schwer",
+        "6": "Experte"
+      }
+    },
+    "numbers": {
+      "label": "Zahlen anzeigen",
+      "description": "Zahlen auf den Bildkacheln anzeigen."
+    }
+  },
+  "statsDialog": {
+    "title": "Deine Statistiken",
+    "tableColumns": {
+      "board": "Spielfeld",
+      "personalBest": "Bestzeit",
+      "average": "Durchschn.",
+      "games": "Spiele",
+      "actions": "Aktionen"
+    },
+    "clearSuccessMessage": "Statistiken gelöscht",
+    "timeNotSet": "Nicht festgelegt",
+    "clearAll": "Alle löschen",
+    "clearStats": "Statistiken löschen"
+  },
+  "helpDialog": {
+    "title": "Spielanleitung",
+    "description": "Schiebe die Kacheln in den freien Platz, um die Zahlen von 1 bis zur höchsten Zahl in die richtige Reihenfolge zu bringen. Versuche, das Puzzle so schnell wie möglich zu lösen!",
+    "controls": {
+      "title": "Steuerung",
+      "moveTiles": "Kacheln verschieben",
+      "pauseResume": "Pausieren/Fortsetzen",
+      "shuffle": "Mischen"
+    }
+  },
+  "settingsDialog": {
+    "title": "Einstellungen"
+  },
+  "imageTags": {
+    "3d": "3D",
+    "animals": "Tiere",
+    "architecture": "Architektur",
+    "art": "Kunst",
+    "automotive": "Automobil",
+    "aviation": "Luftfahrt",
+    "drinks": "Getränke",
+    "food": "Essen",
+    "luxury": "Luxus",
+    "nature": "Natur",
+    "space": "Weltraum",
+    "sports": "Sport",
+    "technology": "Technologie"
+  },
+  "imagePicker": {
+    "label": "Bild",
+    "filters": {
+      "label": "Filter",
+      "imageTags": "Bild-Tags"
+    }
+  },
+  "alerts": {
+    "clearStats": {
+      "title": {
+        "all": "Alle Statistiken löschen?",
+        "board": "Statistiken für das {{size}}x{{size}}-Spielfeld löschen?"
+      },
+      "description": "Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "clearStorage": {
+      "title": "Speicher löschen",
+      "description": "Das Problem könnte an beschädigten gespeicherten Daten liegen. Dadurch werden die Einstellungen und Statistiken des Spiels gelöscht. Fortfahren?"
+    }
+  },
+  "errors": {
+    "title": "Fehler",
+    "somethingWentWrong": "Etwas ist schiefgelaufen."
+  },
+  "languages": {
+    "de": "Deutsch",
+    "en": "English",
+    "ru": "Русский"
+  }
+}

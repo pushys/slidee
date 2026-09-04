@@ -23,9 +23,9 @@ import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '@/components/tooltip';
 
-type Language = 'en' | 'ru';
+type Language = 'de' | 'en' | 'ru';
 
-const LANGUAGE_OPTIONS = ['en', 'ru'] satisfies Language[];
+const LANGUAGE_OPTIONS = ['de', 'en', 'ru'] satisfies Language[];
 
 export const Footer = (props: Footer.Props) => {
   const {
