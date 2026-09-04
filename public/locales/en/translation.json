@@ -107,7 +107,8 @@
     "luxury": "Luxury",
     "nature": "Nature",
     "space": "Space",
-    "sports": "Sports"
+    "sports": "Sports",
+    "technology": "Technology"
   },
   "imagePicker": {
     "label": "Image",

@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const building3 = {
+export const butterfly = {
   image,
   preview,
   attribution: {
-    author: 'Jens Riesenberg',
-    authorUrl: 'https://unsplash.com/@infernisvox',
+    author: 'David Clode',
+    authorUrl: 'https://unsplash.com/@davidclode',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-tall-building-with-lots-of-windows-next-to-a-parking-meter-f_7oN-oCRgg',
+      'https://unsplash.com/photos/selective-focus-photography-of-black-and-yellow-swallowtail-butterfly-on-ixora-during-daytime-Oq9JrJb6K7M',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['architecture'],
+  tags: ['animals'],
 } satisfies ImageMetadata;

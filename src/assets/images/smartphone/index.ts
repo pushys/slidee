@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const building3 = {
+export const smartphone = {
   image,
   preview,
   attribution: {
-    author: 'Jens Riesenberg',
-    authorUrl: 'https://unsplash.com/@infernisvox',
+    author: 'omid armin',
+    authorUrl: 'https://unsplash.com/@itsomidarmin',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-tall-building-with-lots-of-windows-next-to-a-parking-meter-f_7oN-oCRgg',
+      'https://unsplash.com/photos/red-and-black-samsung-android-smartphone-beside-white-earbuds-B2w4rdIihEo',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['architecture'],
+  tags: ['technology'],
 } satisfies ImageMetadata;

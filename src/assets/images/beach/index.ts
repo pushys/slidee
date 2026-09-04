@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const building3 = {
+export const beach = {
   image,
   preview,
   attribution: {
-    author: 'Jens Riesenberg',
-    authorUrl: 'https://unsplash.com/@infernisvox',
+    author: 'Shifaaz shamoon',
+    authorUrl: 'https://unsplash.com/@sotti',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-tall-building-with-lots-of-windows-next-to-a-parking-meter-f_7oN-oCRgg',
+      'https://unsplash.com/photos/aerial-photo-of-seashore-sLAk1guBG90',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['architecture'],
+  tags: ['nature'],
 } satisfies ImageMetadata;

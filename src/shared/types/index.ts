@@ -10,7 +10,8 @@ export type ImageTag =
   | 'luxury'
   | 'nature'
   | 'space'
-  | 'sports';
+  | 'sports'
+  | 'technology';
 
 export interface ImageMetadata {
   image: string;
@@ -21,9 +22,9 @@ export interface ImageMetadata {
 
 export interface ImageAttribution {
   author: string;
-  authorUrl: string;
+  authorUrl: `https://${string}`;
   source: string;
-  sourceUrl: string;
+  sourceUrl: `https://${string}`;
   license: string;
-  licenseUrl: string;
+  licenseUrl: `https://${string}`;
 }

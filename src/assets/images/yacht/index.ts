@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const building3 = {
+export const yacht = {
   image,
   preview,
   attribution: {
-    author: 'Jens Riesenberg',
-    authorUrl: 'https://unsplash.com/@infernisvox',
+    author: 'Matthew Hamilton',
+    authorUrl: 'https://unsplash.com/@thatsmrbio',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-tall-building-with-lots-of-windows-next-to-a-parking-meter-f_7oN-oCRgg',
+      'https://unsplash.com/photos/a-view-of-the-bow-of-a-boat-in-the-water-hllJLqjpEVY',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['architecture'],
+  tags: ['luxury'],
 } satisfies ImageMetadata;

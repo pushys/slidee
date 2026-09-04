@@ -107,7 +107,8 @@
     "luxury": "Роскошь",
     "nature": "Природа",
     "space": "Космос",
-    "sports": "Спорт"
+    "sports": "Спорт",
+    "technology": "Технологии"
   },
   "imagePicker": {
     "label": "Изображение",

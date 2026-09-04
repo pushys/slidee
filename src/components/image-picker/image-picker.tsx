@@ -106,6 +106,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     { tag: 'nature', label: t('imageTags.nature') },
     { tag: 'space', label: t('imageTags.space') },
     { tag: 'sports', label: t('imageTags.sports') },
+    { tag: 'technology', label: t('imageTags.technology') },
   ] satisfies { tag: ImageTag; label: string }[];
 
   return (
