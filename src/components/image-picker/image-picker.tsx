@@ -31,6 +31,22 @@ import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { useControlledState } from '@/shared/utils/use-controlled-state';
 
+const IMAGE_TAGS = [
+  '3d',
+  'animals',
+  'architecture',
+  'art',
+  'automotive',
+  'aviation',
+  'drinks',
+  'food',
+  'luxury',
+  'nature',
+  'space',
+  'sports',
+  'technology',
+] satisfies ImageTag[];
+
 export const ImagePicker = (props: ImagePicker.Props) => {
   const {
     images,
@@ -43,7 +59,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     ...rest
   } = props;
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [selectedKeys, setSelectedKeys] = useControlledState(
     selectedKeysProp,
@@ -93,21 +109,19 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     return setSelectedKeys(new Set(keys));
   };
 
-  const imageTagOptions = [
-    { tag: '3d', label: t('imageTags.3d') },
-    { tag: 'animals', label: t('imageTags.animals') },
-    { tag: 'architecture', label: t('imageTags.architecture') },
-    { tag: 'art', label: t('imageTags.art') },
-    { tag: 'automotive', label: t('imageTags.automotive') },
-    { tag: 'aviation', label: t('imageTags.aviation') },
-    { tag: 'drinks', label: t('imageTags.drinks') },
-    { tag: 'food', label: t('imageTags.food') },
-    { tag: 'luxury', label: t('imageTags.luxury') },
-    { tag: 'nature', label: t('imageTags.nature') },
-    { tag: 'space', label: t('imageTags.space') },
-    { tag: 'sports', label: t('imageTags.sports') },
-    { tag: 'technology', label: t('imageTags.technology') },
-  ] satisfies { tag: ImageTag; label: string }[];
+  // Sort image tag labels alphabetically based on current user language.
+  const imageTagOptions = useMemo(() => {
+    const options = IMAGE_TAGS.map((tag) => ({
+      tag,
+      label: t(`imageTags.${tag}`),
+    })) satisfies { tag: ImageTag; label: string }[];
+
+    const collator = new Intl.Collator(i18n.language, {
+      sensitivity: 'base',
+    });
+
+    return options.sort((a, b) => collator.compare(a.label, b.label));
+  }, [t, i18n.language]);
 
   return (
     <CheckboxGroup
@@ -130,7 +144,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
               )}
             </Badge.Anchor>
           </Tooltip>
-          <Popover.Content placement="bottom right" className="max-w-64">
+          <Popover.Content placement="bottom right" className="max-w-72">
             <Popover.Dialog>
               <TagGroup
                 aria-label={t('imagePicker.filters.imageTags')}
