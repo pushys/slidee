@@ -80,6 +80,7 @@ export const Footer = (props: Footer.Props) => {
           {soundEnabled ? <VolumeFill /> : <VolumeXmarkFill />}
         </Button>
       </Tooltip>
+      <Separator orientation="vertical" className="h-[50%] self-center" />
       <Tooltip content={t('footer.stats')} contentPlacement="bottom">
         <Button
           isIconOnly
@@ -100,6 +101,17 @@ export const Footer = (props: Footer.Props) => {
           aria-label={t('footer.howToPlay')}
         >
           <CircleInfoFill />
+        </Button>
+      </Tooltip>
+      <Tooltip content={t('footer.settings')} contentPlacement="bottom">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="secondary"
+          onPress={onSettingsPress}
+          aria-label={t('footer.settings')}
+        >
+          <Gear />
         </Button>
       </Tooltip>
       <Separator orientation="vertical" className="h-[50%] self-center" />
@@ -150,17 +162,6 @@ export const Footer = (props: Footer.Props) => {
           </RadioGroup>
         </Popover.Content>
       </Popover>
-      <Tooltip content={t('footer.settings')} contentPlacement="bottom">
-        <Button
-          isIconOnly
-          size="sm"
-          variant="secondary"
-          onPress={onSettingsPress}
-          aria-label={t('footer.settings')}
-        >
-          <Gear />
-        </Button>
-      </Tooltip>
     </footer>
   );
 };
