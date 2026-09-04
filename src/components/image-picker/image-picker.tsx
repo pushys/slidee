@@ -17,6 +17,7 @@ import {
   Button,
   Tag,
   TagGroup,
+  type Selection,
 } from '@heroui/react';
 import clsx from 'clsx';
 import { intersection, last } from 'es-toolkit';
@@ -68,6 +69,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
   );
 
   const [tags, setTags] = useState<ImageTag[]>([]);
+  const [isTagsPopoverOpen, setTagsPopoverOpen] = useState(false);
 
   const selectedImageRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +95,21 @@ export const ImagePicker = (props: ImagePicker.Props) => {
 
   const hasSelectedKeys = selectedKeys.size !== 0;
 
-  const handleChange = (values: string[]) => {
+  // Sort image tag labels alphabetically based on current user language.
+  const imageTagOptions = useMemo(() => {
+    const options = IMAGE_TAGS.map((tag) => ({
+      tag,
+      label: t(`imageTags.${tag}`),
+    })) satisfies { tag: ImageTag; label: string }[];
+
+    const collator = new Intl.Collator(i18n.language, {
+      sensitivity: 'base',
+    });
+
+    return options.sort((a, b) => collator.compare(a.label, b.label));
+  }, [t, i18n.language]);
+
+  const handleValueChange = (values: string[]) => {
     const keys = values as ImageKeys[];
 
     if (selectionMode === 'single') {
@@ -109,19 +125,13 @@ export const ImagePicker = (props: ImagePicker.Props) => {
     return setSelectedKeys(new Set(keys));
   };
 
-  // Sort image tag labels alphabetically based on current user language.
-  const imageTagOptions = useMemo(() => {
-    const options = IMAGE_TAGS.map((tag) => ({
-      tag,
-      label: t(`imageTags.${tag}`),
-    })) satisfies { tag: ImageTag; label: string }[];
+  const handleTagSelectionChange = (selection: Selection) => {
+    if (selection === 'all') {
+      return setTags(imageTagOptions.map((o) => o.tag));
+    }
 
-    const collator = new Intl.Collator(i18n.language, {
-      sensitivity: 'base',
-    });
-
-    return options.sort((a, b) => collator.compare(a.label, b.label));
-  }, [t, i18n.language]);
+    setTags(Array.from(selection) as ImageTag[]);
+  };
 
   return (
     <CheckboxGroup
@@ -129,11 +139,11 @@ export const ImagePicker = (props: ImagePicker.Props) => {
       aria-label={t('imagePicker.label')}
       {...rest}
       value={Array.from(selectedKeys)}
-      onChange={handleChange}
+      onChange={handleValueChange}
     >
       <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
         <Label>{t('imagePicker.label')}</Label>
-        <Popover>
+        <Popover isOpen={isTagsPopoverOpen} onOpenChange={setTagsPopoverOpen}>
           <Tooltip content={t('imagePicker.filters.label')}>
             <Badge.Anchor>
               <Button isIconOnly size="sm" variant="ghost" className="size-6">
@@ -150,11 +160,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
                 aria-label={t('imagePicker.filters.imageTags')}
                 selectionMode="multiple"
                 selectedKeys={tags}
-                onSelectionChange={(selection) =>
-                  selection === 'all'
-                    ? setTags(imageTagOptions.map((o) => o.tag))
-                    : setTags(Array.from(selection) as ImageTag[])
-                }
+                onSelectionChange={handleTagSelectionChange}
               >
                 <TagGroup.List>
                   {imageTagOptions.map((option) => (
