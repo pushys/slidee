@@ -1,4 +1,8 @@
 {
+  "app": {
+    "title": "Slidee – Schiebepuzzle",
+    "description": "Spiele ein Schiebepuzzle mit wunderschönen Bildmotiven, verschiedenen Spielfeldgrößen, Tastatursteuerung, flüssigen Animationen und der Möglichkeit, deine persönlichen Bestzeiten zu verfolgen."
+  },
   "common": {
     "save": "Speichern",
     "cancel": "Abbrechen",

@@ -1,4 +1,8 @@
 {
+  "app": {
+    "title": "Slidee - Sliding Puzzle Game",
+    "description": "Play a sliding puzzle game with beautiful image themes, multiple board sizes, keyboard controls, smooth animations, and personal best tracking."
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
