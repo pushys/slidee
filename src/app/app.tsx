@@ -1,3 +1,5 @@
+import { Toast } from '@heroui/react';
+
 import { AppContainer } from '@/components/app-container';
 
 import { Board } from './components/board';
@@ -21,6 +23,7 @@ export const App = () => {
             <Dialogs />
           </AppContainer>
         </AppProvider>
+        <Toast.Provider />
       </Suspense>
     </ErrorBoundary>
   );
