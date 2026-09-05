@@ -6,26 +6,15 @@ import {
   SquareChartColumn,
   Globe,
 } from '@gravity-ui/icons';
-import {
-  Button,
-  type ButtonProps,
-  Separator,
-  Popover,
-  Radio,
-  RadioGroup,
-  Label,
-  Surface,
-  toast,
-} from '@heroui/react';
+import { Button, type ButtonProps, Separator, Popover } from '@heroui/react';
 import clsx from 'clsx';
-import React, { useState, type ComponentProps } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { Language } from '@/shared/types';
+
+import { LanguageSelect } from '@/components/language-select';
 import { Tooltip } from '@/components/tooltip';
-
-type Language = 'de' | 'en' | 'ru';
-
-const LANGUAGE_OPTIONS = ['de', 'en', 'ru'] satisfies Language[];
 
 export const Footer = (props: Footer.Props) => {
   const {
@@ -41,23 +30,6 @@ export const Footer = (props: Footer.Props) => {
   const { t, i18n } = useTranslation();
 
   const [isLanguagePopoverOpen, setLanguagePopoverOpen] = useState(false);
-
-  const handleLanguageChange = (newLang: string) => {
-    // Pre-load new translations before changing language to not
-    // trigger `Suspense` which will unmount the whole app.
-    void i18n.loadLanguages(newLang).then(async () => {
-      await i18n.changeLanguage(newLang);
-
-      setLanguagePopoverOpen(false);
-
-      toast.success(
-        i18n.t('footer.language.changeSuccessMessage', {
-          lang: t(`languages.${newLang as Language}`),
-        }),
-        { timeout: 1500 },
-      );
-    });
-  };
 
   const lang = t(`languages.${(i18n.resolvedLanguage ?? 'en') as Language}`);
 
@@ -120,46 +92,22 @@ export const Footer = (props: Footer.Props) => {
         onOpenChange={setLanguagePopoverOpen}
       >
         <Tooltip
-          content={t('footer.language.label', { lang })}
+          content={t('footer.language', { lang })}
           contentPlacement="bottom"
         >
           <Button
             isIconOnly
             size="sm"
             variant="secondary"
-            aria-label={t('footer.language.label', { lang })}
+            aria-label={t('footer.language', { lang })}
           >
             <Globe />
           </Button>
         </Tooltip>
         <Popover.Content placement="top" className="min-w-60 p-4">
-          <RadioGroup
-            value={i18n.resolvedLanguage}
-            name="language"
-            onChange={handleLanguageChange}
-          >
-            <Label>{t('footer.language.radioGroupLabel')}</Label>
-            <Surface
-              variant="secondary"
-              className="mt-2 flex flex-col gap-3 rounded-xl p-3"
-            >
-              {LANGUAGE_OPTIONS.map((option, index) => (
-                <React.Fragment key={option}>
-                  <Radio value={option} className="mt-0">
-                    <Radio.Content className="w-full">
-                      <Radio.Control>
-                        <Radio.Indicator />
-                      </Radio.Control>
-                      {t(`languages.${option}`)}
-                    </Radio.Content>
-                  </Radio>
-                  {index !== LANGUAGE_OPTIONS.length - 1 && (
-                    <Separator variant="secondary" />
-                  )}
-                </React.Fragment>
-              ))}
-            </Surface>
-          </RadioGroup>
+          <LanguageSelect
+            onLanguageChangeSettle={() => setLanguagePopoverOpen(false)}
+          />
         </Popover.Content>
       </Popover>
     </footer>

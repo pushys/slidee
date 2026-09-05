@@ -28,3 +28,5 @@ export interface ImageAttribution {
   license: string;
   licenseUrl: `https://${string}`;
 }
+
+export type Language = 'de' | 'en' | 'ru';

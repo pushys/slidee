@@ -36,11 +36,7 @@
     "stats": "Stats",
     "howToPlay": "How to play",
     "settings": "Settings",
-    "language": {
-      "label": "Language: {{lang}}",
-      "radioGroupLabel": "Change language",
-      "changeSuccessMessage": "Language changed to {{lang}}"
-    }
+    "language": "Language: {{lang}}"
   },
   "settingsForm": {
     "tabs": {
@@ -120,6 +116,11 @@
       "label": "Filters",
       "imageTags": "Images tags"
     }
+  },
+  "languageSelect": {
+    "label": "Change language",
+    "changeSuccessMessage": "Language changed to {{lang}}",
+    "changeErrorMessage": "Error occurred while changing language"
   },
   "alerts": {
     "clearStats": {

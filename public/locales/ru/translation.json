@@ -36,11 +36,7 @@
     "stats": "Статистика",
     "howToPlay": "Как играть",
     "settings": "Настройки",
-    "language": {
-      "label": "Язык: {{lang}}",
-      "radioGroupLabel": "Сменить язык",
-      "changeSuccessMessage": "Язык сменён на {{lang}}"
-    }
+    "language": "Язык: {{lang}}"
   },
   "settingsForm": {
     "tabs": {
@@ -120,6 +116,11 @@
       "label": "Фильтры",
       "imageTags": "Теги изображений"
     }
+  },
+  "languageSelect": {
+    "label": "Сменить язык",
+    "changeSuccessMessage": "Язык сменён на {{lang}}",
+    "changeErrorMessage": "Произошла ошибка при смене языка"
   },
   "alerts": {
     "clearStats": {
