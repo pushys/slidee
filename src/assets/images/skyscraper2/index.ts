@@ -7,11 +7,11 @@ export const skyscraper2 = {
   image,
   preview,
   attribution: {
-    author: 'Joel Filipe',
-    authorUrl: 'https://unsplash.com/@joelfilip',
+    author: 'Simone Hutsch',
+    authorUrl: 'https://unsplash.com/@heysupersimi',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/glass-building-under-clear-blue-sky-jU9VAZDGMzs',
+      'https://unsplash.com/photos/low-angle-photo-of-high-rise-building-iDSfeuoxM0o',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

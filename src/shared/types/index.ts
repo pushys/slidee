@@ -7,6 +7,7 @@ export type ImageTag =
   | 'aviation'
   | 'drinks'
   | 'food'
+  | 'gaming'
   | 'luxury'
   | 'nature'
   | 'space'

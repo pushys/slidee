@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const burger = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'Eiliv Aceron',
+    authorUrl: 'https://unsplash.com/@shootdelicious',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+      'https://unsplash.com/photos/burger-with-lettuce-and-tomato-uBigm8w_MpA',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['sports'],
+  tags: ['food'],
 } satisfies ImageMetadata;
