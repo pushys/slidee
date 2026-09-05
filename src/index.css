@@ -97,14 +97,18 @@
   }
 }
 
+@utility bg-app {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, white 5%, transparent),
+      transparent 45%
+    ),
+    var(--background);
+}
+
 ::view-transition-group(.tile),
 ::view-transition-old(.tile),
 ::view-transition-new(.tile) {
   animation-duration: 80ms;
-}
-
-#root {
-  display: grid;
-  place-items: center;
-  height: 100vh;
 }
