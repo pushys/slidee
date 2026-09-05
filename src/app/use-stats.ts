@@ -11,7 +11,7 @@ export function useStats(): useStats.ReturnValue {
   const [stats, setStats] = useLocalStorageStats();
 
   const updateStats = useCallback(
-    ({ boardSize, totalPlayTime, image }: useStats.UpdateStatePayload) =>
+    ({ boardSize, totalPlayTime, image }: useStats.UpdateStatsPayload) =>
       setStats((prevStats) => {
         const entry = prevStats[boardSize];
 
@@ -66,7 +66,7 @@ export function useStats(): useStats.ReturnValue {
 }
 
 export namespace useStats {
-  export interface UpdateStatePayload {
+  export interface UpdateStatsPayload {
     boardSize: Game.BoardSize;
     totalPlayTime: number;
     image: ImageKeys | null;
@@ -74,7 +74,7 @@ export namespace useStats {
 
   export interface ReturnValue {
     stats: Stats;
-    updateStats: (data: UpdateStatePayload) => void;
+    updateStats: (data: UpdateStatsPayload) => void;
     clearStats: (boardSize?: Game.BoardSize) => void;
   }
 }
