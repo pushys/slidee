@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { Settings } from '@/settings/settings.schema';
 
-import { SettingsForm } from '@/components/settings-form';
+import { SettingsForm } from '@/components/forms/settings-form';
 
 export const SettingsDialog = (props: SettingsDialog.Props) => {
   const { defaultSettings, onSettingsSave, images, stats, ...rest } = props;
