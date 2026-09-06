@@ -76,5 +76,5 @@
     "*.{ts,tsx}": "oxlint",
     "*.{ts,tsx,md}": "oxfmt"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@11.25.0"
 }
