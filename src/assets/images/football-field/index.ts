@@ -3,15 +3,15 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const footballField = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'calvin jung',
+    authorUrl: 'https://unsplash.com/@methemood',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+      'https://unsplash.com/photos/white-line-on-green-grass-field-CWon59n3AB8',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

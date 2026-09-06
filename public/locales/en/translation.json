@@ -1,4 +1,8 @@
 {
+  "app": {
+    "title": "Slidee - Sliding Puzzle Game",
+    "description": "Play a sliding puzzle game with beautiful image themes, multiple board sizes, keyboard controls, smooth animations, and personal best tracking."
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
@@ -32,11 +36,7 @@
     "stats": "Stats",
     "howToPlay": "How to play",
     "settings": "Settings",
-    "language": {
-      "label": "Language: {{lang}}",
-      "radioGroupLabel": "Change language",
-      "changeSuccessMessage": "Language changed to {{lang}}"
-    }
+    "language": "Language: {{lang}}"
   },
   "settingsForm": {
     "tabs": {
@@ -117,6 +117,11 @@
       "imageTags": "Images tags"
     }
   },
+  "languageSelect": {
+    "label": "Change language",
+    "changeSuccessMessage": "Language changed to {{lang}}",
+    "changeErrorMessage": "Error occurred while changing language"
+  },
   "alerts": {
     "clearStats": {
       "title": {
@@ -135,6 +140,7 @@
     "somethingWentWrong": "Something went wrong."
   },
   "languages": {
+    "de": "Deutsch",
     "en": "English",
     "ru": "Русский"
   }

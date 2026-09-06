@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const resort2 = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'Chelsea Gates',
+    authorUrl: 'https://unsplash.com/@chelseacgates',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+      'https://unsplash.com/photos/woman-on-body-of-water-during-daytime-0653_wY0nRc',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['sports'],
+  tags: ['luxury'],
 } satisfies ImageMetadata;

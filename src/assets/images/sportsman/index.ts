@@ -3,15 +3,14 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const sportsman = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'Braden Collum',
+    authorUrl: 'https://unsplash.com/@bradencollum',
     source: 'Unsplash',
-    sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+    sourceUrl: 'https://unsplash.com/photos/man-on-running-field-9HI8UJMSdZA',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },

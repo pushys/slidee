@@ -1,4 +1,8 @@
 {
+  "app": {
+    "title": "Slidee - Игра в пятнашки",
+    "description": "Играйте в пятнашки с красивыми изображениями, разными размерами игрового поля, управлением с клавиатуры, плавными анимациями и отслеживанием личных рекордов."
+  },
   "common": {
     "save": "Сохранить",
     "cancel": "Отмена",
@@ -32,11 +36,7 @@
     "stats": "Статистика",
     "howToPlay": "Как играть",
     "settings": "Настройки",
-    "language": {
-      "label": "Язык: {{lang}}",
-      "radioGroupLabel": "Сменить язык",
-      "changeSuccessMessage": "Язык сменён на {{lang}}"
-    }
+    "language": "Язык: {{lang}}"
   },
   "settingsForm": {
     "tabs": {
@@ -117,6 +117,11 @@
       "imageTags": "Теги изображений"
     }
   },
+  "languageSelect": {
+    "label": "Сменить язык",
+    "changeSuccessMessage": "Язык сменён на {{lang}}",
+    "changeErrorMessage": "Произошла ошибка при смене языка"
+  },
   "alerts": {
     "clearStats": {
       "title": {
@@ -135,6 +140,7 @@
     "somethingWentWrong": "Что-то пошло не так."
   },
   "languages": {
+    "de": "Deutsch",
     "en": "English",
     "ru": "Русский"
   }

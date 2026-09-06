@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const controller = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'Sora Khan',
+    authorUrl: 'https://unsplash.com/@sorakhan',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+      'https://unsplash.com/photos/white-and-black-sony-ps-4-controller-3U2NAo-VHSE',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['sports'],
+  tags: ['gaming', 'technology'],
 } satisfies ImageMetadata;

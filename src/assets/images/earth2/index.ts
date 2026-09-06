@@ -3,17 +3,17 @@ import type { ImageMetadata } from '@/shared/types';
 import image from './image.avif';
 import preview from './preview.avif';
 
-export const golf = {
+export const earth2 = {
   image,
   preview,
   attribution: {
-    author: 'Atte Grönlund',
-    authorUrl: 'https://unsplash.com/@gratte',
+    author: 'NASA',
+    authorUrl: 'https://unsplash.com/@nasa',
     source: 'Unsplash',
     sourceUrl:
-      'https://unsplash.com/photos/a-golf-putt-and-a-golf-ball-on-a-putting-green-41AJ5WZ4kr0',
+      'https://unsplash.com/photos/view-of-planet-earth-from-space-with-clouds-JZz2UYtHo1s',
     license: 'Unsplash License',
     licenseUrl: 'https://unsplash.com/license',
   },
-  tags: ['sports'],
+  tags: ['nature', 'space'],
 } satisfies ImageMetadata;

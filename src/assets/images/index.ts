@@ -11,6 +11,7 @@ import { berries } from './berries';
 import { building } from './building';
 import { building2 } from './building2';
 import { building3 } from './building3';
+import { burger } from './burger';
 import { butterfly } from './butterfly';
 import { cake } from './cake';
 import { camera } from './camera';
@@ -19,19 +20,23 @@ import { car } from './car';
 import { car2 } from './car2';
 import { car3 } from './car3';
 import { car4 } from './car4';
+import { car5 } from './car5';
 import { cat } from './cat';
 import { cat2 } from './cat2';
 import { chess } from './chess';
 import { cocktail } from './cocktail';
 import { coffee } from './coffee';
+import { controller } from './controller';
 import { dam } from './dam';
 import { dish } from './dish';
 import { dog } from './dog';
 import { earth } from './earth';
+import { earth2 } from './earth2';
 import { fantasy } from './fantasy';
 import { fish } from './fish';
 import { flower } from './flower';
 import { flowers } from './flowers';
+import { footballField } from './football-field';
 import { forest } from './forest';
 import { forest2 } from './forest2';
 import { galaxy } from './galaxy';
@@ -57,6 +62,7 @@ import { parrot } from './parrot';
 import { piano } from './piano';
 import { ramen } from './ramen';
 import { resort } from './resort';
+import { resort2 } from './resort2';
 import { road } from './road';
 import { robot } from './robot';
 import { sculpture } from './sculpture';
@@ -66,6 +72,7 @@ import { skyscraper } from './skyscraper';
 import { skyscraper2 } from './skyscraper2';
 import { smartphone } from './smartphone';
 import { soda } from './soda';
+import { sportsman } from './sportsman';
 import { stadium } from './stadium';
 import { stars } from './stars';
 import { subway } from './subway';
@@ -75,81 +82,88 @@ import { wheat } from './wheat';
 import { yacht } from './yacht';
 
 export const images = {
-  abstract,
-  abstract2,
-  abstract3,
-  basketball,
-  beach,
-  airplane,
-  airplane2,
-  astronaut,
-  beer,
-  berries,
-  building,
-  building2,
-  building3,
-  butterfly,
-  cake,
-  camera,
-  canyon,
-  car,
-  car2,
-  car3,
-  car4,
-  cat,
-  cat2,
-  chess,
-  cocktail,
-  coffee,
   dam,
-  dish,
-  dog,
-  earth,
-  fantasy,
-  fish,
-  forest,
-  forest2,
-  galaxy,
-  glass,
-  golf,
-  hardware,
-  helicopter,
-  hotAirBalloon,
-  house,
-  jetEngine,
-  juice,
-  keyboard,
+  astronaut,
   laptop,
-  leaves,
-  mailbox,
-  moon,
-  flower,
-  flowers,
-  motorcycle,
-  mountains,
-  painting,
-  painting2,
-  pancakes,
-  parrot,
-  piano,
-  ramen,
-  resort,
-  road,
-  robot,
-  sculpture,
-  sculpture2,
-  seaTurtle,
-  skyscraper,
-  skyscraper2,
-  smartphone,
-  soda,
   stadium,
-  stars,
-  subway,
-  toucan,
+  abstract,
+  keyboard,
+  earth2,
+  car5,
+  camera,
   watch,
+  galaxy,
+  soda,
+  house,
+  subway,
+  burger,
+  car2,
+  road,
+  golf,
+  abstract3,
+  hardware,
+  car4,
+  parrot,
+  dish,
+  skyscraper2,
+  glass,
+  robot,
+  forest2,
+  airplane,
+  leaves,
+  helicopter,
+  skyscraper,
+  resort,
+  beach,
+  chess,
+  car3,
+  flowers,
+  cat,
+  hotAirBalloon,
+  seaTurtle,
+  sculpture,
+  painting,
+  car,
+  fish,
+  abstract2,
+  building3,
+  earth,
+  sportsman,
+  jetEngine,
+  footballField,
+  motorcycle,
+  controller,
+  sculpture2,
+  mailbox,
+  toucan,
+  juice,
+  resort2,
+  ramen,
+  cat2,
+  basketball,
   wheat,
+  butterfly,
+  dog,
+  flower,
+  pancakes,
+  building,
+  forest,
+  stars,
+  airplane2,
+  piano,
+  coffee,
+  mountains,
+  moon,
+  building2,
+  cocktail,
   yacht,
+  beer,
+  painting2,
+  canyon,
+  berries,
+  cake,
+  fantasy,
+  smartphone,
 };
 
 export type ImageKeys = keyof typeof images;

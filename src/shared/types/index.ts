@@ -7,6 +7,7 @@ export type ImageTag =
   | 'aviation'
   | 'drinks'
   | 'food'
+  | 'gaming'
   | 'luxury'
   | 'nature'
   | 'space'
@@ -28,3 +29,5 @@ export interface ImageAttribution {
   license: string;
   licenseUrl: `https://${string}`;
 }
+
+export type Language = 'de' | 'en' | 'ru';
