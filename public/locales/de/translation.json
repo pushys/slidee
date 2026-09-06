@@ -54,15 +54,6 @@
       "label": "Konfetti",
       "description": "Nach Abschluss eines Spiels einen Konfetti-Effekt anzeigen."
     },
-    "boardSize": {
-      "label": "Spielfeldgröße",
-      "options": {
-        "3": "Leicht",
-        "4": "Mittel",
-        "5": "Schwer",
-        "6": "Experte"
-      }
-    },
     "numbers": {
       "label": "Zahlen anzeigen",
       "description": "Zahlen auf den Bildkacheln anzeigen."
@@ -115,6 +106,15 @@
     "filters": {
       "label": "Filter",
       "imageTags": "Bild-Tags"
+    }
+  },
+  "boardSizePicker": {
+    "label": "Spielfeldgröße",
+    "options": {
+      "3": "Leicht",
+      "4": "Mittel",
+      "5": "Schwer",
+      "6": "Experte"
     }
   },
   "languageSelect": {

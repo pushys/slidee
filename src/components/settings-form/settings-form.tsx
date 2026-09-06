@@ -1,15 +1,4 @@
-import {
-  Label,
-  Radio,
-  RadioGroup,
-  Switch,
-  Skeleton,
-  Description,
-  SwitchGroup,
-  Chip,
-  Tabs,
-} from '@heroui/react';
-import clsx from 'clsx';
+import { Switch, Description, SwitchGroup, Chip, Tabs } from '@heroui/react';
 import { useState } from 'react';
 import {
   useForm,
@@ -23,35 +12,11 @@ import { usePrefersReducedMotion } from 'rooks';
 import type { Settings } from '@/settings/settings.schema';
 import type { Stats } from '@/stats/stats.schema';
 
+import { BoardSizePicker } from '@/components/board-size-picker';
 import { ImagePicker } from '@/components/image-picker';
-import { Game } from '@/game/game';
 import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
-
-const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {
-  const gridMaps = {
-    3: 'grid-cols-3 grid-rows-3',
-    4: 'grid-cols-4 grid-rows-4',
-    5: 'grid-cols-5 grid-rows-5',
-    6: 'grid-cols-6 grid-rows-6',
-  } satisfies Record<
-    Game.BoardSize,
-    `grid-cols-${Game.BoardSize} grid-rows-${Game.BoardSize}`
-  >;
-
-  return (
-    <div className={clsx('grid size-10 gap-0.5', gridMaps[size])}>
-      {Array.from({ length: size * size - 1 }).map((_, index) => (
-        <Skeleton
-          key={index}
-          className="aspect-square rounded-xs bg-accent"
-          animationType="none"
-        />
-      ))}
-    </div>
-  );
-};
 
 export const SettingsForm = (props: SettingsForm.Props) => {
   const {
@@ -72,12 +37,6 @@ export const SettingsForm = (props: SettingsForm.Props) => {
   const methods = useForm<Settings>({ defaultValues, ...rest });
 
   const image = useWatch({ name: 'image', control: methods.control });
-
-  const boardOptions = Game.BOARD_SIZES.map((size) => ({
-    value: size,
-    label: `${size}x${size}`,
-    description: t(`settingsForm.boardSize.options.${size}`),
-  })) satisfies { value: Game.BoardSize; label: string; description: string }[];
 
   return (
     <form
@@ -165,39 +124,12 @@ export const SettingsForm = (props: SettingsForm.Props) => {
             name="boardSize"
             control={methods.control}
             render={({ field: { value, disabled, ...field } }) => (
-              <RadioGroup
+              <BoardSizePicker
                 {...field}
-                variant="secondary"
-                value={String(value)}
+                value={value}
                 isDisabled={disabled}
-                onChange={(value) => field.onChange(Number(value))}
-              >
-                <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-                  <Label>{t('settingsForm.boardSize.label')}</Label>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {boardOptions.map((option) => (
-                    <Radio
-                      key={option.value}
-                      value={String(option.value)}
-                      className="m-0"
-                    >
-                      <Radio.Content
-                        className={clsx(
-                          'group relative flex w-full flex-row items-start justify-start gap-4 rounded-xl border-2 border-transparent bg-surface-secondary px-4 py-3 transition-all',
-                          'data-[selected=true]:border-accent data-[selected=true]:bg-accent/10',
-                        )}
-                      >
-                        <BoardSkeleton size={option.value} />
-                        <div className="flex flex-col gap-1">
-                          <span>{option.label}</span>
-                          <Description>{option.description}</Description>
-                        </div>
-                      </Radio.Content>
-                    </Radio>
-                  ))}
-                </div>
-              </RadioGroup>
+                onChange={field.onChange}
+              />
             )}
           />
         </Tabs.Panel>

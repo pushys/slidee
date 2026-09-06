@@ -54,15 +54,6 @@
       "label": "Confetti",
       "description": "Play a confetti effect after a game is over."
     },
-    "boardSize": {
-      "label": "Board size",
-      "options": {
-        "3": "Easy",
-        "4": "Medium",
-        "5": "Hard",
-        "6": "Expert"
-      }
-    },
     "numbers": {
       "label": "Show numbers",
       "description": "Display numbers on image tiles."
@@ -115,6 +106,15 @@
     "filters": {
       "label": "Filters",
       "imageTags": "Images tags"
+    }
+  },
+  "boardSizePicker": {
+    "label": "Board size",
+    "options": {
+      "3": "Easy",
+      "4": "Medium",
+      "5": "Hard",
+      "6": "Expert"
     }
   },
   "languageSelect": {
