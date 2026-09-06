@@ -1,5 +1,10 @@
 import { sample, drop } from 'es-toolkit';
-import { useCallback, type Dispatch, type SetStateAction } from 'react';
+import {
+  useCallback,
+  useMemo,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 
 import type { Settings } from '@/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
@@ -85,20 +90,36 @@ export function useSettings(): useSettings.ReturnValue {
     }));
   }, [setSettings]);
 
-  return {
-    settings,
-    setSettings,
-    imageMetadata,
-    isFirstImage,
-    isLastImage,
-    enableSound,
-    disableSound,
-    setBoardSize,
-    randomImage,
-    previousImage,
-    nextImage,
-    toggleMode,
-  };
+  return useMemo(
+    () => ({
+      settings,
+      setSettings,
+      imageMetadata,
+      isFirstImage,
+      isLastImage,
+      enableSound,
+      disableSound,
+      setBoardSize,
+      randomImage,
+      previousImage,
+      nextImage,
+      toggleMode,
+    }),
+    [
+      settings,
+      setSettings,
+      imageMetadata,
+      isFirstImage,
+      isLastImage,
+      enableSound,
+      disableSound,
+      setBoardSize,
+      randomImage,
+      previousImage,
+      nextImage,
+      toggleMode,
+    ],
+  );
 }
 
 export namespace useSettings {
