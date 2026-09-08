@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { ChallengeStatus } from '@/challenge/challenge.schema';
 import { Board as BoardView } from '@/components/board';
 import { Tile } from '@/components/tile';
 
@@ -10,6 +11,7 @@ export const Board = () => {
     isDialogOpen,
     isImagePreviewing,
     settings: { settings, imageMetadata },
+    challenge: { current, start },
     game,
     startViewTransition,
   } = useAppContext();
@@ -46,6 +48,13 @@ export const Board = () => {
       onTileMove={(dir) => startViewTransition(() => game.move(dir))}
       onGamePause={() => game.pause()}
       onGameResume={() => game.resume()}
+      {...(current && {
+        imageSrc: current.imageMetadata?.image,
+        isConfettiDisabled: true,
+        isNumbersVisible: current.settings.showNumbers,
+        isCountdownEnabled: current.status === ChallengeStatus.Countdown,
+        onCountdownComplete: start,
+      })}
     />
   );
 };

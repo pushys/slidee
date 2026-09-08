@@ -9,13 +9,18 @@
     "clear": "Löschen",
     "retry": "Erneut versuchen",
     "ok": "OK",
-    "close": "Schließen"
+    "close": "Schließen",
+    "start": "Start",
+    "shuffle": "Mischen"
   },
   "toolbar": {
-    "shuffle": "Mischen",
     "pause": "Pausieren",
     "resume": "Fortsetzen",
     "solve": "Lösen"
+  },
+  "challengeToolbar": {
+    "quit": "Quit",
+    "score": "Score"
   },
   "board": {
     "imageAttribution": "Foto von <authorLink>{{author}}</authorLink> auf <sourceLink>{{source}}</sourceLink>"
@@ -59,6 +64,12 @@
       "description": "Zahlen auf den Bildkacheln anzeigen."
     }
   },
+  "challengeSettingsForm": {
+    "timeLimit": {
+      "label": "Time limit",
+      "optionLabel": "{{timeLimit}} min"
+    }
+  },
   "statsDialog": {
     "title": "Deine Statistiken",
     "tableColumns": {
@@ -85,6 +96,9 @@
   },
   "settingsDialog": {
     "title": "Einstellungen"
+  },
+  "challengeSettingsDialog": {
+    "title": "Create challenge"
   },
   "imageTags": {
     "3d": "3D",

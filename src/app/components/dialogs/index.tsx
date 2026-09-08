@@ -11,6 +11,10 @@ const SettingsDialog = lazyNamed(
   () => import('./settings-dialog'),
   'SettingsDialog',
 );
+const ChallengeSettingsDialog = lazyNamed(
+  () => import('./challenge-settings-dialog'),
+  'ChallengeSettingsDialog',
+);
 
 export const Dialogs = () => {
   const { dialog, isDialogOpen, closeDialog } = useAppContext();
@@ -26,6 +30,7 @@ export const Dialogs = () => {
           {dialog === 'stats' && <StatsDialog />}
           {dialog === 'help' && <HelpDialog />}
           {dialog === 'settings' && <SettingsDialog />}
+          {dialog === 'challenge-settings' && <ChallengeSettingsDialog />}
         </Modal.Container>
       </Suspense>
     </Modal.Backdrop>

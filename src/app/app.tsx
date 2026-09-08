@@ -6,7 +6,7 @@ import { Board } from './components/board';
 import { Controls } from './components/controls';
 import { Dialogs } from './components/dialogs';
 import { Footer } from './components/footer';
-import { Toolbar } from './components/toolbar';
+import { Toolbars } from './components/toolbars';
 import { AppProvider } from './providers/app-provider';
 import { ErrorBoundary } from './providers/error-boundary';
 import { Suspense } from './providers/suspense';
@@ -17,7 +17,7 @@ export const App = () => {
       <Suspense>
         <AppProvider>
           <AppContainer controls={<Controls />}>
-            <Toolbar />
+            <Toolbars />
             <Board />
             <Footer />
             <Dialogs />

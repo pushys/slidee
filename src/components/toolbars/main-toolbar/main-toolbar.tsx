@@ -20,7 +20,7 @@ import { headShake } from '@/shared/utils/animations/headShake';
 import { useAnimate } from '@/shared/utils/animations/use-animate';
 import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
-export const Toolbar = (props: Toolbar.Props) => {
+export const MainToolbar = (props: MainToolbar.Props) => {
   const {
     gameStatus = Game.Status.Idle,
     moves = 0,
@@ -57,15 +57,15 @@ export const Toolbar = (props: Toolbar.Props) => {
           className="@max-[460px]:hidden"
         >
           <Shuffle />
-          {t('toolbar.shuffle')}
+          {t('common.shuffle')}
         </Button>
-        <Tooltip content={t('toolbar.shuffle')} contentPlacement="top">
+        <Tooltip content={t('common.shuffle')} contentPlacement="top">
           <Button
             isIconOnly
             size="lg"
             onPress={onShufflePress}
             className="@min-[460px]:hidden"
-            aria-label={t('toolbar.shuffle')}
+            aria-label={t('common.shuffle')}
           >
             <Shuffle />
           </Button>
@@ -151,7 +151,7 @@ export const Toolbar = (props: Toolbar.Props) => {
   );
 };
 
-export namespace Toolbar {
+export namespace MainToolbar {
   export interface Props extends ComponentProps<'header'> {
     /**
      * Current game status.

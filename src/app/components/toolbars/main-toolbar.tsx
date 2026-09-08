@@ -1,8 +1,8 @@
-import { Toolbar as ToolbarView } from '@/components/toolbar';
+import { MainToolbar as MainToolbarView } from '@/components/toolbars/main-toolbar';
 
-import { useAppContext } from '../app-context';
+import { useAppContext } from '../../app-context';
 
-export const Toolbar = () => {
+export const MainToolbar = () => {
   const {
     settings: { settings },
     stats: { stats },
@@ -11,7 +11,7 @@ export const Toolbar = () => {
   } = useAppContext();
 
   return (
-    <ToolbarView
+    <MainToolbarView
       gameStatus={game.state.status}
       moves={game.state.moves}
       elapsedTime={game.totalPlayTime}

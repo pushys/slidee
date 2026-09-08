@@ -9,13 +9,18 @@
     "clear": "Clear",
     "retry": "Retry",
     "ok": "OK",
-    "close": "Close"
+    "close": "Close",
+    "start": "Start",
+    "shuffle": "Shuffle"
   },
   "toolbar": {
-    "shuffle": "Shuffle",
     "pause": "Pause",
     "resume": "Resume",
     "solve": "Solve"
+  },
+  "challengeToolbar": {
+    "quit": "Quit",
+    "score": "Score"
   },
   "board": {
     "imageAttribution": "Photo by <authorLink>{{author}}</authorLink> on <sourceLink>{{source}}</sourceLink>"
@@ -59,6 +64,12 @@
       "description": "Display numbers on image tiles."
     }
   },
+  "challengeSettingsForm": {
+    "timeLimit": {
+      "label": "Time limit",
+      "optionLabel": "{{timeLimit}} min"
+    }
+  },
   "statsDialog": {
     "title": "Your stats",
     "tableColumns": {
@@ -85,6 +96,12 @@
   },
   "settingsDialog": {
     "title": "Settings"
+  },
+  "challengeSettingsDialog": {
+    "title": "Create challenge"
+  },
+  "challengeResultDialog": {
+    "title": "Challenge result"
   },
   "imageTags": {
     "3d": "3D",

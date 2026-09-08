@@ -19,6 +19,7 @@ import { useGame } from '@/game/use-game';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
+import { useChallenge } from '../use-challenge';
 import { useSettings } from '../use-settings';
 import { useStats } from '../use-stats';
 
@@ -31,6 +32,7 @@ export function AppProvider(props: PropsWithChildren) {
 
   const settings = useSettings();
   const stats = useStats();
+  const challenge = useChallenge();
 
   const { boardSize, animations, image } = settings.settings;
 
@@ -57,34 +59,42 @@ export function AppProvider(props: PropsWithChildren) {
     });
   });
 
+  const updateChallengeScore = useEffectEvent(() => {
+    challenge.increaseScore();
+  });
+
   useEffect(() => {
     if (game.state.status === Game.Status.Over) {
       updateStats();
+      updateChallengeScore();
     }
   }, [game.state.status]);
 
-  // Board size change or new image selection must start a new game.
-  useDidUpdate(() => game.init({ boardSize }), [boardSize, image]);
+  // Board size change, new image selection or challenge start must trigger a new game.
+  useDidUpdate(
+    () => game.init({ boardSize }),
+    [boardSize, image, challenge.hasCurrent],
+  );
 
-  const handleFocusLoss = () => {
+  const handleWindowBlur = () => {
     if (game.state.status === 'playing') {
       game.pause();
       pauseReasonRef.current = 'lost-focus';
     }
   };
 
-  const handleFocusGain = () => {
+  const handleWindowFocus = () => {
     if (pauseReasonRef.current === 'lost-focus') {
       game.resume();
       pauseReasonRef.current = null;
     }
   };
 
-  useWindowEventListener('blur', handleFocusLoss);
-  useWindowEventListener('focus', handleFocusGain);
+  useWindowEventListener('blur', handleWindowBlur);
+  useWindowEventListener('focus', handleWindowFocus);
   useDocumentEventListener(
     'visibilitychange',
-    document.hidden ? handleFocusLoss : handleFocusGain,
+    document.hidden ? handleWindowBlur : handleWindowFocus,
   );
 
   const openDialog = useCallback(
@@ -122,6 +132,7 @@ export function AppProvider(props: PropsWithChildren) {
       setImagePreviewing,
       settings,
       stats,
+      challenge,
       game,
       startViewTransition,
     }),
@@ -134,6 +145,7 @@ export function AppProvider(props: PropsWithChildren) {
       setImagePreviewing,
       settings,
       stats,
+      challenge,
       game,
       startViewTransition,
     ],

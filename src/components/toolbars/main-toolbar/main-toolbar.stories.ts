@@ -4,11 +4,11 @@ import { fn } from 'storybook/test';
 
 import { Game } from '@/game/game';
 
-import { Toolbar } from './toolbar';
+import { MainToolbar } from './main-toolbar';
 
 const meta = {
-  title: 'Toolbar',
-  component: Toolbar,
+  title: 'Toolbars/MainToolbar',
+  component: MainToolbar,
   parameters: {
     layout: 'centered',
   },
@@ -18,7 +18,7 @@ const meta = {
       options: Object.values(Game.Status),
     },
   },
-} satisfies Meta<typeof Toolbar>;
+} satisfies Meta<typeof MainToolbar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

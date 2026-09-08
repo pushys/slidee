@@ -9,13 +9,18 @@
     "clear": "Очистить",
     "retry": "Попробовать снова",
     "ok": "OK",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "start": "Start",
+    "shuffle": "Перемешать"
   },
   "toolbar": {
-    "shuffle": "Перемешать",
     "pause": "Пауза",
     "resume": "Продолжить",
     "solve": "Решить"
+  },
+  "challengeToolbar": {
+    "quit": "Quit",
+    "score": "Score"
   },
   "board": {
     "imageAttribution": "Фото от <authorLink>{{author}}</authorLink> на <sourceLink>{{source}}</sourceLink>"
@@ -59,6 +64,12 @@
       "description": "Отображать числа поверх плиток."
     }
   },
+  "challengeSettingsForm": {
+    "timeLimit": {
+      "label": "Time limit",
+      "optionLabel": "{{timeLimit}} min"
+    }
+  },
   "statsDialog": {
     "title": "Ваша статистика",
     "tableColumns": {
@@ -85,6 +96,9 @@
   },
   "settingsDialog": {
     "title": "Настройки"
+  },
+  "challengeSettingsDialog": {
+    "title": "Create challenge"
   },
   "imageTags": {
     "3d": "3D",

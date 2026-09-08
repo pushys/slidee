@@ -6,7 +6,7 @@ import { Board } from '../board';
 import { Controls } from '../controls';
 import { Footer } from '../footer';
 import { Tile } from '../tile';
-import { Toolbar } from '../toolbar';
+import { MainToolbar } from '../toolbars/main-toolbar';
 import { AppContainer } from './app-container';
 
 const meta = {
@@ -18,7 +18,7 @@ const meta = {
   render: function Render(args) {
     return (
       <AppContainer {...args}>
-        <Toolbar />
+        <MainToolbar />
         <Board
           tiles={Game.createSequence()}
           renderTile={(tile) => <Tile key={tile} value={tile} />}

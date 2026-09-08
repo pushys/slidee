@@ -22,6 +22,7 @@ import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
 import { SoundManager } from '@/game/sound-manager';
+import { useCountdown } from '@/shared/utils/use-countdown';
 
 import { BoardContext } from './board-context';
 import { BoardCssVar } from './board-css-var';
@@ -57,10 +58,12 @@ export const Board = (props: Board.Props) => {
     isConfettiDisabled = false,
     isNumbersVisible = false,
     isImagePreviewActive = false,
+    isCountdownEnabled = false,
     onTileMove,
     onNewGame,
     onGamePause,
     onGameResume,
+    onCountdownComplete,
     ...rest
   } = props;
 
@@ -71,6 +74,15 @@ export const Board = (props: Board.Props) => {
 
   const [soundManager] = useState(() => new SoundManager());
   const [isCursorHiddenState, setCursorHiddenState] = useState(false);
+
+  const countdown = useCountdown({
+    enabled: isCountdownEnabled,
+    onTick: () => soundManager.play('countdown'),
+    onComplete: () => {
+      onCountdownComplete?.();
+      soundManager.play('countdownEnd');
+    },
+  });
 
   const playSound = useEffectEvent((sound: SoundManager.Sound) => {
     if (!isSoundDisabled) {
@@ -98,7 +110,7 @@ export const Board = (props: Board.Props) => {
   const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
 
   useEffect(() => {
-    playSound(SoundManager.Sound.Move);
+    playSound('move');
 
     // A tile move must remove active focus from any element on
     // the page so it doesn't interfere with the gameplay.
@@ -111,7 +123,7 @@ export const Board = (props: Board.Props) => {
     if (isGamePlaying) {
       confetti.reset();
     } else if (isGameOver) {
-      playSound(SoundManager.Sound.Win);
+      playSound('win');
       playConfetti();
     }
   }, [isGamePlaying, isGameOver]);
@@ -150,7 +162,7 @@ export const Board = (props: Board.Props) => {
           break;
       }
     },
-    { when: !isKeyboardDisabled },
+    { when: !isKeyboardDisabled && countdown === null },
   );
 
   // Unhide cursor once mouse moves again.
@@ -252,6 +264,16 @@ export const Board = (props: Board.Props) => {
           </Chip.Label>
         </Chip>
       )}
+      <div
+        className={clsx(
+          'pointer-events-none absolute inset-2 flex rounded-lg backdrop-blur-xl transition-opacity',
+          { 'opacity-0': countdown === null },
+        )}
+      >
+        <span className="m-auto text-9xl font-bold text-shadow-lg">
+          {countdown}
+        </span>
+      </div>
     </section>
   );
 };
@@ -319,6 +341,12 @@ export namespace Board {
      */
     isImagePreviewActive?: boolean;
     /**
+     * If `true`, a countdown will be rendered over the board.
+     *
+     * @default false
+     */
+    isCountdownEnabled?: boolean;
+    /**
      * Tile move event handler.
      */
     onTileMove?: (direction: Game.MoveDirection) => void;
@@ -334,5 +362,9 @@ export namespace Board {
      * Game resume event handler.
      */
     onGameResume?: () => void;
+    /**
+     * Countdown complete handler.
+     */
+    onCountdownComplete?: () => void;
   }
 }

@@ -1,15 +1,14 @@
-import { sounds } from '@/assets/sounds';
+import { sounds, type SoundKey } from '@/assets/sounds';
 
 export class SoundManager {
-  static readonly Sound = Object.freeze({
-    Move: 'move',
-    Win: 'win',
-  } as const);
-
+  readonly #countdown = new Audio(sounds.countdown);
+  readonly #countdownEnd = new Audio(sounds.countdownEnd);
   readonly #move = new Audio(sounds.move);
   readonly #win = new Audio(sounds.win);
 
   constructor() {
+    this.#countdown.volume = 1;
+    this.#countdownEnd.volume = 1;
     this.#move.volume = 1;
     this.#win.volume = 1;
   }
@@ -21,17 +20,18 @@ export class SoundManager {
     }
   }
 
-  /**
-   * Plays a sound by a code.
-   *
-   * @param sound
-   */
-  public play(sound: SoundManager.Sound): void {
+  public play(sound: SoundKey): void {
     switch (sound) {
-      case SoundManager.Sound.Move:
+      case 'countdown':
+        this.#playAudio(this.#countdown);
+        break;
+      case 'countdownEnd':
+        this.#playAudio(this.#countdownEnd);
+        break;
+      case 'move':
         this.#playAudio(this.#move);
         break;
-      case SoundManager.Sound.Win:
+      case 'win':
         this.#playAudio(this.#win);
         break;
     }
@@ -39,6 +39,5 @@ export class SoundManager {
 }
 
 export namespace SoundManager {
-  export type Sound =
-    (typeof SoundManager.Sound)[keyof typeof SoundManager.Sound];
+  export type Sound = SoundKey;
 }
