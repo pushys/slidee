@@ -29,7 +29,7 @@ export function useChallenge(): useChallenge.ReturnValue {
 
     return {
       ...rest,
-      timeLeft,
+      timeLeft: timeLeft < 0 ? 0 : timeLeft,
       imageMetadata: image ? images[image] : undefined,
     };
   }, [challenge, now]);
@@ -41,7 +41,7 @@ export function useChallenge(): useChallenge.ReturnValue {
       // Save new settings for the next challenge.
       setSettings(settings);
 
-      // Put new challenge into storage.
+      // Put new challenge into storage but don't start yet.
       setChallenge({
         settings,
         status: ChallengeStatus.Countdown,
@@ -53,6 +53,9 @@ export function useChallenge(): useChallenge.ReturnValue {
   );
 
   const start = useCallback(() => {
+    const now = Date.now();
+
+    setNow(now);
     setChallenge((prev) => {
       if (!prev || prev.status === ChallengeStatus.Active) {
         return prev;
@@ -60,7 +63,7 @@ export function useChallenge(): useChallenge.ReturnValue {
       return {
         ...prev,
         status: ChallengeStatus.Active,
-        endTime: Date.now() + prev.settings.timeLimit * 60 * 1_000,
+        endTime: now + prev.settings.timeLimit * 60 * 1_000,
       };
     });
   }, [setChallenge]);
