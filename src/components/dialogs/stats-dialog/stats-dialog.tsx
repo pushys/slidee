@@ -1,14 +1,8 @@
-import {
-  SquareChartColumn,
-  CrownDiamond,
-  Clock,
-  TrashBin,
-} from '@gravity-ui/icons';
+import { SquareChartColumn, CrownDiamond, TrashBin } from '@gravity-ui/icons';
 import {
   Modal,
   Button,
   Table,
-  Chip,
   AlertDialog,
   Typography,
   toast,
@@ -20,8 +14,8 @@ import { useTranslation } from 'react-i18next';
 
 import type { Stats } from '@/stats/stats.schema';
 
+import { TimeChip } from '@/components/time-chip';
 import { Game } from '@/game/game';
-import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
 export const StatsDialog = (props: StatsDialog.Props) => {
   const { stats = {}, onClearStatsPress, ...rest } = props;
@@ -78,16 +72,12 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                         <Table.Cell className="min-w-10 font-bold">{`${size}x${size}`}</Table.Cell>
                         <Table.Cell>
                           {entry ? (
-                            <Chip
+                            <TimeChip
+                              value={entry.best}
+                              startIcon={<CrownDiamond width={12} />}
                               color="warning"
                               variant="soft"
-                              className="tabular-nums"
-                            >
-                              <CrownDiamond width={12} />
-                              <Chip.Label>
-                                {formatElapsedTime(entry.best)}
-                              </Chip.Label>
-                            </Chip>
+                            />
                           ) : (
                             <Typography color="muted" type="body-sm">
                               {t('statsDialog.timeNotSet')}
@@ -96,16 +86,11 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                         </Table.Cell>
                         <Table.Cell>
                           {entry ? (
-                            <Chip
+                            <TimeChip
+                              value={entry.average}
                               color="default"
                               variant="soft"
-                              className="tabular-nums"
-                            >
-                              <Clock width={12} />
-                              <Chip.Label>
-                                {formatElapsedTime(entry.average)}
-                              </Chip.Label>
-                            </Chip>
+                            />
                           ) : (
                             <Typography color="muted" type="body-sm">
                               {t('statsDialog.timeNotSet')}

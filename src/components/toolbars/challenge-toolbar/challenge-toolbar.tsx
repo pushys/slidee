@@ -1,12 +1,12 @@
-import { Clock, Star, ArrowRightFromSquare, Shuffle } from '@gravity-ui/icons';
+import { Star, ArrowRightFromSquare, Shuffle } from '@gravity-ui/icons';
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import { clsx } from 'clsx';
 import { type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ChallengeStatus } from '@/challenge/challenge.schema';
+import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
-import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
 export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
   const {
@@ -52,16 +52,13 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
           <Star width={12} />
           <Chip.Label>{`Score: ${score}`}</Chip.Label>
         </Chip>
-        <Chip
+        <TimeChip
+          value={timeLeft}
           size="lg"
           color={timeLeft < 10000 ? 'danger' : 'success'}
           variant="soft"
-          className="tabular-nums"
           {...(!isActive && { color: 'default' })}
-        >
-          <Clock width={12} />
-          <Chip.Label>{formatElapsedTime(timeLeft)}</Chip.Label>
-        </Chip>
+        />
       </div>
     </header>
   );

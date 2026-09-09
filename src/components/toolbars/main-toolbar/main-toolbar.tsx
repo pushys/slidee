@@ -2,7 +2,6 @@ import {
   PauseFill,
   PlayFill,
   MagicWand,
-  Clock,
   ArrowsExpand,
   CrownDiamond,
   Shuffle,
@@ -14,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { useKey } from 'rooks';
 
 import { KeyCode } from '@/components/board/key-code';
+import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
 import { headShake } from '@/shared/utils/animations/headShake';
 import { useAnimate } from '@/shared/utils/animations/use-animate';
-import { formatElapsedTime } from '@/shared/utils/format-elapsed-time';
 
 export const MainToolbar = (props: MainToolbar.Props) => {
   const {
@@ -119,32 +118,24 @@ export const MainToolbar = (props: MainToolbar.Props) => {
           <ArrowsExpand width={12} />
           <Chip.Label>{moves}</Chip.Label>
         </Chip>
-        <Chip
-          size="lg"
-          color={
-            gameStatus === Game.Status.Idle
-              ? 'default'
-              : isPbBeat
-                ? 'success'
-                : 'danger'
+        <TimeChip
+          value={elapsedTime}
+          endIcon={
+            isAutoSolved && <MagicWand width={12} className="opacity-60" />
           }
+          size="lg"
+          color={isPbBeat ? 'success' : 'danger'}
           variant="soft"
-          className="tabular-nums"
-        >
-          <Clock width={12} />
-          <Chip.Label>{formatElapsedTime(elapsedTime)}</Chip.Label>
-          {isAutoSolved && <MagicWand width={12} className="opacity-60" />}
-        </Chip>
+          {...(gameStatus === Game.Status.Idle && { color: 'default' })}
+        />
         {personalBestTime !== undefined && (
-          <Chip
+          <TimeChip
+            value={personalBestTime}
+            startIcon={<CrownDiamond width={12} />}
             size="lg"
             color="warning"
             variant="soft"
-            className="tabular-nums"
-          >
-            <CrownDiamond width={12} />
-            <Chip.Label>{formatElapsedTime(personalBestTime)}</Chip.Label>
-          </Chip>
+          />
         )}
       </div>
     </header>
