@@ -10,8 +10,9 @@
     "retry": "Попробовать снова",
     "ok": "OK",
     "close": "Закрыть",
-    "start": "Start",
-    "shuffle": "Перемешать"
+    "start": "Старт",
+    "shuffle": "Перемешать",
+    "yes": "Да"
   },
   "toolbar": {
     "pause": "Пауза",
@@ -19,8 +20,8 @@
     "solve": "Решить"
   },
   "challengeToolbar": {
-    "quit": "Quit",
-    "score": "Score"
+    "quit": "Выйти",
+    "score": "Счёт"
   },
   "board": {
     "imageAttribution": "Фото от <authorLink>{{author}}</authorLink> на <sourceLink>{{source}}</sourceLink>"
@@ -28,6 +29,7 @@
   "controls": {
     "numbersMode": "Цифры",
     "imageMode": "Изображение",
+    "challengeMode": "Челлендж",
     "largerBoard": "Большее поле",
     "smallerBoard": "Меньшее поле",
     "randomImage": "Случайное изображение",
@@ -65,10 +67,7 @@
     }
   },
   "challengeSettingsForm": {
-    "timeLimit": {
-      "label": "Time limit",
-      "optionLabel": "{{timeLimit}} min"
-    }
+    "timeLimit": "{{timeLimit}} мин"
   },
   "statsDialog": {
     "title": "Ваша статистика",
@@ -98,7 +97,8 @@
     "title": "Настройки"
   },
   "challengeSettingsDialog": {
-    "title": "Create challenge"
+    "title": "Создать челлендж",
+    "description": "Постарайтесь решить как можно больше головоломок, пока не закончится время!"
   },
   "imageTags": {
     "3d": "3D",
@@ -147,6 +147,10 @@
     "clearStorage": {
       "title": "Очистить хранилище",
       "description": "Возможно, проблема связана с повреждением сохранённых данных. Это действие очистит настройки и статистику игры. Продолжить?"
+    },
+    "quitChallenge": {
+      "title": "Выйти",
+      "description": "Вы уверены, что хотите покинуть текущий челлендж?"
     }
   },
   "errors": {

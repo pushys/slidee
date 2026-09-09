@@ -5,6 +5,7 @@ import { useAppContext } from '../app-context';
 
 export const Controls = () => {
   const {
+    openDialog,
     settings: {
       settings,
       imageMetadata,
@@ -16,18 +17,38 @@ export const Controls = () => {
       previousImage,
       nextImage,
     },
+    challenge: { hasCurrent, end },
     game,
     isImagePreviewing,
     setImagePreviewing,
     startViewTransition,
   } = useAppContext();
 
+  let mode: ControlsView.Mode = 'numbers';
+
+  if (imageMetadata !== undefined) {
+    mode = 'image';
+  }
+
+  if (hasCurrent) {
+    mode = 'challenge';
+  }
+
+  const handleModeChange = (newMode: ControlsView.Mode) => {
+    if (newMode === 'challenge') {
+      return openDialog('challenge-settings');
+    }
+
+    end();
+    startViewTransition(toggleMode);
+  };
+
   return (
     <ControlsView
       boardSize={settings.boardSize}
       onBoardSizeChange={(s) => startViewTransition(() => setBoardSize(s))}
-      mode={imageMetadata ? 'image' : 'numbers'}
-      onModeChange={() => startViewTransition(toggleMode)}
+      mode={mode}
+      onModeChange={handleModeChange}
       onRandomImagePress={() => startViewTransition(randomImage)}
       onPreviousImagePress={() => startViewTransition(previousImage)}
       onNextImagePress={() => startViewTransition(nextImage)}

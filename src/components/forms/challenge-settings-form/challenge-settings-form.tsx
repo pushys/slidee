@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
 
-import { Thunderbolt, Snail, Clock } from '@gravity-ui/icons';
+import { Thunderbolt, Clock } from '@gravity-ui/icons';
 import {
   Switch,
   SwitchGroup,
   ToggleButton,
   ToggleButtonGroup,
-  Label,
 } from '@heroui/react';
 import {
   useForm,
@@ -25,8 +24,7 @@ import { ImagePicker } from '@/components/image-picker';
 
 const TIME_LIMIT_ICONS = {
   [TimeLimit.Fast]: <Thunderbolt />,
-  [TimeLimit.Medium]: <Clock />,
-  [TimeLimit.Slow]: <Snail />,
+  [TimeLimit.Standard]: <Clock />,
 } satisfies Record<TimeLimit, ReactElement>;
 
 export const ChallengeSettingsForm = (props: ChallengeSettingsForm.Props) => {
@@ -47,26 +45,24 @@ export const ChallengeSettingsForm = (props: ChallengeSettingsForm.Props) => {
   return (
     <form
       id={id}
-      className="flex flex-col gap-5"
+      className="flex flex-col gap-6"
       onSubmit={methods.handleSubmit(onSubmit)}
     >
       <Controller
         name="timeLimit"
         render={({ field: { value, onChange } }) => (
           <div className="flex flex-col gap-2">
-            <Label>{t('challengeSettingsForm.timeLimit.label')}</Label>
             <ToggleButtonGroup
               fullWidth
               selectionMode="single"
               selectedKeys={[value]}
               onSelectionChange={(keys) => onChange([...keys][0])}
+              size="lg"
             >
               {Object.values(TimeLimit).map((timeLimit) => (
                 <ToggleButton key={timeLimit} id={timeLimit}>
                   {TIME_LIMIT_ICONS[timeLimit]}
-                  {t('challengeSettingsForm.timeLimit.optionLabel', {
-                    timeLimit,
-                  })}
+                  {t('challengeSettingsForm.timeLimit', { timeLimit })}
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>

@@ -11,7 +11,8 @@
     "ok": "OK",
     "close": "Schließen",
     "start": "Start",
-    "shuffle": "Mischen"
+    "shuffle": "Mischen",
+    "yes": "Ja"
   },
   "toolbar": {
     "pause": "Pausieren",
@@ -19,8 +20,8 @@
     "solve": "Lösen"
   },
   "challengeToolbar": {
-    "quit": "Quit",
-    "score": "Score"
+    "quit": "Beenden",
+    "score": "Punktzahl"
   },
   "board": {
     "imageAttribution": "Foto von <authorLink>{{author}}</authorLink> auf <sourceLink>{{source}}</sourceLink>"
@@ -28,6 +29,7 @@
   "controls": {
     "numbersMode": "Zahlenmodus",
     "imageMode": "Bildmodus",
+    "challengeMode": "Herausforderungsmodus",
     "largerBoard": "Größeres Spielfeld",
     "smallerBoard": "Kleineres Spielfeld",
     "randomImage": "Zufälliges Bild",
@@ -65,10 +67,7 @@
     }
   },
   "challengeSettingsForm": {
-    "timeLimit": {
-      "label": "Time limit",
-      "optionLabel": "{{timeLimit}} min"
-    }
+    "timeLimit": "{{timeLimit}} Min."
   },
   "statsDialog": {
     "title": "Deine Statistiken",
@@ -98,7 +97,8 @@
     "title": "Einstellungen"
   },
   "challengeSettingsDialog": {
-    "title": "Create challenge"
+    "title": "Herausforderung erstellen",
+    "description": "Versuche, so viele Rätsel wie möglich zu lösen, bevor die Zeit abläuft!"
   },
   "imageTags": {
     "3d": "3D",
@@ -147,6 +147,10 @@
     "clearStorage": {
       "title": "Speicher löschen",
       "description": "Das Problem könnte an beschädigten gespeicherten Daten liegen. Dadurch werden die Einstellungen und Statistiken des Spiels gelöscht. Fortfahren?"
+    },
+    "quitChallenge": {
+      "title": "Beenden",
+      "description": "Möchtest du die aktuelle Herausforderung wirklich beenden?"
     }
   },
   "errors": {

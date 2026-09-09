@@ -16,6 +16,10 @@ const meta = {
       control: { type: 'select' },
       options: Game.BOARD_SIZES,
     },
+    mode: {
+      control: 'select',
+      options: ['numbers', 'image', 'challenge'],
+    },
   },
 } satisfies Meta<typeof Controls>;
 

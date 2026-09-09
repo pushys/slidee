@@ -33,27 +33,31 @@ export const Board = () => {
 
   return (
     <BoardView
+      renderTile={renderTile}
+      // Game state.
       tiles={game.state.board}
       gameStatus={game.state.status}
+      onNewGame={() => startViewTransition(() => game.init())}
+      onTileMove={(dir) => startViewTransition(() => game.move(dir))}
+      onGamePause={() => game.pause()}
+      onGameResume={() => game.resume()}
+      // Settings.
       imageSrc={imageMetadata?.image}
       previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
-      renderTile={renderTile}
       isKeyboardDisabled={isDialogOpen}
       isSoundDisabled={!settings?.sound}
       isConfettiDisabled={!settings.confetti}
       isNumbersVisible={settings.showNumbers}
       isImagePreviewActive={isImagePreviewing}
-      onNewGame={() => startViewTransition(() => game.init())}
-      onTileMove={(dir) => startViewTransition(() => game.move(dir))}
-      onGamePause={() => game.pause()}
-      onGameResume={() => game.resume()}
+      // Settings overridden when current challenge is in place.
       {...(current && {
         imageSrc: current.imageMetadata?.image,
+        previewImageSrc: current.imageMetadata?.preview,
         isConfettiDisabled: true,
         isNumbersVisible: current.settings.showNumbers,
         isCountdownEnabled: current.status === ChallengeStatus.Countdown,
-        onCountdownComplete: start,
+        onCountdownComplete: () => start(),
       })}
     />
   );

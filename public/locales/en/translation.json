@@ -11,7 +11,8 @@
     "ok": "OK",
     "close": "Close",
     "start": "Start",
-    "shuffle": "Shuffle"
+    "shuffle": "Shuffle",
+    "yes": "Yes"
   },
   "toolbar": {
     "pause": "Pause",
@@ -28,6 +29,7 @@
   "controls": {
     "numbersMode": "Numbers mode",
     "imageMode": "Image mode",
+    "challengeMode": "Challenge mode",
     "largerBoard": "Larger board",
     "smallerBoard": "Smaller board",
     "randomImage": "Random image",
@@ -65,10 +67,7 @@
     }
   },
   "challengeSettingsForm": {
-    "timeLimit": {
-      "label": "Time limit",
-      "optionLabel": "{{timeLimit}} min"
-    }
+    "timeLimit": "{{timeLimit}} min"
   },
   "statsDialog": {
     "title": "Your stats",
@@ -98,7 +97,8 @@
     "title": "Settings"
   },
   "challengeSettingsDialog": {
-    "title": "Create challenge"
+    "title": "Create challenge",
+    "description": "Try to solve as many puzzles as possible until time runs out!"
   },
   "challengeResultDialog": {
     "title": "Challenge result"
@@ -150,6 +150,10 @@
     "clearStorage": {
       "title": "Clear storage",
       "description": "The issue might be in corrupt storage data. This action will clear game's settings and statistics. Continue?"
+    },
+    "quitChallenge": {
+      "title": "Quit",
+      "description": "Are you sure you want to exit current challenge?"
     }
   },
   "errors": {

@@ -4,8 +4,7 @@ import { images, type ImageKeys } from '@/assets/images';
 
 export const TimeLimit = {
   Fast: 3,
-  Medium: 5,
-  Slow: 7,
+  Standard: 5,
 } as const;
 
 export const challengeSettingsSchema = z.object({

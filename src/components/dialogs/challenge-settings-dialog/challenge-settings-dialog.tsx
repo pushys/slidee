@@ -1,4 +1,4 @@
-import { Flag } from '@gravity-ui/icons';
+import { Stopwatch } from '@gravity-ui/icons';
 import {
   Modal,
   Button,
@@ -28,13 +28,13 @@ export const ChallengeSettingsDialog = (
       <Modal.CloseTrigger />
       <Modal.Header>
         <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-          <Flag className="size-5" />
+          <Stopwatch className="size-5" />
         </Modal.Icon>
         <Modal.Heading>{t('challengeSettingsDialog.title')}</Modal.Heading>
       </Modal.Header>
       <Modal.Body>
         <Typography color="muted" type="body-sm" className="mb-4">
-          Try to solve as many puzzles as possible until time runs out!
+          {t('challengeSettingsDialog.description')}
         </Typography>
         <ChallengeSettingsForm
           id={formId}

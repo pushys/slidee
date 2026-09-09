@@ -1,4 +1,4 @@
-import { Flag } from '@gravity-ui/icons';
+import { Stopwatch } from '@gravity-ui/icons';
 import { Modal, Button, type ModalDialogProps } from '@heroui/react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ export const ChallengeResultDialog = (props: ChallengeResultDialog.Props) => {
       <Modal.CloseTrigger />
       <Modal.Header>
         <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-          <Flag className="size-5" />
+          <Stopwatch className="size-5" />
         </Modal.Icon>
         <Modal.Heading>{t('challengeResultDialog.title')}</Modal.Heading>
       </Modal.Header>
