@@ -1,10 +1,9 @@
 import { Clock } from '@gravity-ui/icons';
 import { Chip, type ChipProps } from '@heroui/react';
-import NumberFlow from '@number-flow/react';
 import clsx from 'clsx';
 import React from 'react';
 
-const SPIN_TIMING = { duration: 150 };
+import { ChipNumberFlow } from '@/components/chip-number-flow';
 
 export const TimeChip = (props: TimeChip.Props) => {
   const { value = 0, startIcon, endIcon, ...rest } = props;
@@ -21,29 +20,23 @@ export const TimeChip = (props: TimeChip.Props) => {
       <Chip.Label>
         {hours > 0 && (
           <React.Fragment>
-            <NumberFlow
+            <ChipNumberFlow
               value={hours}
               format={{ minimumIntegerDigits: 1 }}
-              spinTiming={SPIN_TIMING}
-              className="[&::part(number)]:leading-3"
             />
             <span className="relative -top-px opacity-60">:</span>
           </React.Fragment>
         )}
-        <NumberFlow
+        <ChipNumberFlow
           value={minutes}
           format={{ minimumIntegerDigits: 2 }}
           digits={{ 1: { max: 5 } }}
-          spinTiming={SPIN_TIMING}
-          className="[&::part(number)]:leading-3"
         />
         <span className="relative -top-px opacity-60">:</span>
-        <NumberFlow
+        <ChipNumberFlow
           value={seconds}
           format={{ minimumIntegerDigits: 2 }}
           digits={{ 1: { max: 5 } }}
-          spinTiming={SPIN_TIMING}
-          className="[&::part(number)]:leading-3"
         />
       </Chip.Label>
       {endIcon}

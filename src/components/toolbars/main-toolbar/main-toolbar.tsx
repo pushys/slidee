@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useKey } from 'rooks';
 
 import { KeyCode } from '@/components/board/key-code';
+import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
 import { Game } from '@/game/game';
@@ -116,7 +117,9 @@ export const MainToolbar = (props: MainToolbar.Props) => {
           className="tabular-nums @max-[360px]:hidden"
         >
           <ArrowsExpand width={12} />
-          <Chip.Label>{moves}</Chip.Label>
+          <Chip.Label>
+            <ChipNumberFlow value={moves} />
+          </Chip.Label>
         </Chip>
         <TimeChip
           value={elapsedTime}

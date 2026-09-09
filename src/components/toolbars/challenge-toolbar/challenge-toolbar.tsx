@@ -1,10 +1,17 @@
-import { Star, ArrowRightFromSquare, Shuffle } from '@gravity-ui/icons';
+import {
+  Star,
+  ArrowRightFromSquare,
+  Shuffle,
+  HourglassStart,
+  HourglassEnd,
+} from '@gravity-ui/icons';
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import { clsx } from 'clsx';
 import { type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ChallengeStatus } from '@/challenge/challenge.schema';
+import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
 
@@ -22,6 +29,7 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
 
   const isCountdown = challengeStatus === ChallengeStatus.Countdown;
   const isActive = challengeStatus === ChallengeStatus.Active;
+  const isEnding = timeLeft < 10_000;
 
   return (
     <header {...rest} className={clsx('flex', rest.className)}>
@@ -50,12 +58,22 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
           className="tabular-nums @max-[360px]:hidden"
         >
           <Star width={12} />
-          <Chip.Label>{`Score: ${score}`}</Chip.Label>
+          <Chip.Label>
+            {`${t('challengeToolbar.score')}: `}
+            <ChipNumberFlow value={score} />
+          </Chip.Label>
         </Chip>
         <TimeChip
           value={timeLeft}
+          startIcon={
+            isEnding ? (
+              <HourglassEnd width={12} />
+            ) : (
+              <HourglassStart width={12} />
+            )
+          }
           size="lg"
-          color={timeLeft < 10_000 ? 'danger' : 'success'}
+          color={isEnding ? 'danger' : 'success'}
           variant="soft"
           {...(!isActive && { color: 'default' })}
         />
