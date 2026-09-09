@@ -4,7 +4,7 @@ import { useDidMount, useDidUpdate, useIntervalWhen } from 'rooks';
 type Countdown = number | 'inactive' | 'complete';
 
 const COUNTDOWN_SECONDS = 3;
-const INTERVAL_MS = 1_100;
+const INTERVAL_MS = 1100;
 
 export function useCountdown(props: useCountdown.Props): number | null {
   const { onStart, onTick, onComplete, enabled = true } = props;

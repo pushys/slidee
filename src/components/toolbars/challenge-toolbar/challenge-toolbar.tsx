@@ -55,7 +55,7 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
         <TimeChip
           value={timeLeft}
           size="lg"
-          color={timeLeft < 10000 ? 'danger' : 'success'}
+          color={timeLeft < 10_000 ? 'danger' : 'success'}
           variant="soft"
           {...(!isActive && { color: 'default' })}
         />

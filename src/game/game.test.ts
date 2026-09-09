@@ -287,7 +287,7 @@ describe('Game', () => {
     game.moveTile(6);
     vi.advanceTimersByTime(1000);
     game.solve();
-    vi.advanceTimersByTime(10000);
+    vi.advanceTimersByTime(10_000);
 
     expect(game.totalPlayTime).toBe(6000);
   });

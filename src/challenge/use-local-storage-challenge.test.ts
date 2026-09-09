@@ -24,7 +24,7 @@ describe('useLocalStorageChallenge', () => {
       settings: DEFAULT_CHALLENGE_SETTINGS,
       status: 'active',
       score: 23,
-      endTime: Date.now() + 1_000 * 60,
+      endTime: Date.now() + 1000 * 60,
     } satisfies Challenge;
 
     localStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(data));
@@ -50,7 +50,7 @@ describe('useLocalStorageChallenge', () => {
       settings: { timeLimit: 5, showNumbers: false, image: null },
       status: 'countdown',
       score: 0,
-      endTime: Date.now() + 1_000 * 60,
+      endTime: Date.now() + 1000 * 60,
     } satisfies Challenge;
 
     JSON.parse(localStorage.getItem(CHALLENGE_STORAGE_KEY)!);

@@ -22,7 +22,7 @@ export function useChallenge(): useChallenge.ReturnValue {
     const { image, timeLimit } = challenge.settings;
 
     // If challenge was just created and we don't have end time yet use a placeholder.
-    let timeLeft = timeLimit * 60 * 1_000;
+    let timeLeft = timeLimit * 60 * 1000;
     if (endTime) {
       timeLeft = endTime - now;
     }
@@ -63,7 +63,7 @@ export function useChallenge(): useChallenge.ReturnValue {
       return {
         ...prev,
         status: ChallengeStatus.Active,
-        endTime: now + prev.settings.timeLimit * 60 * 1_000,
+        endTime: now + prev.settings.timeLimit * 60 * 1000,
       };
     });
   }, [setChallenge]);
@@ -83,7 +83,7 @@ export function useChallenge(): useChallenge.ReturnValue {
 
   useIntervalWhen(
     () => setNow(Date.now()),
-    1_000,
+    1000,
     hasCurrent &&
       current.status === ChallengeStatus.Active &&
       current.timeLeft > 0,

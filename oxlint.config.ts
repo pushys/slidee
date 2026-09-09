@@ -1,7 +1,7 @@
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  plugins: ['react', 'typescript', 'oxc'],
+  plugins: ['react', 'typescript', 'oxc', 'unicorn'],
   jsPlugins: ['oxlint-tailwindcss'],
   settings: {
     tailwindcss: {
@@ -34,5 +34,6 @@ export default defineConfig({
     'tailwindcss/no-hardcoded-colors': 'warn',
     'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
     'tailwindcss/prefer-theme-tokens': 'off',
+    'unicorn/numeric-separators-style': 'error',
   },
 });
