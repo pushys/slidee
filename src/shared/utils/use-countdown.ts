@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { useDidMount, useDidUpdate, useIntervalWhen } from 'rooks';
 
+type Countdown = number | 'inactive' | 'complete';
+
 const COUNTDOWN_SECONDS = 3;
 const INTERVAL_MS = 1_100;
 
 export function useCountdown(props: useCountdown.Props): number | null {
   const { onStart, onTick, onComplete, enabled = true } = props;
 
-  const [countdown, setCountdown] = useState<number | null>(
-    enabled ? COUNTDOWN_SECONDS : null,
+  const [countdown, setCountdown] = useState<Countdown>(
+    enabled ? COUNTDOWN_SECONDS : 'inactive',
   );
 
   useDidMount(() => {
-    if (enabled) onStart?.();
+    if (enabled) {
+      onStart?.();
+    }
   });
 
   useDidUpdate(() => {
@@ -20,34 +24,33 @@ export function useCountdown(props: useCountdown.Props): number | null {
       onStart?.();
       setCountdown(COUNTDOWN_SECONDS);
     } else {
-      setCountdown(null);
+      setCountdown('inactive');
     }
   }, [enabled]);
 
   useDidUpdate(() => {
-    if (countdown !== null) {
+    if (typeof countdown === 'number') {
       onTick?.(countdown);
+    } else if (countdown === 'complete') {
+      onComplete?.();
     }
   }, [countdown]);
+
+  const isCountingDown = typeof countdown === 'number';
 
   useIntervalWhen(
     () => {
       setCountdown((prevState) => {
-        if (prevState === null) return null;
+        if (typeof prevState !== 'number') return prevState;
 
-        if (prevState === 1) {
-          onComplete?.();
-          return null;
-        }
-
-        return prevState - 1;
+        return prevState === 1 ? 'complete' : prevState - 1;
       });
     },
     INTERVAL_MS,
-    enabled && countdown !== null,
+    enabled && isCountingDown,
   );
 
-  return countdown;
+  return isCountingDown ? countdown : null;
 }
 
 export namespace useCountdown {
