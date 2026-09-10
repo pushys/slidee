@@ -3,6 +3,7 @@ ignorePaths: []
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - Dismissable
   - heroui
   - languagedetector
   - Pressable
