@@ -1,4 +1,11 @@
-import { useState, useMemo, useCallback } from 'react';
+import { noop } from 'es-toolkit';
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  useEffectEvent,
+} from 'react';
 import { useIntervalWhen } from 'rooks';
 
 import type { ChallengeSettings } from '@/challenge-settings/challenge-settings.schema';
@@ -9,7 +16,11 @@ import { useLocalStorageChallengeSettings } from '@/challenge-settings/use-local
 import { type Challenge, ChallengeStatus } from '@/challenge/challenge.schema';
 import { useLocalStorageChallenge } from '@/challenge/use-local-storage-challenge';
 
-export function useChallenge(): useChallenge.ReturnValue {
+export function useChallenge(
+  props: useChallenge.Props = {},
+): useChallenge.ReturnValue {
+  const { onFinish } = props;
+
   const [, setSettings] = useLocalStorageChallengeSettings();
   const [challenge, setChallenge] = useLocalStorageChallenge();
 
@@ -90,6 +101,13 @@ export function useChallenge(): useChallenge.ReturnValue {
     true,
   );
 
+  const finish = useEffectEvent(onFinish ?? noop);
+  useEffect(() => {
+    if (current?.status === ChallengeStatus.Active && current?.timeLeft === 0) {
+      finish();
+    }
+  }, [current?.status, current?.timeLeft]);
+
   return useMemo(
     () => ({
       current,
@@ -111,6 +129,13 @@ export namespace useChallenge {
     imageMetadata: ImageMetadata | undefined;
   }
 
+  export interface Props {
+    /**
+     * Called when active challenge reaches zero time left.
+     */
+    onFinish?: () => void;
+  }
+
   export interface ReturnValue {
     /**
      * Current challenge.
@@ -121,7 +146,7 @@ export namespace useChallenge {
      */
     hasCurrent: boolean;
     /**
-     * Creates a new challenge, saved into storage but doesn't start.
+     * Creates a new challenge, saves into storage but doesn't start.
      */
     create: (settings: ChallengeSettings) => void;
     /**

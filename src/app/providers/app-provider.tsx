@@ -1,7 +1,5 @@
 import {
   useState,
-  useEffect,
-  useEffectEvent,
   useRef,
   useMemo,
   useCallback,
@@ -32,11 +30,14 @@ export function AppProvider(props: PropsWithChildren) {
 
   const settings = useSettings();
   const stats = useStats();
-  const challenge = useChallenge();
+  const challenge = useChallenge({ onFinish: handleChallengeFinish });
 
   const { boardSize, animations, image } = settings.settings;
 
-  const game = useGame({ defaultBoardSize: settings.settings.boardSize });
+  const game = useGame({
+    defaultBoardSize: settings.settings.boardSize,
+    onOver: handleGameOver,
+  });
 
   const pauseReasonRef = useRef<PauseReason>(null);
 
@@ -47,8 +48,22 @@ export function AppProvider(props: PropsWithChildren) {
     [prefersReducedMotion, animations],
   );
 
-  // Update player's stats when game is over.
-  const updateStats = useEffectEvent(() => {
+  // Board size change, new image selection or challenge start must trigger a new game.
+  useDidUpdate(
+    () => game.init({ boardSize }),
+    [boardSize, image, challenge.hasCurrent],
+  );
+
+  useWindowEventListener('blur', handleWindowBlur);
+  useWindowEventListener('focus', handleWindowFocus);
+  useDocumentEventListener(
+    'visibilitychange',
+    document.hidden ? handleWindowBlur : handleWindowFocus,
+  );
+
+  function handleGameOver() {
+    challenge.increaseScore();
+
     // Ignore games that were won using the "Solve" button.
     if (game.state.isAutoSolved) return;
 
@@ -57,45 +72,26 @@ export function AppProvider(props: PropsWithChildren) {
       image,
       totalPlayTime: game.totalPlayTime,
     });
-  });
+  }
 
-  const updateChallengeScore = useEffectEvent(() => {
-    challenge.increaseScore();
-  });
+  function handleChallengeFinish() {
+    setDialog('challenge-result');
+    setDialogOpen(true);
+  }
 
-  useEffect(() => {
-    if (game.state.status === Game.Status.Over) {
-      updateStats();
-      updateChallengeScore();
-    }
-  }, [game.state.status]);
-
-  // Board size change, new image selection or challenge start must trigger a new game.
-  useDidUpdate(
-    () => game.init({ boardSize }),
-    [boardSize, image, challenge.hasCurrent],
-  );
-
-  const handleWindowBlur = () => {
+  function handleWindowBlur() {
     if (game.state.status === 'playing') {
       game.pause();
       pauseReasonRef.current = 'lost-focus';
     }
-  };
+  }
 
-  const handleWindowFocus = () => {
+  function handleWindowFocus() {
     if (pauseReasonRef.current === 'lost-focus') {
       game.resume();
       pauseReasonRef.current = null;
     }
-  };
-
-  useWindowEventListener('blur', handleWindowBlur);
-  useWindowEventListener('focus', handleWindowFocus);
-  useDocumentEventListener(
-    'visibilitychange',
-    document.hidden ? handleWindowBlur : handleWindowFocus,
-  );
+  }
 
   const openDialog = useCallback(
     (dialogCode: AppContext.Dialog) => {

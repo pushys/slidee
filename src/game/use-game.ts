@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { noop } from 'es-toolkit';
+import { useState, useEffect, useMemo, useEffectEvent } from 'react';
 import { useIntervalWhen } from 'rooks';
 
 import { Game } from './game';
@@ -9,7 +10,7 @@ import { Game } from './game';
  * @param opts
  */
 export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
-  const { defaultBoardSize } = props;
+  const { defaultBoardSize, onOver } = props;
 
   const [game] = useState(() => new Game({ boardSize: defaultBoardSize }));
   const [state, setState] = useState(() => game.state);
@@ -33,6 +34,13 @@ export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
     return () => unsubscribe();
   }, [game]);
 
+  const over = useEffectEvent(onOver ?? noop);
+  useEffect(() => {
+    if (game.state.status === Game.Status.Over) {
+      over();
+    }
+  }, [game.state.status]);
+
   return useMemo(
     () => ({
       state,
@@ -51,7 +59,14 @@ export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
 
 export namespace useGame {
   export interface Props {
+    /**
+     * Default board size.
+     */
     defaultBoardSize?: Game.BoardSize;
+    /**
+     * Game over event handler.
+     */
+    onOver?: () => void;
   }
 
   export type ReturnValue = Pick<
