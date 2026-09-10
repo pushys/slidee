@@ -38,5 +38,10 @@ export function useAppContext() {
 }
 
 export namespace AppContext {
-  export type Dialog = 'settings' | 'stats' | 'help' | 'challenge-settings';
+  export type Dialog =
+    | 'settings'
+    | 'stats'
+    | 'help'
+    | 'challenge-settings'
+    | 'challenge-result';
 }

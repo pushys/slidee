@@ -20,7 +20,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    onRestartChallengePress: fn(),
-    onExitChallengePress: fn(),
+    score: 0,
+    bestScore: 1,
+    onNewChallengePress: fn(),
+    onQuitPress: fn(),
   },
 };

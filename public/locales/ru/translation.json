@@ -12,7 +12,8 @@
     "close": "Закрыть",
     "start": "Старт",
     "shuffle": "Перемешать",
-    "yes": "Да"
+    "yes": "Да",
+    "quit": "Выйти"
   },
   "toolbar": {
     "pause": "Пауза",
@@ -20,7 +21,6 @@
     "solve": "Решить"
   },
   "challengeToolbar": {
-    "quit": "Выйти",
     "score": "Счёт"
   },
   "board": {
@@ -99,6 +99,15 @@
   "challengeSettingsDialog": {
     "title": "Создать челлендж",
     "description": "Постарайтесь решить как можно больше головоломок, пока не закончится время!"
+  },
+  "challengeResultDialog": {
+    "title": "Челлендж завершён",
+    "yourScore": "Ваш счёт",
+    "newBestScore": "Новый рекорд!",
+    "previous": "Предыдущий",
+    "best": "Рекорд",
+    "newChallenge": "Новый челлендж",
+    "or": "Или"
   },
   "imageTags": {
     "3d": "3D",

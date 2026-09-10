@@ -12,7 +12,8 @@
     "close": "Close",
     "start": "Start",
     "shuffle": "Shuffle",
-    "yes": "Yes"
+    "yes": "Yes",
+    "quit": "Quit"
   },
   "toolbar": {
     "pause": "Pause",
@@ -20,7 +21,6 @@
     "solve": "Solve"
   },
   "challengeToolbar": {
-    "quit": "Quit",
     "score": "Score"
   },
   "board": {
@@ -101,7 +101,13 @@
     "description": "Try to solve as many puzzles as possible until time runs out!"
   },
   "challengeResultDialog": {
-    "title": "Challenge result"
+    "title": "Challenge over",
+    "yourScore": "Your Score",
+    "newBestScore": "New Best Score!",
+    "previous": "Previous",
+    "best": "Best",
+    "newChallenge": "New challenge",
+    "or": "Or"
   },
   "imageTags": {
     "3d": "3D",

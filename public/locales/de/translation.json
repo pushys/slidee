@@ -12,7 +12,8 @@
     "close": "Schließen",
     "start": "Start",
     "shuffle": "Mischen",
-    "yes": "Ja"
+    "yes": "Ja",
+    "quit": "Beenden"
   },
   "toolbar": {
     "pause": "Pausieren",
@@ -20,7 +21,6 @@
     "solve": "Lösen"
   },
   "challengeToolbar": {
-    "quit": "Beenden",
     "score": "Punktzahl"
   },
   "board": {
@@ -99,6 +99,15 @@
   "challengeSettingsDialog": {
     "title": "Herausforderung erstellen",
     "description": "Versuche, so viele Rätsel wie möglich zu lösen, bevor die Zeit abläuft!"
+  },
+  "challengeResultDialog": {
+    "title": "Challenge beendet",
+    "yourScore": "Deine Punktzahl",
+    "newBestScore": "Neuer Bestwert!",
+    "previous": "Vorheriger",
+    "best": "Bestwert",
+    "newChallenge": "Neue Challenge",
+    "or": "Oder"
   },
   "imageTags": {
     "3d": "3D",

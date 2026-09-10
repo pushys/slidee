@@ -34,18 +34,22 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
   return (
     <header {...rest} className={clsx('flex', rest.className)}>
       <div className="flex grow items-center gap-2">
-        <Button size="lg" onPress={onShufflePress} isDisabled={isCountdown}>
+        <Button
+          size="lg"
+          onPress={onShufflePress}
+          isDisabled={isCountdown || timeLeft === 0}
+        >
           <Shuffle />
           {t('common.shuffle')}
         </Button>
-        <Tooltip content={t('challengeToolbar.quit')} contentPlacement="top">
+        <Tooltip content={t('common.quit')} contentPlacement="top">
           <Button
             isIconOnly
             size="lg"
             onPress={onExitPress}
             variant="danger-soft"
             isDisabled={isCountdown}
-            aria-label={t('challengeToolbar.quit')}
+            aria-label={t('common.quit')}
           >
             <ArrowRightFromSquare />
           </Button>

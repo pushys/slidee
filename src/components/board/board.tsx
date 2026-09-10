@@ -1,5 +1,6 @@
 import { Picture } from '@gravity-ui/icons';
 import { Chip, Link } from '@heroui/react';
+import NumberFlow from '@number-flow/react';
 import confetti from 'canvas-confetti';
 import clsx from 'clsx';
 import {
@@ -271,7 +272,9 @@ export const Board = (props: Board.Props) => {
         )}
       >
         <span className="m-auto text-9xl font-bold text-shadow-lg">
-          {countdown}
+          {countdown !== null && (
+            <NumberFlow value={countdown} spinTiming={{ duration: 200 }} />
+          )}
         </span>
       </div>
     </section>
