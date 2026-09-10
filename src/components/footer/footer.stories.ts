@@ -23,6 +23,7 @@ export const Primary: Story = {
     onStatsPress: fn(),
     onHelpPress: fn(),
     onSettingsPress: fn(),
+    isChallengeActive: false,
     className: 'border-1 rounded-md p-2 w-lg',
   },
 };

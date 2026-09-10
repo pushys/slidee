@@ -24,6 +24,7 @@ export const Footer = (props: Footer.Props) => {
     onStatsPress,
     onHelpPress,
     onSettingsPress,
+    isChallengeActive = false,
     ...rest
   } = props;
 
@@ -60,6 +61,7 @@ export const Footer = (props: Footer.Props) => {
           variant="secondary"
           onPress={onStatsPress}
           aria-label={t('footer.stats')}
+          isDisabled={isChallengeActive}
         >
           <SquareChartColumn />
         </Button>
@@ -71,6 +73,7 @@ export const Footer = (props: Footer.Props) => {
           variant="secondary"
           onPress={onHelpPress}
           aria-label={t('footer.howToPlay')}
+          isDisabled={isChallengeActive}
         >
           <CircleInfoFill />
         </Button>
@@ -82,6 +85,7 @@ export const Footer = (props: Footer.Props) => {
           variant="secondary"
           onPress={onSettingsPress}
           aria-label={t('footer.settings')}
+          isDisabled={isChallengeActive}
         >
           <Gear />
         </Button>
@@ -116,11 +120,37 @@ export const Footer = (props: Footer.Props) => {
 
 export namespace Footer {
   export interface Props extends ComponentProps<'footer'> {
+    /**
+     * Sound enabled state.
+     *
+     * @default true
+     */
     soundEnabled?: boolean;
+    /**
+     * "Sound" button press handler when sound is OFF.
+     */
     onSoundEnablePress?: ButtonProps['onPress'];
+    /**
+     * "Sound" button press handler when sound in ON.
+     */
     onSoundDisablePress?: ButtonProps['onPress'];
+    /**
+     * "Stats" button press handler.
+     */
     onStatsPress?: ButtonProps['onPress'];
+    /**
+     * "Help" button press handler.
+     */
     onHelpPress?: ButtonProps['onPress'];
+    /**
+     * "Settings" button press handler.
+     */
     onSettingsPress?: ButtonProps['onPress'];
+    /**
+     * If `true`, some footer actions will be locked during challenge.
+     *
+     * @default false
+     */
+    isChallengeActive?: boolean;
   }
 }
