@@ -38,9 +38,12 @@ export function useChallenge(
       timeLeft = endTime - now;
     }
 
+    const timeLeftInSeconds = Math.floor(timeLeft / 1000);
+
     return {
       ...rest,
-      timeLeft: timeLeft < 0 ? 0 : timeLeft,
+      timeLeft: Math.max(timeLeft, 0),
+      timeLeftInSeconds: Math.max(timeLeftInSeconds, 0),
       imageMetadata: image ? images[image] : undefined,
     };
   }, [challenge, now]);
@@ -92,22 +95,21 @@ export function useChallenge(
   }, [setChallenge]);
 
   const hasCurrent = current !== null;
+  const isActive = current?.status === ChallengeStatus.Active;
 
   useIntervalWhen(
     () => setNow(Date.now()),
     1000,
-    hasCurrent &&
-      current.status === ChallengeStatus.Active &&
-      current.timeLeft > 0,
+    hasCurrent && isActive && current.timeLeftInSeconds > 0,
     true,
   );
 
   const finish = useEffectEvent(onFinish ?? noop);
   useEffect(() => {
-    if (current?.status === ChallengeStatus.Active && current?.timeLeft === 0) {
+    if (isActive && current?.timeLeftInSeconds === 0) {
       finish();
     }
-  }, [current?.status, current?.timeLeft]);
+  }, [isActive, current?.timeLeftInSeconds]);
 
   return useMemo(
     () => ({
@@ -127,6 +129,7 @@ export namespace useChallenge {
 
   export interface Current extends Omit<Challenge, 'endTime'> {
     timeLeft: number;
+    timeLeftInSeconds: number;
     imageMetadata: ImageMetadata | undefined;
   }
 

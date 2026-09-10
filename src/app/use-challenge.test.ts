@@ -40,6 +40,7 @@ describe('useChallenge', () => {
       score: 0,
       bestScore: 0,
       timeLeft: 180_000,
+      timeLeftInSeconds: 180,
     });
     expect(result.current.hasCurrent).toBe(true);
   });
@@ -66,6 +67,7 @@ describe('useChallenge', () => {
     });
 
     expect(result.current.current?.timeLeft).toBe(170_000);
+    expect(result.current.current?.timeLeftInSeconds).toBe(170);
   });
 
   it('should decrease time left only when challenge is active', () => {
@@ -77,6 +79,7 @@ describe('useChallenge', () => {
     });
 
     expect(result.current.current?.timeLeft).toBe(180_000);
+    expect(result.current.current?.timeLeftInSeconds).toBe(180);
   });
 
   it('should not let time left go into negative', () => {
@@ -89,6 +92,7 @@ describe('useChallenge', () => {
     });
 
     expect(result.current.current?.timeLeft).toBe(0);
+    expect(result.current.current?.timeLeftInSeconds).toBe(0);
   });
 
   it('should increase score by one', () => {
