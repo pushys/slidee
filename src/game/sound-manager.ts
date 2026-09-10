@@ -4,12 +4,14 @@ export class SoundManager {
   readonly #countdown = new Audio(sounds.countdown);
   readonly #countdownEnd = new Audio(sounds.countdownEnd);
   readonly #move = new Audio(sounds.move);
+  readonly #tick = new Audio(sounds.tick);
   readonly #win = new Audio(sounds.win);
 
   constructor() {
     this.#countdown.volume = 1;
     this.#countdownEnd.volume = 1;
     this.#move.volume = 1;
+    this.#tick.volume = 1;
     this.#win.volume = 1;
   }
 
@@ -30,6 +32,9 @@ export class SoundManager {
         break;
       case 'move':
         this.#playAudio(this.#move);
+        break;
+      case 'tick':
+        this.#playAudio(this.#tick);
         break;
       case 'win':
         this.#playAudio(this.#win);
