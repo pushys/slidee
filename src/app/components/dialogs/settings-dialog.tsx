@@ -14,7 +14,7 @@ export const SettingsDialog = () => {
       defaultSettings={settings}
       onSettingsSave={setSettings}
       images={images}
-      stats={stats}
+      boardStats={stats.board}
     />
   );
 };

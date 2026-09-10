@@ -9,7 +9,8 @@ import type { Settings } from '@/settings/settings.schema';
 import { SettingsForm } from '@/components/forms/settings-form';
 
 export const SettingsDialog = (props: SettingsDialog.Props) => {
-  const { defaultSettings, onSettingsSave, images, stats, ...rest } = props;
+  const { defaultSettings, onSettingsSave, images, boardStats, ...rest } =
+    props;
 
   const { t } = useTranslation();
 
@@ -30,7 +31,7 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
           defaultValues={defaultSettings}
           onSubmit={onSettingsSave}
           images={images}
-          stats={stats}
+          boardStats={boardStats}
         />
       </Modal.Body>
       <Modal.Footer>
@@ -47,7 +48,9 @@ export const SettingsDialog = (props: SettingsDialog.Props) => {
 
 export namespace SettingsDialog {
   export interface Props
-    extends ModalDialogProps, Pick<SettingsForm.Props, 'images' | 'stats'> {
+    extends
+      ModalDialogProps,
+      Pick<SettingsForm.Props, 'images' | 'boardStats'> {
     defaultSettings?: Settings;
     onSettingsSave: (settings: Settings) => void;
   }

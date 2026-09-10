@@ -12,13 +12,13 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Stats } from '@/stats/stats.schema';
+import type { BoardStats } from '@/stats/board-stats.schema';
 
 import { TimeChip } from '@/components/time-chip';
 import { Game } from '@/game/game';
 
 export const StatsDialog = (props: StatsDialog.Props) => {
-  const { stats = {}, onClearStatsPress, ...rest } = props;
+  const { boardStats = {}, onClearBoardStatsPress, ...rest } = props;
 
   const { t } = useTranslation();
 
@@ -27,7 +27,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
 
   const handleClearStats = () => {
     toast.success(t('statsDialog.clearSuccessMessage'));
-    onClearStatsPress?.(boardSize);
+    onClearBoardStatsPress?.(boardSize);
   };
 
   return (
@@ -65,7 +65,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
                 </Table.Header>
                 <Table.Body>
                   {Game.BOARD_SIZES.map((size) => {
-                    const entry = stats[size];
+                    const entry = boardStats[size];
 
                     return (
                       <Table.Row key={size}>
@@ -124,7 +124,7 @@ export const StatsDialog = (props: StatsDialog.Props) => {
         <Modal.Footer>
           <Button
             variant="danger-soft"
-            isDisabled={Object.keys(stats).length === 0}
+            isDisabled={Object.keys(boardStats).length === 0}
             onPress={() => {
               setBoardSize(undefined);
               setConfirmOpen(true);
@@ -174,12 +174,12 @@ export const StatsDialog = (props: StatsDialog.Props) => {
 export namespace StatsDialog {
   export interface Props extends ModalDialogProps {
     /**
-     * Stats object.
+     * Board stats object.
      */
-    stats?: Stats;
+    boardStats?: BoardStats;
     /**
-     * Clear stats button press handler.
+     * Clear board stats button press handler.
      */
-    onClearStatsPress?: (boardSize?: Game.BoardSize) => void;
+    onClearBoardStatsPress?: (boardSize?: Game.BoardSize) => void;
   }
 }

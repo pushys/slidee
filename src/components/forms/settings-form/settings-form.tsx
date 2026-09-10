@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
 import type { Settings } from '@/settings/settings.schema';
-import type { Stats } from '@/stats/stats.schema';
+import type { BoardStats } from '@/stats/board-stats.schema';
 
 import { BoardSizePicker } from '@/components/board-size-picker';
 import { ImagePicker } from '@/components/image-picker';
@@ -24,7 +24,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
     onSubmit,
     defaultValues = DEFAULT_SETTINGS,
     images,
-    stats = {},
+    boardStats = {},
     ...rest
   } = props;
 
@@ -174,7 +174,7 @@ export const SettingsForm = (props: SettingsForm.Props) => {
                 onBlur={field.onBlur}
                 className="max-h-75.75"
                 getIsImageSolved={(size, key) =>
-                  stats?.[size]?.images.includes(key) ?? false
+                  boardStats?.[size]?.images.includes(key) ?? false
                 }
               />
             )}
@@ -191,8 +191,10 @@ export namespace SettingsForm {
     id?: string;
     onSubmit: (values: Settings) => void;
     /**
-     * Stats object to show progress per image.
+     * Board stats object to show progress per image.
+     *
+     * @default {}
      */
-    stats?: Stats;
+    boardStats?: BoardStats;
   }
 }

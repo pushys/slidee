@@ -2,8 +2,10 @@ import {
   Star,
   ArrowRightFromSquare,
   Shuffle,
+  Hourglass,
   HourglassStart,
   HourglassEnd,
+  CrownDiamond,
 } from '@gravity-ui/icons';
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import { clsx } from 'clsx';
@@ -15,21 +17,23 @@ import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
 
+const ENDING_CUTOFF_MS = 10_000;
+
 export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
   const {
     score = 0,
+    bestScore = 0,
     timeLeft = 0,
     challengeStatus = false,
     onShufflePress,
-    onExitPress,
+    onQuitPress,
     ...rest
   } = props;
 
   const { t } = useTranslation();
 
-  const isCountdown = challengeStatus === ChallengeStatus.Countdown;
   const isActive = challengeStatus === ChallengeStatus.Active;
-  const isEnding = timeLeft < 10_000;
+  const isEnding = timeLeft < ENDING_CUTOFF_MS;
 
   return (
     <header {...rest} className={clsx('flex', rest.className)}>
@@ -37,7 +41,7 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
         <Button
           size="lg"
           onPress={onShufflePress}
-          isDisabled={isCountdown || timeLeft === 0}
+          isDisabled={!isActive || timeLeft === 0}
         >
           <Shuffle />
           {t('common.shuffle')}
@@ -46,9 +50,9 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
           <Button
             isIconOnly
             size="lg"
-            onPress={onExitPress}
+            onPress={onQuitPress}
             variant="danger-soft"
-            isDisabled={isCountdown}
+            isDisabled={!isActive}
             aria-label={t('common.quit')}
           >
             <ArrowRightFromSquare />
@@ -56,17 +60,25 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
         </Tooltip>
       </div>
       <div className="flex items-center gap-1">
-        <Chip
-          size="lg"
-          variant="soft"
-          className="tabular-nums @max-[360px]:hidden"
-        >
+        <Chip size="lg" variant="soft" className="tabular-nums">
           <Star width={12} />
           <Chip.Label>
-            {`${t('challengeToolbar.score')}: `}
             <ChipNumberFlow value={score} />
           </Chip.Label>
         </Chip>
+        {bestScore !== 0 && (
+          <Chip
+            size="lg"
+            variant="soft"
+            color="warning"
+            className="tabular-nums"
+          >
+            <CrownDiamond width={12} />
+            <Chip.Label>
+              <ChipNumberFlow value={bestScore} />
+            </Chip.Label>
+          </Chip>
+        )}
         <TimeChip
           value={timeLeft}
           startIcon={
@@ -80,6 +92,7 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
           color={isEnding ? 'danger' : 'success'}
           variant="soft"
           {...(!isActive && { color: 'default' })}
+          {...(timeLeft === 0 && { startIcon: <Hourglass width={12} /> })}
         />
       </div>
     </header>
@@ -94,6 +107,12 @@ export namespace ChallengeToolbar {
      * @default 0
      */
     score?: number;
+    /**
+     * Score to beat.
+     *
+     * @default 0
+     */
+    bestScore?: number;
     /**
      * Challenge time left in milliseconds.
      *
@@ -111,6 +130,6 @@ export namespace ChallengeToolbar {
     /**
      * "Exit" button press handler.
      */
-    onExitPress?: ButtonProps['onPress'];
+    onQuitPress?: ButtonProps['onPress'];
   }
 }

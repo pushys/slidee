@@ -2,7 +2,9 @@ import { omit } from 'es-toolkit';
 import { useCallback, useMemo } from 'react';
 
 import type { ImageKeys } from '@/assets/images';
-import type { Stats, StatsEntry } from '@/stats/stats.schema';
+import type { BoardStatsEntry } from '@/stats/board-stats.schema';
+import type { ChallengeStats } from '@/stats/challenge-stats.schema';
+import type { Stats } from '@/stats/stats.schema';
 
 import { Game } from '@/game/game';
 import { useLocalStorageStats } from '@/stats/use-local-storage-stats';
@@ -10,12 +12,12 @@ import { useLocalStorageStats } from '@/stats/use-local-storage-stats';
 export function useStats(): useStats.ReturnValue {
   const [stats, setStats] = useLocalStorageStats();
 
-  const updateStats = useCallback(
-    ({ boardSize, totalPlayTime, image }: useStats.UpdateStatsPayload) =>
+  const updateBoardStats = useCallback(
+    ({ boardSize, totalPlayTime, image }: useStats.UpdateBoardStatsPayload) => {
       setStats((prevStats) => {
-        const entry = prevStats[boardSize];
+        const entry = prevStats.board[boardSize];
 
-        let newEntry: StatsEntry;
+        let newEntry: BoardStatsEntry;
 
         if (entry) {
           const newGameCount = entry.games + 1;
@@ -44,37 +46,60 @@ export function useStats(): useStats.ReturnValue {
           };
         }
 
-        return { ...prevStats, [boardSize]: newEntry };
-      }),
+        return {
+          ...prevStats,
+          board: { ...prevStats.board, [boardSize]: newEntry },
+        };
+      });
+    },
     [setStats],
   );
 
-  const clearStats = useCallback(
+  const clearBoardStats = useCallback(
     (boardSize?: Game.BoardSize) => {
       if (boardSize) {
-        return setStats((prevStats) => omit(prevStats, [boardSize]));
+        return setStats((prevStats) => ({
+          ...prevStats,
+          board: omit(prevStats.board, [boardSize]),
+        }));
       }
-      return setStats({});
+      return setStats((prevStats) => ({ ...prevStats, board: {} }));
+    },
+    [setStats],
+  );
+
+  const updateChallengeStats = useCallback(
+    (challenge: useStats.UpdateChallengeStatsPayload) => {
+      setStats((prevStats) => {
+        // Ignore challenge stats update if there isn't new best score.
+        if (prevStats.challenge.bestScore >= challenge.bestScore) {
+          return prevStats;
+        }
+        return { ...prevStats, challenge };
+      });
     },
     [setStats],
   );
 
   return useMemo(
-    () => ({ stats, updateStats, clearStats }),
-    [stats, updateStats, clearStats],
+    () => ({ stats, updateBoardStats, clearBoardStats, updateChallengeStats }),
+    [stats, updateBoardStats, clearBoardStats, updateChallengeStats],
   );
 }
 
 export namespace useStats {
-  export interface UpdateStatsPayload {
+  export interface UpdateBoardStatsPayload {
     boardSize: Game.BoardSize;
     totalPlayTime: number;
     image: ImageKeys | null;
   }
 
+  export interface UpdateChallengeStatsPayload extends ChallengeStats {}
+
   export interface ReturnValue {
     stats: Stats;
-    updateStats: (data: UpdateStatsPayload) => void;
-    clearStats: (boardSize?: Game.BoardSize) => void;
+    updateBoardStats: (data: UpdateBoardStatsPayload) => void;
+    clearBoardStats: (boardSize?: Game.BoardSize) => void;
+    updateChallengeStats: (data: ChallengeStats) => void;
   }
 }

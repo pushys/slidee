@@ -15,7 +15,7 @@ export const MainToolbar = () => {
       gameStatus={game.state.status}
       moves={game.state.moves}
       elapsedTime={game.totalPlayTime}
-      personalBestTime={stats[settings.boardSize]?.best}
+      personalBestTime={stats.board[settings.boardSize]?.best}
       isAutoSolved={game.state.isAutoSolved}
       onShufflePress={() => startViewTransition(() => game.init())}
       onPausePress={game.pause}

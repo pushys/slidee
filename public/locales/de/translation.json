@@ -20,9 +20,6 @@
     "resume": "Fortsetzen",
     "solve": "Lösen"
   },
-  "challengeToolbar": {
-    "score": "Punktzahl"
-  },
   "board": {
     "imageAttribution": "Foto von <authorLink>{{author}}</authorLink> auf <sourceLink>{{source}}</sourceLink>"
   },

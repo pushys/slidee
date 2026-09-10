@@ -26,7 +26,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
     });
 
     expect(result.current.current).toStrictEqual({
@@ -38,6 +38,7 @@ describe('useChallenge', () => {
       status: 'countdown',
       imageMetadata: undefined,
       score: 0,
+      bestScore: 0,
       timeLeft: 180_000,
     });
     expect(result.current.hasCurrent).toBe(true);
@@ -47,7 +48,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
     });
 
@@ -59,7 +60,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
       vi.advanceTimersByTime(10_000);
     });
@@ -71,7 +72,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       vi.advanceTimersByTime(10_000);
     });
 
@@ -82,7 +83,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
       vi.advanceTimersByTime(190_000);
     });
@@ -94,7 +95,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
       result.current.increaseScore();
     });
@@ -106,7 +107,7 @@ describe('useChallenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS);
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
       result.current.end();
     });

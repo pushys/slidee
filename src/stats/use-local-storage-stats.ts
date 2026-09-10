@@ -1,7 +1,7 @@
 import useLocalStorageState from 'use-local-storage-state';
 
 import { STATS_STORAGE_KEY } from './constants';
-import { type Stats, statsSchema } from './stats.schema';
+import { type Stats, statsSchema, DEFAULT_STATS } from './stats.schema';
 
 /**
  * Low-level hook for accessing, validating and writing statistics data to
@@ -9,7 +9,7 @@ import { type Stats, statsSchema } from './stats.schema';
  */
 export function useLocalStorageStats() {
   return useLocalStorageState<Stats>(STATS_STORAGE_KEY, {
-    defaultValue: {},
+    defaultValue: DEFAULT_STATS,
     serializer: {
       parse: (value) => statsSchema.parse(JSON.parse(value)),
       stringify: JSON.stringify,

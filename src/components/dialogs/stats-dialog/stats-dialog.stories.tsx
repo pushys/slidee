@@ -20,9 +20,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    stats: {
+    boardStats: {
       3: { best: 109_303, average: 112_009, games: 39, images: [] },
     },
-    onClearStatsPress: fn(),
+    onClearBoardStatsPress: fn(),
   },
 };

@@ -16,6 +16,7 @@ export const ChallengeResultDialog = () => {
   return (
     <ChallengeResultDialogView
       score={current?.score}
+      bestScore={current?.bestScore}
       onNewChallengePress={handleRestartChallengePress}
       onQuitPress={end}
     />

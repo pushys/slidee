@@ -67,7 +67,7 @@ export function AppProvider(props: PropsWithChildren) {
     // Ignore games that were won using the "Solve" button.
     if (game.state.isAutoSolved) return;
 
-    stats.updateStats({
+    stats.updateBoardStats({
       boardSize,
       image,
       totalPlayTime: game.totalPlayTime,
@@ -77,6 +77,10 @@ export function AppProvider(props: PropsWithChildren) {
   function handleChallengeFinish() {
     setDialog('challenge-result');
     setDialogOpen(true);
+
+    if (challenge.current) {
+      stats.updateChallengeStats({ bestScore: challenge.current.score });
+    }
   }
 
   function handleWindowBlur() {

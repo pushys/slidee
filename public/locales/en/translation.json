@@ -20,9 +20,6 @@
     "resume": "Resume",
     "solve": "Solve"
   },
-  "challengeToolbar": {
-    "score": "Score"
-  },
   "board": {
     "imageAttribution": "Photo by <authorLink>{{author}}</authorLink> on <sourceLink>{{source}}</sourceLink>"
   },

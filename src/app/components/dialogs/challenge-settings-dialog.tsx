@@ -6,6 +6,7 @@ import { useAppContext } from '../../app-context';
 
 export const ChallengeSettingsDialog = () => {
   const {
+    stats: { stats },
     challenge: { create },
   } = useAppContext();
 
@@ -14,7 +15,9 @@ export const ChallengeSettingsDialog = () => {
   return (
     <ChallengeSettingsDialogView
       defaultChallengeSettings={challengeSettings}
-      onChallengeSettingsSave={create}
+      onChallengeSettingsSave={(settings) =>
+        create(settings, stats.challenge.bestScore)
+      }
       images={images}
     />
   );

@@ -11,6 +11,7 @@ export const challengeSchema = z.object({
   settings: challengeSettingsSchema,
   status: z.enum(ChallengeStatus),
   score: z.number().min(0),
+  bestScore: z.number().min(0),
   endTime: z.number().min(0).nullable(),
 });
 

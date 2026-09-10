@@ -16,10 +16,11 @@ export const ChallengeToolbar = () => {
   return (
     <ChallengeToolbarView
       score={current.score}
+      bestScore={current.bestScore}
       timeLeft={current.timeLeft}
       challengeStatus={current.status}
       onShufflePress={() => startViewTransition(() => game.init())}
-      onExitPress={end}
+      onQuitPress={end}
     />
   );
 };

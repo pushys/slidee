@@ -26,9 +26,11 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     score: 0,
+    bestScore: 0,
     timeLeft: 0,
     challengeStatus: undefined,
-    onExitPress: fn(),
+    onShufflePress: fn(),
+    onQuitPress: fn(),
     className: 'border-1 rounded-md p-2 w-lg',
   },
 };

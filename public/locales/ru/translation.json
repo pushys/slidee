@@ -20,9 +20,6 @@
     "resume": "Продолжить",
     "solve": "Решить"
   },
-  "challengeToolbar": {
-    "score": "Счёт"
-  },
   "board": {
     "imageAttribution": "Фото от <authorLink>{{author}}</authorLink> на <sourceLink>{{source}}</sourceLink>"
   },
