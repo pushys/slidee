@@ -15,12 +15,12 @@ import {
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { ImagePicker } from '@/components/image-picker';
 import {
   TimeLimit,
   type ChallengeSettings,
   DEFAULT_CHALLENGE_SETTINGS,
-} from '@/challenge-settings/challenge-settings.schema';
-import { ImagePicker } from '@/components/image-picker';
+} from '@/shared/lib/challenge-settings/challenge-settings.schema';
 
 const TIME_LIMIT_ICONS = {
   [TimeLimit.Fast]: <Thunderbolt />,

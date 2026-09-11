@@ -9,12 +9,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
-import type { Settings } from '@/settings/settings.schema';
-import type { BoardStats } from '@/stats/board-stats.schema';
+import type { Settings } from '@/shared/lib/settings/settings.schema';
+import type { BoardStats } from '@/shared/lib/stats/board-stats.schema';
 
 import { BoardSizePicker } from '@/components/board-size-picker';
 import { ImagePicker } from '@/components/image-picker';
-import { DEFAULT_SETTINGS } from '@/settings/settings.schema';
+import { DEFAULT_SETTINGS } from '@/shared/lib/settings/settings.schema';
 
 type TabKey = 'general' | 'image';
 

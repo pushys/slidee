@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { useState } from 'storybook/preview-api';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { BoardSizePicker } from './board-size-picker';
 

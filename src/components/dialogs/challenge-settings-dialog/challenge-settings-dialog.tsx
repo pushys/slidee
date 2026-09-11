@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { ChallengeSettings } from '@/challenge-settings/challenge-settings.schema';
+import type { ChallengeSettings } from '@/shared/lib/challenge-settings/challenge-settings.schema';
 
 import { ChallengeSettingsForm } from '@/components/forms/challenge-settings-form';
 

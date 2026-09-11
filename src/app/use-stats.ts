@@ -2,12 +2,12 @@ import { omit } from 'es-toolkit';
 import { useCallback, useMemo } from 'react';
 
 import type { ImageKeys } from '@/assets/images';
-import type { BoardStatsEntry } from '@/stats/board-stats.schema';
-import type { ChallengeStats } from '@/stats/challenge-stats.schema';
-import type { Stats } from '@/stats/stats.schema';
+import type { BoardStatsEntry } from '@/shared/lib/stats/board-stats.schema';
+import type { ChallengeStats } from '@/shared/lib/stats/challenge-stats.schema';
+import type { Stats } from '@/shared/lib/stats/stats.schema';
 
-import { Game } from '@/game/game';
-import { useLocalStorageStats } from '@/stats/use-local-storage-stats';
+import { Game } from '@/shared/lib/game/game';
+import { useLocalStorageStats } from '@/shared/lib/stats/use-local-storage-stats';
 
 export function useStats(): useStats.ReturnValue {
   const [stats, setStats] = useLocalStorageStats();

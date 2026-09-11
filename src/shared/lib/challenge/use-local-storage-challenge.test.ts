@@ -26,8 +26,6 @@ describe('useLocalStorageChallenge', () => {
       endTime: Date.now() + 1000 * 60,
     } satisfies Challenge;
 
-    JSON.parse(localStorage.getItem(CHALLENGE_STORAGE_KEY)!);
-
     const { result } = renderHook(() => useLocalStorageChallenge());
 
     act(() => {

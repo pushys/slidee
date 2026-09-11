@@ -16,7 +16,7 @@ import { KeyCode } from '@/components/board/key-code';
 import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 import { headShake } from '@/shared/utils/animations/headShake';
 import { useAnimate } from '@/shared/utils/animations/use-animate';
 

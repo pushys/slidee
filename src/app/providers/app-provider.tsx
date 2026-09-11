@@ -13,8 +13,8 @@ import {
   useWindowEventListener,
 } from 'rooks';
 
-import { Game } from '@/game/game';
-import { useGame } from '@/game/use-game';
+import { Game } from '@/shared/lib/game/game';
+import { useGame } from '@/shared/lib/game/use-game';
 import { soundManager } from '@/shared/lib/sound-manager';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 

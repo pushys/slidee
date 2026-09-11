@@ -21,7 +21,7 @@ import {
 
 import type { ImageAttribution } from '@/shared/types';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 import { soundManager } from '@/shared/lib/sound-manager';
 import { useCountdown } from '@/shared/utils/use-countdown';
 

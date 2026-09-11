@@ -8,13 +8,16 @@ import {
 } from 'react';
 import { useIntervalWhen } from 'rooks';
 
-import type { ChallengeSettings } from '@/challenge-settings/challenge-settings.schema';
+import type { ChallengeSettings } from '@/shared/lib/challenge-settings/challenge-settings.schema';
 import type { ImageMetadata } from '@/shared/types';
 
 import { images } from '@/assets/images';
-import { useLocalStorageChallengeSettings } from '@/challenge-settings/use-local-storage-challenge-settings';
-import { type Challenge, ChallengeStatus } from '@/challenge/challenge.schema';
-import { useLocalStorageChallenge } from '@/challenge/use-local-storage-challenge';
+import { useLocalStorageChallengeSettings } from '@/shared/lib/challenge-settings/use-local-storage-challenge-settings';
+import {
+  type Challenge,
+  ChallengeStatus,
+} from '@/shared/lib/challenge/challenge.schema';
+import { useLocalStorageChallenge } from '@/shared/lib/challenge/use-local-storage-challenge';
 
 export function useChallenge(
   props: useChallenge.Props = {},

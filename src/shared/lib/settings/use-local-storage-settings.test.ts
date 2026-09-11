@@ -90,8 +90,6 @@ describe('useLocalStorageSettings', () => {
       image: 'beer',
     } satisfies Settings;
 
-    JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)!);
-
     const { result } = renderHook(() => useLocalStorageSettings());
 
     act(() => {

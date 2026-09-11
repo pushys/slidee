@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 
-import { DEFAULT_CHALLENGE_SETTINGS } from '@/challenge-settings/challenge-settings.schema';
+import { DEFAULT_CHALLENGE_SETTINGS } from '@/shared/lib/challenge-settings/challenge-settings.schema';
 
 import { useChallenge } from './use-challenge';
 

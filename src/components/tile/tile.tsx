@@ -4,7 +4,7 @@ import { type ComponentProps, type CSSProperties, useMemo } from 'react';
 
 import { useBoardContext } from '@/components/board/board-context';
 import { BoardCssVar } from '@/components/board/board-css-var';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { TileCssVar } from './tile-css-var';
 

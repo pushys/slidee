@@ -5,7 +5,7 @@ import {
   type SetStateAction,
 } from 'react';
 
-import type { useGame } from '@/game/use-game';
+import type { useGame } from '@/shared/lib/game/use-game';
 
 import type { useChallenge } from './use-challenge';
 import type { useSettings } from './use-settings';

@@ -9,7 +9,7 @@ import {
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 import { useControlledState } from '@/shared/utils/use-controlled-state';
 
 const BoardSkeleton = ({ size }: { size: Game.BoardSize }) => {

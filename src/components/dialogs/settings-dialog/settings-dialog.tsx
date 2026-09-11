@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Settings } from '@/settings/settings.schema';
+import type { Settings } from '@/shared/lib/settings/settings.schema';
 
 import { SettingsForm } from '@/components/forms/settings-form';
 

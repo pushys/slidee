@@ -1,6 +1,6 @@
 import { useContext, createContext } from 'react';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 export interface BoardContext {
   size: Game.BoardSize;

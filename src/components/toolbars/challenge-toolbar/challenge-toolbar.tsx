@@ -12,10 +12,10 @@ import { clsx } from 'clsx';
 import { type ComponentProps, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ChallengeStatus } from '@/challenge/challenge.schema';
 import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
+import { ChallengeStatus } from '@/shared/lib/challenge/challenge.schema';
 import { soundManager } from '@/shared/lib/sound-manager';
 
 const ENDING_CUTOFF_S = 9;

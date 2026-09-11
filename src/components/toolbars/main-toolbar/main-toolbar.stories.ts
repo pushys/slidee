@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { fn } from 'storybook/test';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { MainToolbar } from './main-toolbar';
 

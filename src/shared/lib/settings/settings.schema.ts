@@ -1,7 +1,7 @@
 import * as z from 'zod';
 
 import { images, type ImageKeys } from '@/assets/images';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 export const settingsSchema = z.object({
   sound: z.boolean().catch(true),

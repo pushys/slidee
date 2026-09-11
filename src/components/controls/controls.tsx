@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '@/components/tooltip';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 export const Controls = (props: Controls.Props) => {
   const {

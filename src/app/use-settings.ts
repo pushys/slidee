@@ -6,12 +6,12 @@ import {
   type SetStateAction,
 } from 'react';
 
-import type { Settings } from '@/settings/settings.schema';
+import type { Settings } from '@/shared/lib/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
 
 import { images, type ImageKeys } from '@/assets/images';
-import { Game } from '@/game/game';
-import { useLocalStorageSettings } from '@/settings/use-local-storage-settings';
+import { Game } from '@/shared/lib/game/game';
+import { useLocalStorageSettings } from '@/shared/lib/settings/use-local-storage-settings';
 
 const imageKeys = Object.keys(images) as unknown as ImageKeys[];
 

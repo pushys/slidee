@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
 import { images } from '@/assets/images';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { Tile } from '../tile';
 import { Board } from './board';

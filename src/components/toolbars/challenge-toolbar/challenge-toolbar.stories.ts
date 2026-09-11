@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { fn } from 'storybook/test';
 
-import { ChallengeStatus } from '@/challenge/challenge.schema';
+import { ChallengeStatus } from '@/shared/lib/challenge/challenge.schema';
 
 import { ChallengeToolbar } from './challenge-toolbar';
 

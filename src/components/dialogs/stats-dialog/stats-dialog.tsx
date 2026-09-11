@@ -12,10 +12,10 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { BoardStats } from '@/stats/board-stats.schema';
+import type { BoardStats } from '@/shared/lib/stats/board-stats.schema';
 
 import { TimeChip } from '@/components/time-chip';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 export const StatsDialog = (props: StatsDialog.Props) => {
   const { boardStats = {}, onClearBoardStatsPress, ...rest } = props;

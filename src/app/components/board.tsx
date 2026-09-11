@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import { ChallengeStatus } from '@/challenge/challenge.schema';
 import { Board as BoardView } from '@/components/board';
 import { Tile } from '@/components/tile';
+import { ChallengeStatus } from '@/shared/lib/challenge/challenge.schema';
 
 import { useAppContext } from '../app-context';
 

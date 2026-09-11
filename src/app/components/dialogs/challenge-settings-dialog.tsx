@@ -1,6 +1,6 @@
 import { images } from '@/assets/images';
-import { useLocalStorageChallengeSettings } from '@/challenge-settings/use-local-storage-challenge-settings';
 import { ChallengeSettingsDialog as ChallengeSettingsDialogView } from '@/components/dialogs/challenge-settings-dialog';
+import { useLocalStorageChallengeSettings } from '@/shared/lib/challenge-settings/use-local-storage-challenge-settings';
 
 import { useAppContext } from '../../app-context';
 

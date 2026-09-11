@@ -1,5 +1,5 @@
 import { Controls as ControlsView } from '@/components/controls';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { useAppContext } from '../app-context';
 

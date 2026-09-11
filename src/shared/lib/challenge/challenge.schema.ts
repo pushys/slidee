@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { challengeSettingsSchema } from '@/challenge-settings/challenge-settings.schema';
+import { challengeSettingsSchema } from '@/shared/lib/challenge-settings/challenge-settings.schema';
 
 export const ChallengeStatus = {
   Countdown: 'countdown',

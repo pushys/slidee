@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 
 import { Board } from '../board';
 import { Controls } from '../controls';

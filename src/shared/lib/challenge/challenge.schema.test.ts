@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_CHALLENGE_SETTINGS } from '@/challenge-settings/challenge-settings.schema';
+import { DEFAULT_CHALLENGE_SETTINGS } from '@/shared/lib/challenge-settings/challenge-settings.schema';
 
 import type { Challenge } from './challenge.schema';
 

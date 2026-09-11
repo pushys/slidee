@@ -29,7 +29,7 @@ import type { ImageKeys } from '@/assets/images';
 import type { ImageMetadata, ImageTag } from '@/shared/types';
 
 import { Tooltip } from '@/components/tooltip';
-import { Game } from '@/game/game';
+import { Game } from '@/shared/lib/game/game';
 import { useControlledState } from '@/shared/utils/use-controlled-state';
 
 const IMAGE_TAGS = [
