@@ -71,16 +71,19 @@ export function AppProvider(props: PropsWithChildren) {
   }, [sound]);
 
   function handleGameOver() {
-    challenge.increaseScore();
+    if (challenge.hasCurrent) {
+      challenge.increaseScore();
+      setTimeout(() => startViewTransition(() => game.init()), 100);
+    }
 
     // Ignore games that were won using the "Solve" button.
-    if (game.state.isAutoSolved) return;
-
-    stats.updateBoardStats({
-      boardSize,
-      image,
-      totalPlayTime: game.totalPlayTime,
-    });
+    if (!game.state.isAutoSolved) {
+      stats.updateBoardStats({
+        boardSize,
+        image,
+        totalPlayTime: game.totalPlayTime,
+      });
+    }
   }
 
   function handleChallengeFinish(result: useChallenge.Result) {
