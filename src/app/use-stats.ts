@@ -2,8 +2,8 @@ import { omit } from 'es-toolkit';
 import { useCallback, useMemo } from 'react';
 
 import type { ImageKeys } from '@/assets/images';
+import type { TimeLimit } from '@/shared/lib/challenge-settings/time-limit.schema';
 import type { BoardStatsEntry } from '@/shared/lib/stats/board-stats.schema';
-import type { ChallengeStats } from '@/shared/lib/stats/challenge-stats.schema';
 import type { Stats } from '@/shared/lib/stats/stats.schema';
 
 import { Game } from '@/shared/lib/game/game';
@@ -69,13 +69,19 @@ export function useStats(): useStats.ReturnValue {
   );
 
   const updateChallengeStats = useCallback(
-    (challenge: useStats.UpdateChallengeStatsPayload) => {
+    ({ timeLimit, bestScore }: useStats.UpdateChallengeStatsPayload) => {
       setStats((prevStats) => {
+        const prevChallenge = prevStats.challenge[timeLimit];
+
         // Ignore challenge stats update if there isn't new best score.
-        if (prevStats.challenge.bestScore >= challenge.bestScore) {
+        if (prevChallenge && prevChallenge.bestScore >= bestScore) {
           return prevStats;
         }
-        return { ...prevStats, challenge };
+
+        return {
+          ...prevStats,
+          challenge: { ...prevStats.challenge, [timeLimit]: { bestScore } },
+        };
       });
     },
     [setStats],
@@ -94,12 +100,15 @@ export namespace useStats {
     image: ImageKeys | null;
   }
 
-  export interface UpdateChallengeStatsPayload extends ChallengeStats {}
+  export interface UpdateChallengeStatsPayload {
+    timeLimit: TimeLimit;
+    bestScore: number;
+  }
 
   export interface ReturnValue {
     stats: Stats;
     updateBoardStats: (data: UpdateBoardStatsPayload) => void;
     clearBoardStats: (boardSize?: Game.BoardSize) => void;
-    updateChallengeStats: (data: ChallengeStats) => void;
+    updateChallengeStats: (data: UpdateChallengeStatsPayload) => void;
   }
 }

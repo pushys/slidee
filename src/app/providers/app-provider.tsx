@@ -51,10 +51,12 @@ export function AppProvider(props: PropsWithChildren) {
   );
 
   // Board size change, new image selection or challenge start must trigger a new game.
-  useDidUpdate(
-    () => game.init({ boardSize }),
-    [boardSize, image, challenge.hasCurrent],
-  );
+  useDidUpdate(() => {
+    game.init({
+      // Challenge mode has a fixed board size.
+      boardSize: challenge.hasCurrent ? Game.BoardSize.Medium : boardSize,
+    });
+  }, [boardSize, image, challenge.hasCurrent]);
 
   useWindowEventListener('blur', handleWindowBlur);
   useWindowEventListener('focus', handleWindowFocus);
@@ -86,7 +88,10 @@ export function AppProvider(props: PropsWithChildren) {
     setDialogOpen(true);
 
     if (challenge.current) {
-      stats.updateChallengeStats({ bestScore: challenge.current.score });
+      stats.updateChallengeStats({
+        timeLimit: challenge.current.settings.timeLimit,
+        bestScore: challenge.current.score,
+      });
     }
   }
 

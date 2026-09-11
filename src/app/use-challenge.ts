@@ -52,7 +52,7 @@ export function useChallenge(
   }, [challenge, now]);
 
   const create = useCallback(
-    (settings: ChallengeSettings, bestScore: number) => {
+    (settings: ChallengeSettings, bestScore = 0) => {
       if (current) return;
 
       // Save new settings for the next challenge.
@@ -155,7 +155,7 @@ export namespace useChallenge {
     /**
      * Creates a new challenge, saves into storage but doesn't start.
      */
-    create: (settings: ChallengeSettings, bestScore: number) => void;
+    create: (settings: ChallengeSettings, bestScore?: number) => void;
     /**
      * Starts the created challenge.
      */

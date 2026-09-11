@@ -17,10 +17,10 @@ import { useTranslation } from 'react-i18next';
 
 import { ImagePicker } from '@/components/image-picker';
 import {
-  TimeLimit,
   type ChallengeSettings,
   DEFAULT_CHALLENGE_SETTINGS,
 } from '@/shared/lib/challenge-settings/challenge-settings.schema';
+import { TimeLimit } from '@/shared/lib/challenge-settings/time-limit.schema';
 
 const TIME_LIMIT_ICONS = {
   [TimeLimit.Fast]: <Thunderbolt />,

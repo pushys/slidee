@@ -21,7 +21,7 @@ describe('useLocalStorageStats', () => {
       board: {
         3: { best: 600, average: 700, games: 15, images: ['car'] },
       },
-      challenge: { bestScore: 0 },
+      challenge: { 3: { bestScore: 0 } },
     } satisfies Stats;
 
     const { result } = renderHook(() => useLocalStorageStats());

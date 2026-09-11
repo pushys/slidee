@@ -16,7 +16,7 @@ export const ChallengeSettingsDialog = () => {
     <ChallengeSettingsDialogView
       defaultChallengeSettings={challengeSettings}
       onChallengeSettingsSave={(settings) =>
-        create(settings, stats.challenge.bestScore)
+        create(settings, stats.challenge[settings.timeLimit]?.bestScore)
       }
       images={images}
     />
