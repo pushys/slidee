@@ -9,19 +9,14 @@ import {
 } from '@gravity-ui/icons';
 import { Button, type ButtonProps, Chip } from '@heroui/react';
 import { clsx } from 'clsx';
-import {
-  type ComponentProps,
-  useState,
-  useEffect,
-  useEffectEvent,
-} from 'react';
+import { type ComponentProps, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ChallengeStatus } from '@/challenge/challenge.schema';
 import { ChipNumberFlow } from '@/components/chip-number-flow';
 import { TimeChip } from '@/components/time-chip';
 import { Tooltip } from '@/components/tooltip';
-import { SoundManager } from '@/game/sound-manager';
+import { soundManager } from '@/shared/lib/sound-manager';
 
 const ENDING_CUTOFF_S = 9;
 
@@ -38,21 +33,13 @@ export const ChallengeToolbar = (props: ChallengeToolbar.Props) => {
 
   const { t } = useTranslation();
 
-  const [soundManager] = useState(() => new SoundManager());
-
   const timeLeft = Math.floor(timeLeftMs / 1000);
   const isActive = challengeStatus === ChallengeStatus.Active;
   const isEnding = timeLeft <= ENDING_CUTOFF_S;
 
-  const playSound = useEffectEvent((sound: SoundManager.Sound) => {
-    if (isActive) {
-      soundManager.play(sound);
-    }
-  });
-
   useEffect(() => {
     if (timeLeft <= ENDING_CUTOFF_S) {
-      playSound('tick');
+      soundManager.play('tick');
     }
   }, [timeLeft]);
 

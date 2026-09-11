@@ -46,7 +46,6 @@ export const Board = () => {
       previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
       isKeyboardDisabled={isDialogOpen}
-      isSoundDisabled={!settings?.sound}
       isConfettiDisabled={!settings.confetti}
       isNumbersVisible={settings.showNumbers}
       isImagePreviewActive={isImagePreviewing}

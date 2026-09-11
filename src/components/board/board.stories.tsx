@@ -42,7 +42,6 @@ export const Default: Story = {
     tiles: '3x3' as unknown as Game.Board,
     gameStatus: Game.Status.Idle,
     isKeyboardDisabled: false,
-    isSoundDisabled: false,
     isConfettiDisabled: false,
     isNumbersVisible: false,
     isImagePreviewActive: false,

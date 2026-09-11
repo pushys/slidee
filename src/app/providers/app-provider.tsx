@@ -3,6 +3,7 @@ import {
   useRef,
   useMemo,
   useCallback,
+  useEffect,
   type PropsWithChildren,
 } from 'react';
 import {
@@ -14,6 +15,7 @@ import {
 
 import { Game } from '@/game/game';
 import { useGame } from '@/game/use-game';
+import { soundManager } from '@/shared/lib/sound-manager';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
@@ -32,7 +34,7 @@ export function AppProvider(props: PropsWithChildren) {
   const stats = useStats();
   const challenge = useChallenge({ onFinish: handleChallengeFinish });
 
-  const { boardSize, animations, image } = settings.settings;
+  const { boardSize, animations, image, sound } = settings.settings;
 
   const game = useGame({
     defaultBoardSize: settings.settings.boardSize,
@@ -60,6 +62,11 @@ export function AppProvider(props: PropsWithChildren) {
     'visibilitychange',
     document.hidden ? handleWindowBlur : handleWindowFocus,
   );
+
+  // Sync sound setting with the sound manager.
+  useEffect(() => {
+    soundManager.setEnabled(sound);
+  }, [sound]);
 
   function handleGameOver() {
     challenge.increaseScore();

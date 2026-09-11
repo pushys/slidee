@@ -22,7 +22,7 @@ import {
 import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/game/game';
-import { SoundManager } from '@/game/sound-manager';
+import { soundManager } from '@/shared/lib/sound-manager';
 import { useCountdown } from '@/shared/utils/use-countdown';
 
 import { BoardContext } from './board-context';
@@ -55,7 +55,6 @@ export const Board = (props: Board.Props) => {
     previewImageSrc,
     imageAttribution,
     isKeyboardDisabled = false,
-    isSoundDisabled = false,
     isConfettiDisabled = false,
     isNumbersVisible = false,
     isImagePreviewActive = false,
@@ -73,7 +72,6 @@ export const Board = (props: Board.Props) => {
 
   Game.validateBoardSize(size);
 
-  const [soundManager] = useState(() => new SoundManager());
   const [isCursorHiddenState, setCursorHiddenState] = useState(false);
 
   const countdown = useCountdown({
@@ -83,12 +81,6 @@ export const Board = (props: Board.Props) => {
       onCountdownComplete?.();
       soundManager.play('countdownEnd');
     },
-  });
-
-  const playSound = useEffectEvent((sound: SoundManager.Sound) => {
-    if (!isSoundDisabled) {
-      soundManager.play(sound);
-    }
   });
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -111,7 +103,7 @@ export const Board = (props: Board.Props) => {
   const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
 
   useEffect(() => {
-    playSound('move');
+    soundManager.play('move');
 
     // A tile move must remove active focus from any element on
     // the page so it doesn't interfere with the gameplay.
@@ -124,7 +116,7 @@ export const Board = (props: Board.Props) => {
     if (isGamePlaying) {
       confetti.reset();
     } else if (isGameOver) {
-      playSound('win');
+      soundManager.play('win');
       playConfetti();
     }
   }, [isGamePlaying, isGameOver]);
@@ -317,12 +309,6 @@ export namespace Board {
      * @default false
      */
     isKeyboardDisabled?: boolean;
-    /**
-     * If `true`, disables sound effects.
-     *
-     * @default false
-     */
-    isSoundDisabled?: boolean;
     /**
      * If `true`, the confetti effect won't triggered once the game is over.
      *
