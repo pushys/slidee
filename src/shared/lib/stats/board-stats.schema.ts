@@ -1,8 +1,8 @@
-import { isPlainObject } from 'es-toolkit';
 import * as z from 'zod';
 
 import { images, type ImageKeys } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
+import { safePartialRecord } from '@/shared/utils/zod/safe-partial-record';
 
 const imageKeys = Object.keys(images) as ImageKeys[];
 
@@ -20,28 +20,11 @@ const boardStatsEntrySchema = z.object({
   }),
 });
 
-export const boardStatsSchema = z.custom<unknown>().transform((data, ctx) => {
-  if (!isPlainObject(data)) {
-    ctx.addIssue('Invalid data');
-    return z.NEVER;
-  }
-
-  const result: Partial<Record<Game.BoardSize, BoardStatsEntry>> = {};
-
-  for (const [key, value] of Object.entries(data)) {
-    const boardSize = boardSizeSchema.safeParse(Number(key));
-
-    if (!boardSize.success) continue;
-
-    const entry = boardStatsEntrySchema.safeParse(value);
-
-    if (entry.success) {
-      result[boardSize.data] = entry.data;
-    }
-  }
-
-  return result;
-});
+export const boardStatsSchema = safePartialRecord(
+  boardSizeSchema,
+  boardStatsEntrySchema,
+  Number,
+);
 
 export type BoardStatsEntry = z.infer<typeof boardStatsEntrySchema>;
 export type BoardStats = z.infer<typeof boardStatsSchema>;
