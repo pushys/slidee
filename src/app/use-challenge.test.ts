@@ -95,6 +95,21 @@ describe('useChallenge', () => {
     expect(result.current.current?.timeLeftInSeconds).toBe(0);
   });
 
+  it('should call onFinish callback', () => {
+    const callbacks = { onFinish: () => {} };
+    const onFinish = vi.spyOn(callbacks, 'onFinish');
+
+    const { result } = renderHook(() => useChallenge({ onFinish }));
+
+    act(() => {
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
+      result.current.start();
+      vi.advanceTimersByTime(180_000);
+    });
+
+    expect(onFinish).toHaveBeenCalled();
+  });
+
   it('should increase score by one', () => {
     const { result } = renderHook(() => useChallenge());
 
