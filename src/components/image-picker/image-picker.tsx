@@ -25,7 +25,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePrefersReducedMotion } from 'rooks';
 
-import type { ImageKeys } from '@/assets/images';
+import type { ImageKey } from '@/assets/images';
 import type { ImageMetadata, ImageTag } from '@/shared/types';
 
 import { Tooltip } from '@/components/tooltip';
@@ -84,7 +84,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
   }, [prefersReducedMotion]);
 
   const imageOptions = useMemo(() => {
-    const entries = Object.entries(images) as [ImageKeys, ImageMetadata][];
+    const entries = Object.entries(images) as [ImageKey, ImageMetadata][];
 
     if (tags.length < 1) return entries;
 
@@ -110,7 +110,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
   }, [t, i18n.language]);
 
   const handleValueChange = (values: string[]) => {
-    const keys = values as ImageKeys[];
+    const keys = values as ImageKey[];
 
     if (selectionMode === 'single') {
       const key = last(keys);
@@ -249,7 +249,7 @@ export const ImagePicker = (props: ImagePicker.Props) => {
 };
 
 export namespace ImagePicker {
-  export type Selection = Set<ImageKeys>;
+  export type Selection = Set<ImageKey>;
 
   export interface Props extends Omit<
     CheckboxGroupProps,
@@ -258,7 +258,7 @@ export namespace ImagePicker {
     /**
      * Map of images.
      */
-    images: Record<ImageKeys, ImageMetadata>;
+    images: Record<ImageKey, ImageMetadata>;
     /**
      * Whether the collection allows empty selection.
      *
@@ -288,7 +288,7 @@ export namespace ImagePicker {
      */
     getIsImageSolved?: (
       boardSize: Game.BoardSize,
-      imageKey: ImageKeys,
+      imageKey: ImageKey,
     ) => boolean;
   }
 }

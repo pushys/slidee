@@ -1,7 +1,7 @@
 import { omit } from 'es-toolkit';
 import { useCallback, useMemo } from 'react';
 
-import type { ImageKeys } from '@/assets/images';
+import type { ImageKey } from '@/assets/images';
 import type { TimeLimit } from '@/shared/lib/challenge-settings/time-limit.schema';
 import type { BoardStatsEntry } from '@/shared/lib/stats/board-stats.schema';
 import type { Stats } from '@/shared/lib/stats/stats.schema';
@@ -97,7 +97,7 @@ export namespace useStats {
   export interface UpdateBoardStatsPayload {
     boardSize: Game.BoardSize;
     totalPlayTime: number;
-    image: ImageKeys | null;
+    image: ImageKey | null;
   }
 
   export interface UpdateChallengeStatsPayload {

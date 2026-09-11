@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { images, type ImageKeys } from '@/assets/images';
+import { images, type ImageKey } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 
 export const settingsSchema = z.object({
@@ -10,7 +10,7 @@ export const settingsSchema = z.object({
   animations: z.boolean().catch(true),
   showNumbers: z.boolean().catch(true),
   image: z
-    .enum(Object.keys(images) as ImageKeys[])
+    .enum(Object.keys(images) as ImageKey[])
     .nullable()
     .catch(null),
 });

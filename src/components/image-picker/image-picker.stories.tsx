@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { useState } from 'storybook/preview-api';
 
-import { images, type ImageKeys } from '@/assets/images';
+import { images, type ImageKey } from '@/assets/images';
 
 import { ImagePicker } from './image-picker';
 
@@ -37,7 +37,7 @@ export const Controlled: Story = {
     ...Default.args,
   },
   render: function Render(args) {
-    const [selection, setSelection] = useState(new Set<ImageKeys>());
+    const [selection, setSelection] = useState(new Set<ImageKey>());
 
     return (
       <ImagePicker

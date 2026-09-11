@@ -166,4 +166,4 @@ export const images = {
   smartphone,
 };
 
-export type ImageKeys = keyof typeof images;
+export type ImageKey = keyof typeof images;

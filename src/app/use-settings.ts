@@ -9,15 +9,15 @@ import {
 import type { Settings } from '@/shared/lib/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
 
-import { images, type ImageKeys } from '@/assets/images';
+import { images, type ImageKey } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 import { useLocalStorageSettings } from '@/shared/lib/settings/use-local-storage-settings';
 
-const imageKeys = Object.keys(images) as unknown as ImageKeys[];
+const imageKeys = Object.keys(images) as unknown as ImageKey[];
 
 // Keep history of randomly selected images to exclude them
 // when selecting a new one to avoid repeating too often.
-let recentImages: ImageKeys[] = [];
+let recentImages: ImageKey[] = [];
 
 const MAX_RECENT_IMAGES = 10;
 
@@ -46,7 +46,7 @@ export function useSettings(): useSettings.ReturnValue {
 
   const randomImage = useCallback(() => {
     setSettings((prevSettings) => {
-      let newImage: ImageKeys;
+      let newImage: ImageKey;
 
       // Re-sample image until it isn't among recently used or matches previous.
       do {
