@@ -4,7 +4,7 @@ import { useAppContext } from '../../app-context';
 
 export const ChallengeToolbar = () => {
   const {
-    challenge: { current, end },
+    challenge: { current, quit },
     game,
     startViewTransition,
   } = useAppContext();
@@ -20,7 +20,7 @@ export const ChallengeToolbar = () => {
       timeLeft={current.timeLeft}
       challengeStatus={current.status}
       onShufflePress={() => startViewTransition(() => game.init())}
-      onQuitPress={end}
+      onQuitPress={quit}
     />
   );
 };

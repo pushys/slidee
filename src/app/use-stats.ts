@@ -69,18 +69,21 @@ export function useStats(): useStats.ReturnValue {
   );
 
   const updateChallengeStats = useCallback(
-    ({ timeLimit, bestScore }: useStats.UpdateChallengeStatsPayload) => {
+    ({ timeLimit, score }: useStats.UpdateChallengeStatsPayload) => {
       setStats((prevStats) => {
         const prevChallenge = prevStats.challenge[timeLimit];
 
         // Ignore challenge stats update if there isn't new best score.
-        if (prevChallenge && prevChallenge.bestScore >= bestScore) {
+        if (prevChallenge && prevChallenge.bestScore >= score) {
           return prevStats;
         }
 
         return {
           ...prevStats,
-          challenge: { ...prevStats.challenge, [timeLimit]: { bestScore } },
+          challenge: {
+            ...prevStats.challenge,
+            [timeLimit]: { bestScore: score },
+          },
         };
       });
     },
@@ -102,7 +105,7 @@ export namespace useStats {
 
   export interface UpdateChallengeStatsPayload {
     timeLimit: TimeLimit;
-    bestScore: number;
+    score: number;
   }
 
   export interface ReturnValue {

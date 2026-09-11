@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, cleanup } from '@testing-library/react';
 import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 
 import { DEFAULT_CHALLENGE_SETTINGS } from '@/shared/lib/challenge-settings/challenge-settings.schema';
@@ -11,6 +11,8 @@ describe('useChallenge', () => {
   });
 
   afterEach(() => {
+    cleanup();
+    vi.clearAllTimers();
     vi.useRealTimers();
     localStorage.clear();
   });
@@ -20,6 +22,7 @@ describe('useChallenge', () => {
 
     expect(result.current.current).toBe(null);
     expect(result.current.hasCurrent).toBe(false);
+    expect(result.current.result).toBe(null);
   });
 
   it('should create a new challenge', () => {
@@ -43,6 +46,7 @@ describe('useChallenge', () => {
       timeLeftInSeconds: 180,
     });
     expect(result.current.hasCurrent).toBe(true);
+    expect(result.current.result).toBe(null);
   });
 
   it('should start a created challenge', () => {
@@ -82,20 +86,7 @@ describe('useChallenge', () => {
     expect(result.current.current?.timeLeftInSeconds).toBe(180);
   });
 
-  it('should not let time left go into negative', () => {
-    const { result } = renderHook(() => useChallenge());
-
-    act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
-      result.current.start();
-      vi.advanceTimersByTime(190_000);
-    });
-
-    expect(result.current.current?.timeLeft).toBe(0);
-    expect(result.current.current?.timeLeftInSeconds).toBe(0);
-  });
-
-  it('should call onFinish callback', () => {
+  it('should finish challenge', () => {
     const callbacks = { onFinish: () => {} };
     const onFinish = vi.spyOn(callbacks, 'onFinish');
 
@@ -104,10 +95,22 @@ describe('useChallenge', () => {
     act(() => {
       result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
+    });
+
+    act(() => {
       vi.advanceTimersByTime(180_000);
     });
 
-    expect(onFinish).toHaveBeenCalled();
+    const challengeResult = {
+      timeLimit: 3,
+      score: 0,
+      bestScore: 0,
+      isNewBest: false,
+    } satisfies useChallenge.Result;
+
+    expect(onFinish).toHaveBeenCalledWith(challengeResult);
+    expect(result.current.current).toBe(null);
+    expect(result.current.result).toStrictEqual(challengeResult);
   });
 
   it('should increase score by one', () => {
@@ -122,13 +125,27 @@ describe('useChallenge', () => {
     expect(result.current.current?.score).toBe(1);
   });
 
-  it('should end challenge', () => {
+  it('should not increase score when challenge not active', () => {
+    const { result } = renderHook(() => useChallenge());
+
+    act(() => {
+      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
+    });
+
+    act(() => {
+      result.current.increaseScore();
+    });
+
+    expect(result.current.current?.score).toBe(0);
+  });
+
+  it('should quit challenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
       result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
       result.current.start();
-      result.current.end();
+      result.current.quit();
     });
 
     expect(result.current.current).toBe(null);

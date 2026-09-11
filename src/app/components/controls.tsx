@@ -17,7 +17,7 @@ export const Controls = () => {
       previousImage,
       nextImage,
     },
-    challenge: { hasCurrent, end },
+    challenge: { hasCurrent, quit },
     game,
     isImagePreviewing,
     setImagePreviewing,
@@ -39,7 +39,7 @@ export const Controls = () => {
       return openDialog('challenge-settings');
     }
 
-    end();
+    quit();
     startViewTransition(toggleMode);
   };
 

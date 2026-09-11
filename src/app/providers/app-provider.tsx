@@ -83,16 +83,10 @@ export function AppProvider(props: PropsWithChildren) {
     });
   }
 
-  function handleChallengeFinish() {
+  function handleChallengeFinish(result: useChallenge.Result) {
     setDialog('challenge-result');
     setDialogOpen(true);
-
-    if (challenge.current) {
-      stats.updateChallengeStats({
-        timeLimit: challenge.current.settings.timeLimit,
-        bestScore: challenge.current.score,
-      });
-    }
+    stats.updateChallengeStats(result);
   }
 
   function handleWindowBlur() {

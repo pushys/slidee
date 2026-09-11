@@ -5,20 +5,14 @@ import { useAppContext } from '../../app-context';
 export const ChallengeResultDialog = () => {
   const {
     openDialog,
-    challenge: { current, end },
+    challenge: { result },
   } = useAppContext();
-
-  const handleRestartChallengePress = () => {
-    end();
-    openDialog('challenge-settings');
-  };
 
   return (
     <ChallengeResultDialogView
-      score={current?.score}
-      bestScore={current?.bestScore}
-      onNewChallengePress={handleRestartChallengePress}
-      onQuitPress={end}
+      score={result?.score}
+      bestScore={result?.bestScore}
+      onNewChallengePress={() => openDialog('challenge-settings')}
     />
   );
 };

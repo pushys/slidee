@@ -1,4 +1,3 @@
-import { noop } from 'es-toolkit';
 import {
   useState,
   useMemo,
@@ -9,6 +8,7 @@ import {
 import { useIntervalWhen } from 'rooks';
 
 import type { ChallengeSettings } from '@/shared/lib/challenge-settings/challenge-settings.schema';
+import type { TimeLimit } from '@/shared/lib/challenge-settings/time-limit.schema';
 import type { ImageMetadata } from '@/shared/types';
 
 import { images } from '@/assets/images';
@@ -28,6 +28,7 @@ export function useChallenge(
   const [challenge, setChallenge] = useLocalStorageChallenge();
 
   const [now, setNow] = useState(() => Date.now());
+  const [result, setResult] = useState<useChallenge.Result | null>(null);
 
   const current = useMemo<useChallenge.Current | null>(() => {
     if (!challenge) return null;
@@ -35,12 +36,8 @@ export function useChallenge(
     const { endTime, ...rest } = challenge;
     const { image, timeLimit } = challenge.settings;
 
-    // If challenge was just created and we don't have end time yet use a placeholder.
-    let timeLeft = timeLimit * 60 * 1000;
-    if (endTime) {
-      timeLeft = endTime - now;
-    }
-
+    // If challenge was just created we don't have end time yet so use a placeholder.
+    const timeLeft = endTime ? endTime - now : timeLimit * 60 * 1000;
     const timeLeftInSeconds = Math.floor(timeLeft / 1000);
 
     return {
@@ -55,10 +52,12 @@ export function useChallenge(
     (settings: ChallengeSettings, bestScore = 0) => {
       if (current) return;
 
-      // Save new settings for the next challenge.
+      setResult(null);
+
+      // Save new settings in storage for the next challenge.
       setSettings(settings);
 
-      // Put new challenge into storage but don't start yet.
+      // Save new challenge into storage but don't start yet.
       setChallenge({
         settings,
         status: ChallengeStatus.Countdown,
@@ -88,12 +87,14 @@ export function useChallenge(
 
   const increaseScore = useCallback(() => {
     setChallenge((prev) => {
-      if (!prev) return null;
+      if (!prev || prev.status !== ChallengeStatus.Active) {
+        return prev;
+      }
       return { ...prev, score: prev.score + 1 };
     });
   }, [setChallenge]);
 
-  const end = useCallback(() => {
+  const quit = useCallback(() => {
     setChallenge(null);
   }, [setChallenge]);
 
@@ -107,23 +108,39 @@ export function useChallenge(
     true,
   );
 
-  const finish = useEffectEvent(onFinish ?? noop);
+  const finish = useEffectEvent(() => {
+    if (!current) return;
+
+    const result = {
+      timeLimit: current.settings.timeLimit,
+      score: current.score,
+      bestScore: current.bestScore,
+      isNewBest: current.score > current.bestScore,
+    } satisfies useChallenge.Result;
+
+    onFinish?.(result);
+    setResult(result);
+    quit();
+  });
+
   useEffect(() => {
-    if (isActive && current?.timeLeftInSeconds === 0) {
-      finish();
-    }
+    if (!isActive || current?.timeLeftInSeconds !== 0) return;
+
+    // eslint-disable-next-line react/set-state-in-effect
+    finish();
   }, [isActive, current?.timeLeftInSeconds]);
 
   return useMemo(
     () => ({
       current,
       hasCurrent,
+      result,
       create,
       start,
       increaseScore,
-      end,
+      quit,
     }),
-    [current, hasCurrent, create, start, increaseScore, end],
+    [current, hasCurrent, result, create, start, increaseScore, quit],
   );
 }
 
@@ -136,11 +153,18 @@ export namespace useChallenge {
     imageMetadata: ImageMetadata | undefined;
   }
 
+  export interface Result {
+    timeLimit: TimeLimit;
+    score: number;
+    bestScore: number;
+    isNewBest: boolean;
+  }
+
   export interface Props {
     /**
      * Called when active challenge reaches zero time left.
      */
-    onFinish?: () => void;
+    onFinish?: (result: Result) => void;
   }
 
   export interface ReturnValue {
@@ -152,6 +176,10 @@ export namespace useChallenge {
      * Whether there is a current challenge.
      */
     hasCurrent: boolean;
+    /**
+     * Challenge result.
+     */
+    result: Result | null;
     /**
      * Creates a new challenge, saves into storage but doesn't start.
      */
@@ -165,8 +193,8 @@ export namespace useChallenge {
      */
     increaseScore: () => void;
     /**
-     * Ends current challenge.
+     * Quits current challenge.
      */
-    end: () => void;
+    quit: () => void;
   }
 }
