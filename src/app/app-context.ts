@@ -7,9 +7,9 @@ import {
 
 import type { useGame } from '@/shared/lib/game/use-game';
 
-import type { useChallenge } from './use-challenge';
-import type { useSettings } from './use-settings';
-import type { useStats } from './use-stats';
+import type { useChallenge } from './features/challenge';
+import type { useSettings } from './features/settings';
+import type { useStats } from './features/stats';
 
 export interface AppContext {
   dialog: AppContext.Dialog | null;

@@ -19,9 +19,9 @@ import { soundManager } from '@/shared/lib/sound-manager';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
-import { useChallenge } from '../use-challenge';
-import { useSettings } from '../use-settings';
-import { useStats } from '../use-stats';
+import { useChallenge } from '../features/challenge';
+import { useSettings } from '../features/settings';
+import { useStats } from '../features/stats';
 
 type PauseReason = 'dialog' | 'lost-focus';
 
