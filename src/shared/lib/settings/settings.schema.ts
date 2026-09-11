@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { images, type ImageKey } from '@/assets/images';
+import { imageKeySchema } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 
 export const settingsSchema = z.object({
@@ -9,10 +9,7 @@ export const settingsSchema = z.object({
   confetti: z.boolean().catch(true),
   animations: z.boolean().catch(true),
   showNumbers: z.boolean().catch(true),
-  image: z
-    .enum(Object.keys(images) as ImageKey[])
-    .nullable()
-    .catch(null),
+  image: imageKeySchema.nullable().catch(null),
 });
 
 export type Settings = z.infer<typeof settingsSchema>;

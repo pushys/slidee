@@ -1,18 +1,14 @@
 import * as z from 'zod';
 
-import { images, type ImageKey } from '@/assets/images';
+import { imageKeySchema, imageKeys } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 import { safePartialRecord } from '@/shared/utils/zod/safe-partial-record';
-
-const imageKeys = Object.keys(images) as ImageKey[];
-
-const boardSizeSchema = z.enum(Game.BoardSize);
 
 const boardStatsEntrySchema = z.object({
   best: z.number(),
   average: z.number(),
   games: z.number(),
-  images: z.array(z.enum(Object.keys(images) as ImageKey[])).catch((ctx) => {
+  images: z.array(imageKeySchema).catch((ctx) => {
     if (!Array.isArray(ctx.value)) return [];
 
     // In case some image keys aren't valid we at least try to save some that are.
@@ -21,7 +17,7 @@ const boardStatsEntrySchema = z.object({
 });
 
 export const boardStatsSchema = safePartialRecord(
-  boardSizeSchema,
+  z.enum(Game.BoardSize),
   boardStatsEntrySchema,
   Number,
 );

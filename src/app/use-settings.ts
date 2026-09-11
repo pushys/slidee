@@ -9,11 +9,9 @@ import {
 import type { Settings } from '@/shared/lib/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
 
-import { images, type ImageKey } from '@/assets/images';
+import { images, imageKeys, type ImageKey } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 import { useLocalStorageSettings } from '@/shared/lib/settings/use-local-storage-settings';
-
-const imageKeys = Object.keys(images) as unknown as ImageKey[];
 
 // Keep history of randomly selected images to exclude them
 // when selecting a new one to avoid repeating too often.

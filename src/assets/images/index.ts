@@ -1,3 +1,5 @@
+import * as z from 'zod';
+
 import { abstract } from './abstract';
 import { abstract2 } from './abstract2';
 import { abstract3 } from './abstract3';
@@ -167,3 +169,6 @@ export const images = {
 };
 
 export type ImageKey = keyof typeof images;
+
+export const imageKeys = Object.keys(images) as ImageKey[];
+export const imageKeySchema = z.enum(imageKeys);
