@@ -20,6 +20,8 @@ import { useStats } from '../features/stats';
 
 type PauseReason = 'dialog' | 'lost-focus';
 
+const NEW_GAME_DELAY_MS = 300;
+
 export function AppProvider(props: PropsWithChildren) {
   const dialog = useDialog({
     onOpen: handleDialogOpen,
@@ -69,7 +71,10 @@ export function AppProvider(props: PropsWithChildren) {
   function handleGameOver() {
     if (challenge.hasCurrent) {
       challenge.increaseScore();
-      setTimeout(() => startViewTransition(() => game.init()), 100);
+      setTimeout(
+        () => startViewTransition(() => game.init()),
+        NEW_GAME_DELAY_MS,
+      );
     }
 
     // Ignore games that were won using the "Solve" button.
