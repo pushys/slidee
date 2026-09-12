@@ -103,14 +103,16 @@ export const Board = (props: Board.Props) => {
   const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
 
   useEffect(() => {
-    soundManager.play('move');
+    if (!countdown) {
+      soundManager.play('move');
+    }
 
     // A tile move must remove active focus from any element on
     // the page so it doesn't interfere with the gameplay.
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
-  }, [tiles]);
+  }, [countdown, tiles]);
 
   useEffect(() => {
     if (isGamePlaying) {
