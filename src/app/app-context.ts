@@ -8,16 +8,14 @@ import {
 import type { useGame } from '@/shared/lib/game/use-game';
 
 import type { useChallenge } from './features/challenge';
+import type { useDialog } from './features/dialog';
 import type { useSettings } from './features/settings';
 import type { useStats } from './features/stats';
 
 export interface AppContext {
-  dialog: AppContext.Dialog | null;
-  isDialogOpen: boolean;
-  openDialog: (dialog: AppContext.Dialog) => void;
-  closeDialog: () => void;
   isImagePreviewing: boolean;
   setImagePreviewing: Dispatch<SetStateAction<boolean>>;
+  dialog: useDialog.ReturnValue;
   settings: useSettings.ReturnValue;
   stats: useStats.ReturnValue;
   challenge: useChallenge.ReturnValue;
@@ -35,13 +33,4 @@ export function useAppContext() {
     );
   }
   return context;
-}
-
-export namespace AppContext {
-  export type Dialog =
-    | 'settings'
-    | 'stats'
-    | 'help'
-    | 'challenge-settings'
-    | 'challenge-result';
 }

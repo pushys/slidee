@@ -4,7 +4,7 @@ import { useAppContext } from '../app-context';
 
 export const Footer = () => {
   const {
-    openDialog,
+    dialog: { open },
     settings: { settings, enableSound, disableSound },
     challenge: { hasCurrent },
   } = useAppContext();
@@ -14,9 +14,9 @@ export const Footer = () => {
       soundEnabled={settings.sound}
       onSoundEnablePress={enableSound}
       onSoundDisablePress={disableSound}
-      onStatsPress={() => openDialog('stats')}
-      onHelpPress={() => openDialog('help')}
-      onSettingsPress={() => openDialog('settings')}
+      onStatsPress={() => open('stats')}
+      onHelpPress={() => open('help')}
+      onSettingsPress={() => open('settings')}
       isChallengeActive={hasCurrent}
     />
   );

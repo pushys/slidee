@@ -8,8 +8,8 @@ import { useAppContext } from '../app-context';
 
 export const Board = () => {
   const {
-    isDialogOpen,
     isImagePreviewing,
+    dialog: { isOpen },
     settings: { settings, imageMetadata },
     challenge: { current, start },
     game,
@@ -22,13 +22,13 @@ export const Board = () => {
         key={tile}
         value={tile}
         isSolved={tile === index + 1}
-        isViewTransitionDisabled={isDialogOpen}
+        isViewTransitionDisabled={isOpen}
         {...(game.isTileMovable(tile) && {
           onPress: () => startViewTransition(() => game.moveTile(tile)),
         })}
       />
     ),
-    [isDialogOpen, game, startViewTransition],
+    [isOpen, game, startViewTransition],
   );
 
   return (
@@ -45,7 +45,7 @@ export const Board = () => {
       imageSrc={imageMetadata?.image}
       previewImageSrc={imageMetadata?.preview}
       imageAttribution={imageMetadata?.attribution}
-      isKeyboardDisabled={isDialogOpen}
+      isKeyboardDisabled={isOpen}
       isConfettiDisabled={!settings.confetti}
       isNumbersVisible={settings.showNumbers}
       isImagePreviewActive={isImagePreviewing}

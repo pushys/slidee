@@ -5,7 +5,7 @@ import { useAppContext } from '../app-context';
 
 export const Controls = () => {
   const {
-    openDialog,
+    dialog: { open },
     settings: {
       settings,
       imageMetadata,
@@ -36,7 +36,7 @@ export const Controls = () => {
 
   const handleModeChange = (newMode: ControlsView.Mode) => {
     if (newMode === 'challenge') {
-      return openDialog('challenge-settings');
+      return open('challenge-settings');
     }
 
     quit();

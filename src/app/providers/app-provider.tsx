@@ -2,7 +2,6 @@ import {
   useState,
   useRef,
   useMemo,
-  useCallback,
   useEffect,
   type PropsWithChildren,
 } from 'react';
@@ -20,16 +19,19 @@ import { createStartViewTransition } from '@/shared/utils/create-start-view-tran
 
 import { AppContext } from '../app-context';
 import { useChallenge } from '../features/challenge';
+import { useDialog } from '../features/dialog';
 import { useSettings } from '../features/settings';
 import { useStats } from '../features/stats';
 
 type PauseReason = 'dialog' | 'lost-focus';
 
 export function AppProvider(props: PropsWithChildren) {
-  const [dialog, setDialog] = useState<AppContext.Dialog | null>(null);
-  const [isDialogOpen, setDialogOpen] = useState(false);
   const [isImagePreviewing, setImagePreviewing] = useState(false);
 
+  const dialog = useDialog({
+    onOpen: handleDialogOpen,
+    onClose: handleDialogClose,
+  });
   const settings = useSettings();
   const stats = useStats();
   const challenge = useChallenge({ onFinish: handleChallengeFinish });
@@ -87,8 +89,7 @@ export function AppProvider(props: PropsWithChildren) {
   }
 
   function handleChallengeFinish(result: useChallenge.Result) {
-    setDialog('challenge-result');
-    setDialogOpen(true);
+    dialog.open('challenge-result');
     stats.updateChallengeStats(result);
   }
 
@@ -106,22 +107,14 @@ export function AppProvider(props: PropsWithChildren) {
     }
   }
 
-  const openDialog = useCallback(
-    (dialogCode: AppContext.Dialog) => {
-      setDialog(dialogCode);
-      setDialogOpen(true);
+  function handleDialogOpen() {
+    if (game.state.status === Game.Status.Playing) {
+      game.pause();
+      pauseReasonRef.current = 'dialog';
+    }
+  }
 
-      if (game.state.status === Game.Status.Playing) {
-        game.pause();
-        pauseReasonRef.current = 'dialog';
-      }
-    },
-    [game],
-  );
-
-  const closeDialog = useCallback(() => {
-    setDialogOpen(false);
-
+  function handleDialogClose() {
     if (
       game.state.status === Game.Status.Paused &&
       pauseReasonRef.current === 'dialog'
@@ -129,16 +122,13 @@ export function AppProvider(props: PropsWithChildren) {
       game.resume();
       pauseReasonRef.current = null;
     }
-  }, [game]);
+  }
 
   const contextValue = useMemo(
     () => ({
-      dialog,
-      isDialogOpen,
-      openDialog,
-      closeDialog,
       isImagePreviewing,
       setImagePreviewing,
+      dialog,
       settings,
       stats,
       challenge,
@@ -146,12 +136,9 @@ export function AppProvider(props: PropsWithChildren) {
       startViewTransition,
     }),
     [
-      dialog,
-      isDialogOpen,
-      openDialog,
-      closeDialog,
       isImagePreviewing,
       setImagePreviewing,
+      dialog,
       settings,
       stats,
       challenge,

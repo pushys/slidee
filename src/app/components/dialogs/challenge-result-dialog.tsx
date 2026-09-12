@@ -4,7 +4,7 @@ import { useAppContext } from '../../app-context';
 
 export const ChallengeResultDialog = () => {
   const {
-    openDialog,
+    dialog: { open },
     challenge: { result },
   } = useAppContext();
 
@@ -12,7 +12,7 @@ export const ChallengeResultDialog = () => {
     <ChallengeResultDialogView
       score={result?.score}
       bestScore={result?.bestScore}
-      onNewChallengePress={() => openDialog('challenge-settings')}
+      onNewChallengePress={() => open('challenge-settings')}
     />
   );
 };

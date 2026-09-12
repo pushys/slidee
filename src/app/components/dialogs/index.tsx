@@ -3,7 +3,9 @@ import { Suspense } from 'react';
 
 import { lazyNamed } from '@/shared/utils/lazy-named';
 
-import { useAppContext, type AppContext } from '../../app-context';
+import type { useDialog } from '../../features/dialog';
+
+import { useAppContext } from '../../app-context';
 
 const StatsDialog = lazyNamed(() => import('./stats-dialog'), 'StatsDialog');
 const HelpDialog = lazyNamed(() => import('./help-dialog'), 'HelpDialog');
@@ -21,28 +23,30 @@ const ChallengeResultDialog = lazyNamed(
 );
 
 // These dialogs will be dismissable neither by clicking nor by keyboard.
-const NON_DISMISSABLE: AppContext.Dialog[] = ['challenge-result'];
+const NON_DISMISSABLE: useDialog.Key[] = ['challenge-result'];
 
 export const Dialogs = () => {
-  const { dialog, isDialogOpen, closeDialog } = useAppContext();
+  const {
+    dialog: { current, isOpen, close },
+  } = useAppContext();
 
-  const isDismissable = dialog ? !NON_DISMISSABLE.includes(dialog) : false;
+  const isDismissable = current ? !NON_DISMISSABLE.includes(current) : false;
 
   return (
     <Modal.Backdrop
       variant="blur"
-      isOpen={isDialogOpen}
-      onOpenChange={closeDialog}
+      isOpen={isOpen}
+      onOpenChange={close}
       isDismissable={isDismissable}
       isKeyboardDismissDisabled={!isDismissable}
     >
       <Suspense fallback={<Spinner className="text-white" />}>
         <Modal.Container>
-          {dialog === 'stats' && <StatsDialog />}
-          {dialog === 'help' && <HelpDialog />}
-          {dialog === 'settings' && <SettingsDialog />}
-          {dialog === 'challenge-settings' && <ChallengeSettingsDialog />}
-          {dialog === 'challenge-result' && <ChallengeResultDialog />}
+          {current === 'stats' && <StatsDialog />}
+          {current === 'help' && <HelpDialog />}
+          {current === 'settings' && <SettingsDialog />}
+          {current === 'challenge-settings' && <ChallengeSettingsDialog />}
+          {current === 'challenge-result' && <ChallengeResultDialog />}
         </Modal.Container>
       </Suspense>
     </Modal.Backdrop>
