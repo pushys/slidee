@@ -5,6 +5,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
+import { useDidMount } from 'rooks';
 
 import type { Settings } from '@/shared/lib/settings/settings.schema';
 import type { ImageMetadata } from '@/shared/types';
@@ -87,6 +88,12 @@ export function useSettings(): useSettings.ReturnValue {
       image: prevSettings.image !== null ? null : imageKeys[0],
     }));
   }, [setSettings]);
+
+  useDidMount(() => {
+    if (settings.image) {
+      recentImages.push(settings.image);
+    }
+  });
 
   return useMemo(
     () => ({
