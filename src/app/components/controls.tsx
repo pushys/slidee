@@ -18,9 +18,8 @@ export const Controls = () => {
       nextImage,
     },
     challenge: { hasCurrent, quit },
+    board,
     game,
-    isImagePreviewing,
-    setImagePreviewing,
     startViewTransition,
   } = useAppContext();
 
@@ -52,12 +51,12 @@ export const Controls = () => {
       onRandomImagePress={() => startViewTransition(randomImage)}
       onPreviousImagePress={() => startViewTransition(previousImage)}
       onNextImagePress={() => startViewTransition(nextImage)}
-      onPreviewImagePressStart={() => setImagePreviewing(true)}
-      onPreviewImagePressEnd={() => setImagePreviewing(false)}
+      onPreviewImagePressStart={board.startImagePreview}
+      onPreviewImagePressEnd={board.stopImagePreview}
       isPreviousImageButtonDisabled={isFirstImage}
       isNextImageButtonDisabled={isLastImage}
       isPreviewImageButtonDisabled={game.state.status === Game.Status.Over}
-      isImagePreviewing={isImagePreviewing}
+      isImagePreviewing={board.isImagePreviewing}
     />
   );
 };

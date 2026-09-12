@@ -1,24 +1,19 @@
-import {
-  useContext,
-  createContext,
-  type Dispatch,
-  type SetStateAction,
-} from 'react';
+import { useContext, createContext } from 'react';
 
 import type { useGame } from '@/shared/lib/game/use-game';
 
+import type { useBoard } from './features/board';
 import type { useChallenge } from './features/challenge';
 import type { useDialog } from './features/dialog';
 import type { useSettings } from './features/settings';
 import type { useStats } from './features/stats';
 
 export interface AppContext {
-  isImagePreviewing: boolean;
-  setImagePreviewing: Dispatch<SetStateAction<boolean>>;
   dialog: useDialog.ReturnValue;
   settings: useSettings.ReturnValue;
   stats: useStats.ReturnValue;
   challenge: useChallenge.ReturnValue;
+  board: useBoard.ReturnValue;
   game: useGame.ReturnValue;
   startViewTransition: (callback: () => void) => void;
 }

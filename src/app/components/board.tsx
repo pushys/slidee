@@ -8,10 +8,10 @@ import { useAppContext } from '../app-context';
 
 export const Board = () => {
   const {
-    isImagePreviewing,
     dialog: { isOpen },
     settings: { settings, imageMetadata },
     challenge: { current, start },
+    board: { isImagePreviewing },
     game,
     startViewTransition,
   } = useAppContext();

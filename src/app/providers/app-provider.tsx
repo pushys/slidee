@@ -1,10 +1,4 @@
-import {
-  useState,
-  useRef,
-  useMemo,
-  useEffect,
-  type PropsWithChildren,
-} from 'react';
+import { useRef, useMemo, useEffect, type PropsWithChildren } from 'react';
 import {
   useDidUpdate,
   usePrefersReducedMotion,
@@ -18,6 +12,7 @@ import { soundManager } from '@/shared/lib/sound-manager';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
+import { useBoard } from '../features/board';
 import { useChallenge } from '../features/challenge';
 import { useDialog } from '../features/dialog';
 import { useSettings } from '../features/settings';
@@ -26,8 +21,6 @@ import { useStats } from '../features/stats';
 type PauseReason = 'dialog' | 'lost-focus';
 
 export function AppProvider(props: PropsWithChildren) {
-  const [isImagePreviewing, setImagePreviewing] = useState(false);
-
   const dialog = useDialog({
     onOpen: handleDialogOpen,
     onClose: handleDialogClose,
@@ -35,6 +28,7 @@ export function AppProvider(props: PropsWithChildren) {
   const settings = useSettings();
   const stats = useStats();
   const challenge = useChallenge({ onFinish: handleChallengeFinish });
+  const board = useBoard();
 
   const { boardSize, animations, image, sound } = settings.settings;
 
@@ -126,25 +120,15 @@ export function AppProvider(props: PropsWithChildren) {
 
   const contextValue = useMemo(
     () => ({
-      isImagePreviewing,
-      setImagePreviewing,
       dialog,
       settings,
       stats,
       challenge,
+      board,
       game,
       startViewTransition,
     }),
-    [
-      isImagePreviewing,
-      setImagePreviewing,
-      dialog,
-      settings,
-      stats,
-      challenge,
-      game,
-      startViewTransition,
-    ],
+    [dialog, settings, stats, challenge, board, game, startViewTransition],
   );
 
   return <AppContext value={contextValue}>{props.children}</AppContext>;
