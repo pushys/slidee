@@ -53,10 +53,15 @@ export const Board = () => {
       {...(current && {
         imageSrc: current.imageMetadata?.image,
         previewImageSrc: current.imageMetadata?.preview,
+        imageAttribution: current.imageMetadata?.attribution,
+        isKeyboardDisabled: false,
         isConfettiDisabled: true,
         isNumbersVisible: current.settings.showNumbers,
+        isImagePreviewActive: false,
         isCountdownEnabled: current.status === ChallengeStatus.Countdown,
         onCountdownComplete: () => start(),
+        onGamePause: undefined,
+        onGameResume: undefined,
       })}
     />
   );
