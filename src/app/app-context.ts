@@ -1,10 +1,9 @@
 import { useContext, createContext } from 'react';
 
-import type { useGame } from '@/shared/lib/game/use-game';
-
 import type { useBoard } from './features/board';
 import type { useChallenge } from './features/challenge';
 import type { useDialog } from './features/dialog';
+import type { useGame } from './features/game';
 import type { useSettings } from './features/settings';
 import type { useStats } from './features/stats';
 

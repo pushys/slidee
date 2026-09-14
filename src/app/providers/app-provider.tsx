@@ -7,13 +7,13 @@ import {
 } from 'rooks';
 
 import { Game } from '@/shared/lib/game/game';
-import { useGame } from '@/shared/lib/game/use-game';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
 import { useBoard } from '../features/board';
 import { useChallenge } from '../features/challenge';
 import { useDialog } from '../features/dialog';
+import { useGame } from '../features/game';
 import { useSettings } from '../features/settings';
 import { useStats } from '../features/stats';
 

@@ -2,13 +2,8 @@ import { noop } from 'es-toolkit';
 import { useState, useEffect, useMemo, useEffectEvent } from 'react';
 import { useIntervalWhen } from 'rooks';
 
-import { Game } from './game';
+import { Game } from '@/shared/lib/game/game';
 
-/**
- * A hook wrapper around `Game`.
- *
- * @param opts
- */
 export function useGame(props: useGame.Props = {}): useGame.ReturnValue {
   const { defaultBoardSize, onOver } = props;
 

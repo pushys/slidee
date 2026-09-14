@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
 
-import { Game } from './game';
+import { Game } from '@/shared/lib/game/game';
+
 import { useGame } from './use-game';
 
 const SEQUENCE = [1, 5, 3, 7, 6, 0, 4, 2, 8];
