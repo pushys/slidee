@@ -2,6 +2,7 @@ import { sample, drop } from 'es-toolkit';
 import {
   useCallback,
   useMemo,
+  useEffect,
   type Dispatch,
   type SetStateAction,
 } from 'react';
@@ -13,6 +14,7 @@ import type { ImageMetadata } from '@/shared/types';
 import { images, imageKeys, type ImageKey } from '@/assets/images';
 import { Game } from '@/shared/lib/game/game';
 import { useLocalStorageSettings } from '@/shared/lib/settings/use-local-storage-settings';
+import { soundManager } from '@/shared/lib/sound-manager';
 
 // Keep history of randomly selected images to exclude them
 // when selecting a new one to avoid repeating too often.
@@ -88,6 +90,11 @@ export function useSettings(): useSettings.ReturnValue {
       image: prevSettings.image !== null ? null : imageKeys[0],
     }));
   }, [setSettings]);
+
+  // Sync sound setting with the sound manager.
+  useEffect(() => {
+    soundManager.setEnabled(settings.sound);
+  }, [settings.sound]);
 
   useDidMount(() => {
     if (settings.image) {

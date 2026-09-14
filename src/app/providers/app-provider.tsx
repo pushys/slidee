@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect, type PropsWithChildren } from 'react';
+import { useRef, useMemo, type PropsWithChildren } from 'react';
 import {
   useDidUpdate,
   usePrefersReducedMotion,
@@ -8,7 +8,6 @@ import {
 
 import { Game } from '@/shared/lib/game/game';
 import { useGame } from '@/shared/lib/game/use-game';
-import { soundManager } from '@/shared/lib/sound-manager';
 import { createStartViewTransition } from '@/shared/utils/create-start-view-transition';
 
 import { AppContext } from '../app-context';
@@ -32,7 +31,7 @@ export function AppProvider(props: PropsWithChildren) {
   const challenge = useChallenge({ onFinish: handleChallengeFinish });
   const board = useBoard();
 
-  const { boardSize, animations, image, sound } = settings.settings;
+  const { boardSize, animations, image } = settings.settings;
 
   const game = useGame({
     defaultBoardSize: settings.settings.boardSize,
@@ -63,10 +62,8 @@ export function AppProvider(props: PropsWithChildren) {
     document.hidden ? handleWindowBlur : handleWindowFocus,
   );
 
-  // Sync sound setting with the sound manager.
-  useEffect(() => {
-    soundManager.setEnabled(sound);
-  }, [sound]);
+  const isGamePlaying = game.state.status === Game.Status.Playing;
+  const isGamePaused = game.state.status === Game.Status.Paused;
 
   function handleGameOver() {
     if (challenge.hasCurrent) {
@@ -93,7 +90,7 @@ export function AppProvider(props: PropsWithChildren) {
   }
 
   function handleWindowBlur() {
-    if (game.state.status === 'playing') {
+    if (isGamePlaying && !challenge.hasCurrent) {
       game.pause();
       pauseReasonRef.current = 'lost-focus';
     }
@@ -107,17 +104,14 @@ export function AppProvider(props: PropsWithChildren) {
   }
 
   function handleDialogOpen() {
-    if (game.state.status === Game.Status.Playing) {
+    if (isGamePlaying && !challenge.hasCurrent) {
       game.pause();
       pauseReasonRef.current = 'dialog';
     }
   }
 
   function handleDialogClose() {
-    if (
-      game.state.status === Game.Status.Paused &&
-      pauseReasonRef.current === 'dialog'
-    ) {
+    if (isGamePaused && pauseReasonRef.current === 'dialog') {
       game.resume();
       pauseReasonRef.current = null;
     }
