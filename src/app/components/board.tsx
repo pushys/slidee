@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 import { Board as BoardView } from '@/components/board';
 import { Tile } from '@/components/tile';
-import { ChallengeStatus } from '@/shared/lib/challenge/challenge.schema';
 
 import { useAppContext } from '../app-context';
 
@@ -10,7 +9,7 @@ export const Board = () => {
   const {
     dialog: { isOpen },
     settings: { settings, imageMetadata },
-    challenge: { current, start },
+    challenge: { current, countdown },
     board: { isImagePreviewing },
     game,
     startViewTransition,
@@ -58,8 +57,7 @@ export const Board = () => {
         isConfettiDisabled: true,
         isNumbersVisible: current.settings.showNumbers,
         isImagePreviewActive: false,
-        isCountdownEnabled: current.status === ChallengeStatus.Countdown,
-        onCountdownComplete: () => start(),
+        countdown: countdown ?? undefined,
         onGamePause: undefined,
         onGameResume: undefined,
       })}

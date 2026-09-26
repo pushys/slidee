@@ -72,16 +72,14 @@ export function AppProvider(props: PropsWithChildren) {
         () => startViewTransition(() => game.init()),
         NEW_GAME_DELAY_MS,
       );
+      return;
     }
 
-    // Ignore games that were won using the "Solve" button.
-    if (!game.state.isAutoSolved) {
-      stats.updateBoardStats({
-        boardSize,
-        image,
-        totalPlayTime: game.totalPlayTime,
-      });
-    }
+    stats.updateBoardStats({
+      boardSize,
+      image,
+      totalPlayTime: game.totalPlayTime,
+    });
   }
 
   function handleChallengeFinish(result: useChallenge.Result) {

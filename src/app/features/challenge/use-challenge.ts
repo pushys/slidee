@@ -18,6 +18,8 @@ import {
   ChallengeStatus,
 } from '@/shared/lib/challenge/challenge.schema';
 import { useLocalStorageChallenge } from '@/shared/lib/challenge/use-local-storage-challenge';
+import { soundManager } from '@/shared/lib/sound-manager';
+import { useCountdown } from '@/shared/utils/use-countdown';
 
 export function useChallenge(
   props: useChallenge.Props = {},
@@ -47,6 +49,15 @@ export function useChallenge(
       imageMetadata: image ? images[image] : undefined,
     };
   }, [challenge, now]);
+
+  const countdown = useCountdown({
+    enabled: current?.status === ChallengeStatus.Countdown,
+    onTick: () => soundManager.play('countdown'),
+    onComplete: () => {
+      start();
+      soundManager.play('countdownEnd');
+    },
+  });
 
   const create = useCallback(
     (settings: ChallengeSettings, bestScore = 0) => {
@@ -134,13 +145,23 @@ export function useChallenge(
     () => ({
       current,
       hasCurrent,
+      countdown,
       result,
       create,
       start,
       increaseScore,
       quit,
     }),
-    [current, hasCurrent, result, create, start, increaseScore, quit],
+    [
+      current,
+      hasCurrent,
+      countdown,
+      result,
+      create,
+      start,
+      increaseScore,
+      quit,
+    ],
   );
 }
 
@@ -176,6 +197,10 @@ export namespace useChallenge {
      * Whether there is a current challenge.
      */
     hasCurrent: boolean;
+    /**
+     * Current countdown.
+     */
+    countdown: number | null;
     /**
      * Challenge result.
      */

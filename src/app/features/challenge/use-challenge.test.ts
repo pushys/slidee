@@ -25,7 +25,7 @@ describe('useChallenge', () => {
     expect(result.current.result).toBe(null);
   });
 
-  it('should create a new challenge', () => {
+  it('should create and start a new challenge', () => {
     const { result } = renderHook(() => useChallenge());
 
     act(() => {
@@ -46,17 +46,14 @@ describe('useChallenge', () => {
       timeLeftInSeconds: 180,
     });
     expect(result.current.hasCurrent).toBe(true);
+    expect(result.current.countdown).toBe(3);
     expect(result.current.result).toBe(null);
-  });
-
-  it('should start a created challenge', () => {
-    const { result } = renderHook(() => useChallenge());
 
     act(() => {
-      result.current.create(DEFAULT_CHALLENGE_SETTINGS, 0);
-      result.current.start();
+      vi.advanceTimersByTime(4000);
     });
 
+    expect(result.current.countdown).toBe(null);
     expect(result.current.current?.status).toBe('active');
     expect(result.current.current?.timeLeft).toBe(180_000);
   });

@@ -22,8 +22,6 @@ import {
 import type { ImageAttribution } from '@/shared/types';
 
 import { Game } from '@/shared/lib/game/game';
-import { soundManager } from '@/shared/lib/sound-manager';
-import { useCountdown } from '@/shared/utils/use-countdown';
 
 import { BoardContext } from './board-context';
 import { BoardCssVar } from './board-css-var';
@@ -35,6 +33,13 @@ const MOVE_KEYS: KeyCode[] = [
   KeyCode.ArrowRight,
   KeyCode.ArrowDown,
 ];
+
+const keyCodeMoveDirectionMap = {
+  [KeyCode.ArrowLeft]: Game.MoveDirection.Left,
+  [KeyCode.ArrowUp]: Game.MoveDirection.Up,
+  [KeyCode.ArrowRight]: Game.MoveDirection.Right,
+  [KeyCode.ArrowDown]: Game.MoveDirection.Down,
+} satisfies Partial<Record<KeyCode, Game.MoveDirection>>;
 
 const gridMaps = {
   3: 'grid-cols-3 grid-rows-3',
@@ -54,34 +59,24 @@ export const Board = (props: Board.Props) => {
     imageSrc,
     previewImageSrc,
     imageAttribution,
+    countdown,
     isKeyboardDisabled = false,
     isConfettiDisabled = false,
     isNumbersVisible = false,
     isImagePreviewActive = false,
-    isCountdownEnabled = false,
     onTileMove,
     onNewGame,
     onGamePause,
     onGameResume,
-    onCountdownComplete,
     ...rest
   } = props;
 
-  // Derive board size from tiles so it's the only source of truth.
+  // Derive board size directly from tiles so it's the only source of truth.
   const size = Math.sqrt(tiles.length);
 
   Game.validateBoardSize(size);
 
   const [isCursorHiddenState, setCursorHiddenState] = useState(false);
-
-  const countdown = useCountdown({
-    enabled: isCountdownEnabled,
-    onTick: () => soundManager.play('countdown'),
-    onComplete: () => {
-      onCountdownComplete?.();
-      soundManager.play('countdownEnd');
-    },
-  });
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -101,27 +96,21 @@ export const Board = (props: Board.Props) => {
   const isGamePaused = gameStatus === Game.Status.Paused;
   const isGameOver = gameStatus === Game.Status.Over;
   const isCursorHidden = isGamePlaying ? isCursorHiddenState : false;
+  const isCountingDown = countdown !== undefined;
 
   useEffect(() => {
-    if (!countdown) {
-      soundManager.play('move');
-    }
-
-    // A tile move must remove active focus from any element on
+    // Tiles change must remove active focus from any element on
     // the page so it doesn't interfere with the gameplay.
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
-  }, [countdown, tiles]);
+  }, [tiles]);
 
   useEffect(() => {
-    if (isGamePlaying) {
-      confetti.reset();
-    } else if (isGameOver) {
-      soundManager.play('win');
+    if (isGameOver) {
       playConfetti();
     }
-  }, [isGamePlaying, isGameOver]);
+  }, [isGameOver]);
 
   useKey(
     Object.values(KeyCode),
@@ -137,16 +126,10 @@ export const Board = (props: Board.Props) => {
 
       switch (code) {
         case KeyCode.ArrowLeft:
-          onTileMove?.(Game.MoveDirection.Left);
-          break;
         case KeyCode.ArrowUp:
-          onTileMove?.(Game.MoveDirection.Up);
-          break;
         case KeyCode.ArrowRight:
-          onTileMove?.(Game.MoveDirection.Right);
-          break;
         case KeyCode.ArrowDown:
-          onTileMove?.(Game.MoveDirection.Down);
+          onTileMove?.(keyCodeMoveDirectionMap[code]);
           break;
         case KeyCode.Space:
           onNewGame?.();
@@ -157,7 +140,7 @@ export const Board = (props: Board.Props) => {
           break;
       }
     },
-    { when: !isKeyboardDisabled && countdown === null },
+    { when: !isKeyboardDisabled && !isCountingDown },
   );
 
   // Unhide cursor once mouse moves again.
@@ -262,11 +245,11 @@ export const Board = (props: Board.Props) => {
       <div
         className={clsx(
           'pointer-events-none absolute inset-2 flex rounded-lg backdrop-blur-xl transition-opacity',
-          { 'opacity-0': countdown === null },
+          { 'opacity-0': !isCountingDown },
         )}
       >
         <span className="m-auto text-9xl font-bold text-shadow-lg">
-          {countdown !== null && (
+          {isCountingDown && (
             <NumberFlow value={countdown} spinTiming={{ duration: 200 }} />
           )}
         </span>
@@ -306,6 +289,10 @@ export namespace Board {
      */
     imageAttribution?: ImageAttribution;
     /**
+     * If provided, an overlay with the number will be displayed over the board.
+     */
+    countdown?: number;
+    /**
      * Disables key press detection.
      *
      * @default false
@@ -332,12 +319,6 @@ export namespace Board {
      */
     isImagePreviewActive?: boolean;
     /**
-     * If `true`, a countdown will be rendered over the board.
-     *
-     * @default false
-     */
-    isCountdownEnabled?: boolean;
-    /**
      * Tile move event handler.
      */
     onTileMove?: (direction: Game.MoveDirection) => void;
@@ -353,9 +334,5 @@ export namespace Board {
      * Game resume event handler.
      */
     onGameResume?: () => void;
-    /**
-     * Countdown complete handler.
-     */
-    onCountdownComplete?: () => void;
   }
 }

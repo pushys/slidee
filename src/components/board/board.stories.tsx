@@ -30,6 +30,7 @@ const meta = {
       control: { type: 'select' },
       options: Object.values(images).map((i) => i.image),
     },
+    countdown: { control: 'number' },
   },
 } satisfies Meta<typeof Board>;
 
@@ -45,7 +46,6 @@ export const Default: Story = {
     isConfettiDisabled: false,
     isNumbersVisible: false,
     isImagePreviewActive: false,
-    isCountdownEnabled: false,
     imageSrc: undefined,
     imageAttribution: {
       author: 'John Doe',
@@ -55,6 +55,7 @@ export const Default: Story = {
       license: 'Free',
       licenseUrl: 'https://example.com/license',
     },
+    countdown: undefined,
     renderTile: (tile, index) => (
       <Tile key={tile} value={tile} isSolved={tile === index + 1} />
     ),
@@ -62,7 +63,6 @@ export const Default: Story = {
     onNewGame: fn(),
     onGamePause: fn(),
     onGameResume: fn(),
-    onCountdownComplete: fn(),
     className: 'w-lg',
   },
 };
