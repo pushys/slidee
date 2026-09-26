@@ -97,7 +97,7 @@ export class Game {
     this.#elapsedMs = 0;
     this.#isAutoSolved = false;
 
-    this.#emitGameState();
+    this.#emit('init');
     this.#debug('New game initialized');
   };
 
@@ -113,7 +113,7 @@ export class Game {
     this.#status = Game.Status.Paused;
 
     this.#stopPlaySession();
-    this.#emitGameState();
+    this.#emit('pause');
     this.#debug('Game paused');
   };
 
@@ -129,7 +129,7 @@ export class Game {
     this.#status = Game.Status.Playing;
     this.#playSessionStartedAt = Date.now();
 
-    this.#emitGameState();
+    this.#emit('resume');
     this.#debug('Game resumed');
   };
 
@@ -147,7 +147,7 @@ export class Game {
     this.#isAutoSolved = true;
 
     this.#stopPlaySession();
-    this.#emitGameState();
+    this.#emit('solve');
     this.#debug('Game solved');
   };
 
@@ -217,10 +217,12 @@ export class Game {
     if (Game.isSequenceSolved(this.#board)) {
       this.#status = Game.Status.Over;
       this.#stopPlaySession();
+      this.#emit('over');
       this.#debug('Game over');
+      return;
     }
 
-    this.#emitGameState();
+    this.#emit('move');
   };
 
   /**
@@ -424,8 +426,10 @@ export class Game {
     return { row, column };
   }
 
-  #emitGameState(): void {
-    this.#listeners.forEach((listener) => listener(this.state));
+  #emit(type: Game.EventType): void {
+    this.#listeners.forEach((listener) =>
+      listener({ type, state: this.state }),
+    );
   }
 
   /**
@@ -506,7 +510,20 @@ export namespace Game {
   export type MoveDirection =
     (typeof Game.MoveDirection)[keyof typeof Game.MoveDirection];
 
-  export type Listener = (state: State) => void;
+  export type Listener = (event: Event) => void;
+
+  export type EventType =
+    | 'init'
+    | 'pause'
+    | 'resume'
+    | 'move'
+    | 'solve'
+    | 'over';
+
+  export interface Event {
+    type: EventType;
+    state: State;
+  }
 }
 
 const DirectionOffsets = {

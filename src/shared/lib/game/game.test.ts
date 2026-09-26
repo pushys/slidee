@@ -181,9 +181,9 @@ describe('Game', () => {
   it('should subscribe/unsubscribe to game state changes', () => {
     const game = new Game({ boardSize: 3 });
 
-    let stateChanges: Game.State[] = [];
+    let stateChanges: Game.Event[] = [];
 
-    const unsubscribe = game.subscribe((state) => stateChanges.push(state));
+    const unsubscribe = game.subscribe((event) => stateChanges.push(event));
 
     game.move('up');
     game.pause();
@@ -192,28 +192,40 @@ describe('Game', () => {
 
     expect(stateChanges).toStrictEqual([
       {
-        board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
-        moves: 1,
-        status: Game.Status.Playing,
-        isAutoSolved: false,
+        type: 'move',
+        state: {
+          board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
+          moves: 1,
+          status: Game.Status.Playing,
+          isAutoSolved: false,
+        },
       },
       {
-        board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
-        moves: 1,
-        status: Game.Status.Paused,
-        isAutoSolved: false,
+        type: 'pause',
+        state: {
+          board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
+          moves: 1,
+          status: Game.Status.Paused,
+          isAutoSolved: false,
+        },
       },
       {
-        board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
-        moves: 1,
-        status: Game.Status.Playing,
-        isAutoSolved: false,
+        type: 'resume',
+        state: {
+          board: [1, 5, 3, 7, 6, 8, 4, 2, 0],
+          moves: 1,
+          status: Game.Status.Playing,
+          isAutoSolved: false,
+        },
       },
       {
-        board: [1, 2, 3, 4, 5, 6, 7, 8, 0],
-        moves: 1,
-        status: Game.Status.Over,
-        isAutoSolved: true,
+        type: 'solve',
+        state: {
+          board: [1, 2, 3, 4, 5, 6, 7, 8, 0],
+          moves: 1,
+          status: Game.Status.Over,
+          isAutoSolved: true,
+        },
       },
     ]);
 
