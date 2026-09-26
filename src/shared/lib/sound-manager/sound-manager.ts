@@ -24,6 +24,7 @@ class SoundManager {
     const audio = this.#audio[sound];
 
     audio.currentTime = 0;
+    audio.volume = 1;
     void audio.play();
   };
 }
